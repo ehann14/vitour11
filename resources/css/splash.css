@@ -1,0 +1,296 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298, #1a2a4a);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Background Circles */
+.splash-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.splash-circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.3;
+}
+
+.splash-circle-1 {
+    width: 600px;
+    height: 600px;
+    top: -200px;
+    left: -150px;
+    background: radial-gradient(circle, #00c9b1, transparent 70%);
+    animation: float 20s infinite linear;
+}
+
+.splash-circle-2 {
+    width: 700px;
+    height: 700px;
+    bottom: -250px;
+    right: -150px;
+    background: radial-gradient(circle, #00c9b1, transparent 70%);
+    animation: float 25s infinite reverse linear;
+}
+
+.splash-circle-3 {
+    width: 400px;
+    height: 400px;
+    top: 40%;
+    right: -100px;
+    background: radial-gradient(circle, rgba(255,255,255,0.5), transparent 70%);
+    animation: float 18s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(50px, -30px) rotate(90deg); }
+    50% { transform: translate(100px, 0) rotate(180deg); }
+    75% { transform: translate(50px, 30px) rotate(270deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+/* Splash Container */
+.splash-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.5s ease;
+}
+
+/* Logo Section */
+.logo-container {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: fadeInUp 1s ease-out;
+}
+
+.logo-icon {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, rgba(30, 60, 114, 0.9), rgba(42, 82, 152, 0.95));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    border: 4px solid rgba(0, 201, 177, 0.3);
+    animation: pulse 2s infinite;
+}
+
+.logo-icon i {
+    font-size: 4rem;
+    color: #00c9b1;
+    animation: rotate 3s infinite linear;
+}
+
+.school-name {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    letter-spacing: 2px;
+    background: linear-gradient(to right, #ffffff, #00c9b1, #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% auto;
+    animation: shine 3s linear infinite;
+}
+
+/* LOADING SECTION */
+.loading-container {
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.loading-bar {
+    width: 100%;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+    overflow: hidden;
+    margin: 20px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+}
+
+.loading-progress {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #1e3c72, #00c9b1, #2a5298);
+    border-radius: 50px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 201, 177, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.loading-progress::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shineProgress 2s infinite;
+}
+
+@keyframes shineProgress {
+    100% { left: 100%; }
+}
+
+.loading-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.loading-dots {
+    animation: dots 1.5s infinite;
+}
+
+.percentage {
+    font-weight: 700;
+    color: #00c9b1;
+}
+
+/* Tagline */
+.tagline {
+    margin-top: 20px;
+    padding: 15px 40px;
+    background: rgba(0, 201, 177, 0.15);
+    border-radius: 50px;
+    border: 2px solid rgba(0, 201, 177, 0.3);
+}
+
+.tagline p {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+/* Footer */
+.splash-footer {
+    position: absolute;
+    bottom: 30px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    text-align: center;
+    animation: fadeIn 2s ease-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes shine {
+    to { background-position: 200% center; }
+}
+
+@keyframes dots {
+    0%, 20% { content: "Loading"; }
+    40% { content: "Loading."; }
+    60% { content: "Loading.."; }
+    80%, 100% { content: "Loading..."; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .logo-icon {
+        width: 100px;
+        height: 100px;
+    }
+    .logo-icon i {
+        font-size: 3rem;
+    }
+    .school-name {
+        font-size: 1.8rem;
+    }
+    .loading-container {
+        max-width: 300px;
+    }
+    .loading-bar,
+    .loading-info {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-icon {
+        width: 80px;
+        height: 80px;
+    }
+    .logo-icon i {
+        font-size: 2.5rem;
+    }
+    .school-name {
+        font-size: 1.5rem;
+    }
+    .loading-container {
+        max-width: 250px;
+    }
+    .loading-bar {
+        height: 10px;
+    }
+    .tagline p {
+        font-size: 1rem;
+        padding: 10px 25px;
+    }
+}
