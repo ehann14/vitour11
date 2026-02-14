@@ -7,5 +7,9 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    return view('home'); // Halaman utama
+    return view('home'); // Halaman home
 })->name('home');
+
+Route::get('/denah', function () {
+    return view('denah'); // Halaman denah 360°
+})->name('denah');

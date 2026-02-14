@@ -849,9 +849,9 @@
                             <i class="fas fa-book-open"></i>
                             Pelajari Lebih Lanjut
                         </a>
-                        <a href="#" class="btn btn-secondary">
-                            <i class="fas fa-map-marked-alt"></i>
-                            Lihat Denah Sekolah
+                        <a href="{{ route('denah') }}" class="btn btn-secondary">
+                        <i class="fas fa-map-marked-alt"></i>
+                        Lihat Denah Sekolah
                         </a>
                     </div>
                 </div>
