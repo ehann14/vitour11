@@ -850,8 +850,8 @@
                             Pelajari Lebih Lanjut
                         </a>
                         <a href="{{ route('denah') }}" class="btn btn-secondary">
-                        <i class="fas fa-map-marked-alt"></i>
-                        Lihat Denah Sekolah
+                            <i class="fas fa-map-marked-alt"></i>
+                            Lihat Denah Sekolah
                         </a>
                     </div>
                 </div>
