@@ -857,15 +857,15 @@
                 </div>
                 <div class="hero-images">
                     <div class="hero-img hero-img-1">
-                        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop" alt="Sekolah">
+                        <img src="{{ asset('image/b/11.png') }}" alt="Banner">
                     </div>
                     <div class="hero-img">
-                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=600&fit=crop" alt="Kegiatan">
-                    </div>
+                        <img src="{{ asset('image/360/slide_1.jpg') }}" alt="Sekolah">
+                    </div>  <!-- ← Missing closing tag ini -->
                     <div class="hero-img">
-                        <img src="https://images.unsplash.com/photo-1503549455944-6b6636e25783?w=800&h=600&fit=crop" alt="Upacara">
+                        <img src="{{ asset('image/b/slide_3a.jpeg') }}" alt="Banner">
                     </div>
-                </div>
+                </div>  <!-- ← Missing closing tag ini -->
             </div>
         </div>
     </section>
@@ -1054,7 +1054,7 @@
 
             <div class="gallery-grid">
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop" alt="Kegiatan Upacara">
+                    <img src="{{ asset('image/b/banner-1.png') }}" alt="Banner">
                     <div class="gallery-overlay">
                         <h4>Kegiatan Upacara</h4>
                         <p>Siswa aktif dalam proses pembelajaran</p>
@@ -1082,9 +1082,9 @@
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop" alt="Perpustakaan">
+                    <img src="{{ asset('image/b/slide_2a.jpeg') }}" alt="Banner">
                     <div class="gallery-overlay">
-                        <h4>Perpustakaan</h4>
+                        <h4>Taman</h4>
                         <p>Sumber belajar yang lengkap</p>
                     </div>
                 </div>
