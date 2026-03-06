@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "framework": null,
+  "outputDirectory": "public",
+  "buildCommand": "composer install --no-dev --optimize-autoloader && php artisan route:cache && php artisan config:cache",
+  "installCommand": "composer install --no-dev --optimize-autoloader",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.php"
+    }
+  ]
+}
