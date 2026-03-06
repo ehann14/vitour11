@@ -1067,7 +1067,7 @@
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1503549455944-6b6636e25783?w=800&h=600&fit=crop" alt="Ekstrakurikuler">
+                    <img src="{{ asset('image/b/eskul.jpg') }}" alt="Ekstrakurikuler">
                     <div class="gallery-overlay">
                         <h4>Ekstrakurikuler</h4>
                         <p>Pengembangan minat dan bakat siswa</p>
