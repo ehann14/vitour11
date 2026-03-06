@@ -1,13 +1,9 @@
 {
   "version": 2,
-  "framework": null,
   "outputDirectory": "public",
-  "buildCommand": "composer install --no-dev --optimize-autoloader && php artisan route:cache && php artisan config:cache",
-  "installCommand": "composer install --no-dev --optimize-autoloader",
+  "buildCommand": "curl -sS https://getcomposer.org/installer | php && php composer.phar install --no-dev --optimize-autoloader && php artisan config:cache && php artisan route:cache",
+  "installCommand": "curl -sS https://getcomposer.org/installer | php && php composer.phar install --no-dev --optimize-autoloader",
   "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.php"
-    }
+    { "source": "/(.*)", "destination": "/index.php" }
   ]
 }
