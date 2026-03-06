@@ -823,7 +823,6 @@
                 <li><a href="#home" class="active">Beranda</a></li>
                 <li><a href="#profile">Profil</a></li>
                 <li><a href="#gallery">Galeri</a></li>
-                <li><a href="#facilities">Fasilitas</a></li>
                 <li><a href="#achievement">Prestasi</a></li>
                 <li><a href="#contact">Kontak</a></li>
             </ul>
