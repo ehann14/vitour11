@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <title>Denah Sekolah 360° - SMK Negeri 11 Bandung</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -651,29 +652,29 @@ to { transform: translateY(0); opacity: 1; }
 <h3><i class="fas fa-map-marked-alt"></i> Pilih Lokasi</h3>
 </div>
 <div class="scene-buttons">
-<button class="scene-btn active" data-scene="halaman-depan">
+<button class="scene-btn active" data-scene="gerbang">
 <i class="fas fa-home"></i>
-<span>Halaman Depan</span>
+<span>Gerbang</span>
 </button>
 <button class="scene-btn" data-scene="lapangan">
 <i class="fas fa-field"></i>
 <span>Lapangan</span>
 </button>
-<button class="scene-btn" data-scene="ruang-kelas">
-<i class="fas fa-chalkboard"></i>
-<span>Ruang Kelas</span>
+<button class="scene-btn" data-scene="masjid">
+<i class="fas fa-mosque"></i>
+<span>Masjid</span>
 </button>
-<button class="scene-btn" data-scene="laboratorium">
+<button class="scene-btn" data-scene="koridor-lab">
 <i class="fas fa-flask"></i>
-<span>Laboratorium</span>
+<span>Koridor Lab</span>
 </button>
-<button class="scene-btn" data-scene="perpustakaan">
-<i class="fas fa-book"></i>
-<span>Perpustakaan</span>
+<button class="scene-btn" data-scene="parkiran">
+<i class="fas fa-parking"></i>
+<span>Parkiran</span>
 </button>
-<button class="scene-btn" data-scene="kantin">
-<i class="fas fa-utensils"></i>
-<span>Kantin</span>
+<button class="scene-btn" data-scene="ruang-bk">
+<i class="fas fa-user-friends"></i>
+<span>Ruang BK</span>
 </button>
 </div>
 </div>
@@ -684,7 +685,7 @@ to { transform: translateY(0); opacity: 1; }
 <div class="viewer-header">
 <div>
 <h2><i class="fas fa-vr-cardboard"></i> Virtual Tour 360°</h2>
-<p class="scene-title" id="current-scene-title">Halaman Depan SMK Negeri 11 Bandung</p>
+<p class="scene-title" id="current-scene-title">Gerbang SMK Negeri 11 Bandung</p>
 <p class="viewer-subtitle">Klik dan drag untuk memutar | Scroll untuk zoom | Klik hotspot untuk navigasi</p>
 </div>
 </div>
@@ -748,7 +749,7 @@ Kembali ke Beranda
 <i class="fas fa-graduation-cap"></i>
 <span>SMK NEGERI 11 BANDUNG</span>
 </div>
-<p class="footer-text">© 2026 SMK Negeri 11 Bandung | Sekolah Kejuruan Unggulan</p>
+<p class="footer-text">© {{ date('Y') }} SMK Negeri 11 Bandung | Sekolah Kejuruan Unggulan</p>
 </div>
 </footer>
 <!-- Pannellum 360° Viewer JS -->
@@ -766,12 +767,12 @@ document.querySelector('.nav-menu').classList.remove('active');
 });
 // Initialize Pannellum - Multi Scene
 let viewer = null;
-let currentScene = 'halaman-depan';
+let currentScene = 'gerbang';
 document.addEventListener('DOMContentLoaded', function() {
 // Initialize Pannellum
 viewer = pannellum.viewer('panorama', {
 "default": {
-"firstScene": "halaman-depan",
+"firstScene": "gerbang",
 "sceneFadeDuration": 1000,
 "autoLoad": true,
 "showZoomCtrl": true,
@@ -781,11 +782,11 @@ viewer = pannellum.viewer('panorama', {
 "autoRotateInactivityDelay": 5000
 },
 "scenes": {
-// ===== SCENE 1: HALAMAN DEPAN =====
-"halaman-depan": {
-"title": "Halaman Depan SMK Negeri 11 Bandung",
+// ===== SCENE 1: GERBANG =====
+"gerbang": {
+"title": "Gerbang Utama",
 "type": "equirectangular",
-"panorama": "image/360/Gerbang.jpg",
+"panorama": "{{ asset('image/360/Gerbang.jpg') }}",
 "hotSpots": [
 {
 "pitch": -4.53,
@@ -817,65 +818,65 @@ viewer = pannellum.viewer('panorama', {
 }
 ]
 },
-// ===== SCENE 2: Lapangan =====
+// ===== SCENE 2: LAPANGAN =====
 "lapangan": {
-"title": "Lapangan",
+"title": "Lapangan Sekolah",
 "type": "equirectangular",
-"panorama": "image/360/lapang.jpg",
+"panorama": "{{ asset('image/360/lapang.jpg') }}",
 "hotSpots": [
 {
 "pitch": 0,
 "yaw": -120,
 "type": "scene",
-"text": "Kembali ke Halaman",
-"sceneId": "halaman-depan",
+"text": "Kembali ke Gerbang",
+"sceneId": "gerbang",
 "targetYaw": 180,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Halaman Depan"
+"createTooltipArgs": "Gerbang"
 },
 {
 "pitch": 5,
 "yaw": 45,
 "type": "scene",
-"text": "Ke Ruang Kelas",
-"sceneId": "ruang-kelas",
+"text": "Ke Koridor Lab",
+"sceneId": "koridor-lab",
 "targetYaw": -90,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Ruang Kelas"
+"createTooltipArgs": "Koridor Lab"
 },
 {
 "pitch": -5,
 "yaw": 135,
 "type": "scene",
-"text": "Ke Laboratorium",
-"sceneId": "laboratorium",
+"text": "Ke Masjid",
+"sceneId": "masjid",
 "targetYaw": 0,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Laboratorium"
+"createTooltipArgs": "Masjid"
 },
 {
 "pitch": 10,
 "yaw": 90,
 "type": "info",
-"text": "Lobi Utama dengan Resepsionis - Area penerima tamu dan informasi",
-"id": "info-lobi"
+"text": "Lapangan Utama - Area upacara dan kegiatan olahraga",
+"id": "info-lapangan"
 }
 ]
 },
-// ===== SCENE 3: RUANG KELAS =====
-"ruang-kelas": {
-"title": "Ruang Kelas XI RPL",
+// ===== SCENE 3: MASJID =====
+"masjid": {
+"title": "Masjid Sekolah",
 "type": "equirectangular",
-"panorama": "https://pannellum.org/images/bma-2.jpg",
+"panorama": "{{ asset('image/360/Masjid_atas.jpg') }}",
 "hotSpots": [
 {
 "pitch": 0,
 "yaw": -90,
 "type": "scene",
-"text": "Kembali ke Gedung Utama",
+"text": "Kembali ke Lapangan",
 "sceneId": "lapangan",
 "targetYaw": 180,
 "targetPitch": 0,
@@ -886,33 +887,33 @@ viewer = pannellum.viewer('panorama', {
 "pitch": 5,
 "yaw": 60,
 "type": "info",
-"text": "Meja Guru & Whiteboard - Area mengajar dengan fasilitas lengkap",
-"id": "info-meja-guru"
+"text": "Masjid - Tempat ibadah dan kegiatan keagamaan",
+"id": "info-masjid"
 },
 {
 "pitch": -5,
 "yaw": 150,
 "type": "scene",
-"text": "Ke Perpustakaan",
-"sceneId": "perpustakaan",
+"text": "Tikungan Masjid",
+"sceneId": "tikungan-masjid",
 "targetYaw": 0,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Perpustakaan"
+"createTooltipArgs": "Tikungan Masjid"
 }
 ]
 },
-// ===== SCENE 4: LABORATORIUM =====
-"laboratorium": {
-"title": "Laboratorium Komputer",
+// ===== SCENE 4: KORIDOR LAB =====
+"koridor-lab": {
+"title": "Koridor Laboratorium",
 "type": "equirectangular",
-"panorama": "https://pannellum.org/images/bma-3.jpg",
+"panorama": "{{ asset('image/360/Koridor_lab_atas_kanan.jpg') }}",
 "hotSpots": [
 {
 "pitch": 0,
 "yaw": -180,
 "type": "scene",
-"text": "Kembali ke Gedung Utama",
+"text": "Kembali ke Lapangan",
 "sceneId": "lapangan",
 "targetYaw": 180,
 "targetPitch": 0,
@@ -923,134 +924,123 @@ viewer = pannellum.viewer('panorama', {
 "pitch": 10,
 "yaw": 30,
 "type": "info",
-"text": "Komputer PC Terbaru - Dilengkapi software terkini untuk pembelajaran",
-"id": "info-komputer"
+"text": "Koridor Laboratorium - Area praktikum siswa",
+"id": "info-koridor-lab"
 },
 {
 "pitch": -5,
 "yaw": 90,
 "type": "scene",
-"text": "Ke Bengkel Otomotif",
-"sceneId": "bengkel",
+"text": "Ke Ruang BK",
+"sceneId": "ruang-bk",
 "targetYaw": 0,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Bengkel Otomotif"
+"createTooltipArgs": "Ruang BK"
 }
 ]
 },
-// ===== SCENE 5: PERPUSTAKAAN =====
-"perpustakaan": {
-"title": "Perpustakaan Sekolah",
+// ===== SCENE 5: PARKIRAN =====
+"parkiran": {
+"title": "Area Parkiran",
 "type": "equirectangular",
-"panorama": "https://pannellum.org/images/bma-4.jpg",
+"panorama": "{{ asset('image/360/Parkiran.jpg') }}",
 "hotSpots": [
 {
 "pitch": 0,
 "yaw": -90,
 "type": "scene",
-"text": "Kembali ke Ruang Kelas",
-"sceneId": "ruang-kelas",
+"text": "Kembali ke Gerbang",
+"sceneId": "gerbang",
 "targetYaw": 180,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Ruang Kelas"
+"createTooltipArgs": "Gerbang"
 },
 {
 "pitch": 5,
 "yaw": 45,
 "type": "info",
-"text": "Koleksi Buku Lengkap - Ribuan buku referensi dan fiksi tersedia",
-"id": "info-buku"
-},
-{
-"pitch": -10,
-"yaw": 120,
-"type": "scene",
-"text": "Ke Kantin Sekolah",
-"sceneId": "kantin",
-"targetYaw": 0,
-"targetPitch": 0,
-"createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Kantin Sekolah"
+"text": "Area Parkiran - Tempat parkir siswa dan guru",
+"id": "info-parkiran"
 }
 ]
 },
-// ===== SCENE 6: LAPANGAN OLAHRAGA =====
-"lapangan-olahraga": {
-"title": "Lapangan Olahraga",
+// ===== SCENE 6: RUANG BK =====
+"ruang-bk": {
+"title": "Ruang BK",
 "type": "equirectangular",
-"panorama": "https://pannellum.org/images/bma-5.jpg",
-"hotSpots": [
-{
-"pitch": 0,
-"yaw": 180,
-"type": "scene",
-"text": "Kembali ke Halaman",
-"sceneId": "halaman-depan",
-"targetYaw": 0,
-"targetPitch": 0,
-"createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Halaman Depan"
-},
-{
-"pitch": 10,
-"yaw": 60,
-"type": "info",
-"text": "Lapangan Basket & Futsal - Fasilitas olahraga lengkap untuk siswa",
-"id": "info-lapangan"
-}
-]
-},
-// ===== SCENE 7: BENGKEL OTOMOTIF =====
-"bengkel": {
-"title": "Bengkel Otomotif",
-"type": "equirectangular",
-"panorama": "https://pannellum.org/images/bma-6.jpg",
+"panorama": "{{ asset('image/360/Tikungan_Ruang_BK.jpg') }}",
 "hotSpots": [
 {
 "pitch": 0,
 "yaw": -180,
 "type": "scene",
-"text": "Kembali ke Laboratorium",
-"sceneId": "laboratorium",
+"text": "Kembali ke Koridor Lab",
+"sceneId": "koridor-lab",
 "targetYaw": 180,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Laboratorium"
+"createTooltipArgs": "Koridor Lab"
 },
 {
 "pitch": 5,
 "yaw": 30,
 "type": "info",
-"text": "Alat Praktik Otomotif - Kendaraan dan tools untuk pembelajaran praktik",
-"id": "info-alat"
+"text": "Ruang Bimbingan Konseling - Layanan konseling siswa",
+"id": "info-bk"
 }
 ]
 },
-// ===== SCENE 8: KANTIN SEKOLAH =====
-"kantin": {
-"title": "Kantin Sekolah",
+// ===== SCENE 7: TIKUNGAN MASJID =====
+"tikungan-masjid": {
+"title": "Tikungan Masjid",
 "type": "equirectangular",
-"panorama": "https://pannellum.org/images/bma-7.jpg",
+"panorama": "{{ asset('image/360/Tikungan_kandang_burung_masjid_.jpg') }}",
 "hotSpots": [
 {
 "pitch": 0,
 "yaw": -90,
 "type": "scene",
-"text": "Kembali ke Perpustakaan",
-"sceneId": "perpustakaan",
+"text": "Kembali ke Masjid",
+"sceneId": "masjid",
 "targetYaw": 180,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Perpustakaan"
+"createTooltipArgs": "Masjid"
 },
 {
-"pitch": -5,
+"pitch": 5,
 "yaw": 45,
 "type": "info",
-"text": "Area Makan Siswa - Tempat istirahat dan makan siang siswa",
-"id": "info-kantin"
+"text": "Area sekitar masjid",
+"id": "info-tikungan-masjid"
+}
+]
+},
+// ===== SCENE 8: CORIDOR RAPAT =====
+"coridor-rapat": {
+"title": "Koridor Rapat",
+"type": "equirectangular",
+"panorama": "{{ asset('image/360/Coridor_Rapat.jpg') }}",
+"hotSpots": [
+{
+"pitch": 0,
+"yaw": -90,
+"type": "scene",
+"text": "Kembali ke Gerbang",
+"sceneId": "gerbang",
+"targetYaw": 180,
+"targetPitch": 0,
+"createTooltipFunc": hotspotTooltip,
+"createTooltipArgs": "Gerbang"
+},
+{
+"pitch": 5,
+"yaw": 45,
+"type": "info",
+"text": "Koridor Ruang Rapat - Area pertemuan",
+"id": "info-rapat"
 }
 ]
 }
@@ -1191,7 +1181,7 @@ function preloadPanoramas() {
     sceneIds.forEach((sceneId, index) => {
         if (sceneId !== currentScene) {
             const img = new Image();
-            img.src = scenes[sceneId].panorama;
+            img.src = scenes[sceneId].panorama.replace("{{ asset('", "").replace("') }}", "");
             console.log(`🔄 Preloading scene ${index + 1}/${sceneIds.length}: ${sceneId}`);
         }
     });
