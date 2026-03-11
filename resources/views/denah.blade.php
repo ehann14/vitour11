@@ -646,41 +646,6 @@ to { transform: translateY(0); opacity: 1; }
 <p>Explore lingkungan sekolah kami dengan pengalaman virtual 360° yang interaktif. Putar, zoom, dan jelajahi setiap sudut kampus kami secara virtual!</p>
 </div>
 </section>
-<!-- Scene Selector -->
-<section class="scene-selector">
-<div class="container">
-<div class="scene-selector-header">
-<h3><i class="fas fa-map"></i> Pilih Lokasi</h3>
-<span class="scene-count">8 Lokasi Tersedia</span>
-</div>
-<div class="scene-buttons">
-<button class="scene-btn active" data-scene="halaman-depan">
-<i class="fas fa-home"></i> Halaman Depan
-</button>
-<button class="scene-btn" data-scene="gedung-utama">
-<i class="fas fa-building"></i> Gedung Utama
-</button>
-<button class="scene-btn" data-scene="ruang-kelas">
-<i class="fas fa-chalkboard"></i> Ruang Kelas
-</button>
-<button class="scene-btn" data-scene="laboratorium">
-<i class="fas fa-microchip"></i> Laboratorium
-</button>
-<button class="scene-btn" data-scene="perpustakaan">
-<i class="fas fa-book"></i> Perpustakaan
-</button>
-<button class="scene-btn" data-scene="lapangan">
-<i class="fas fa-futbol"></i> Lapangan
-</button>
-<button class="scene-btn" data-scene="bengkel">
-<i class="fas fa-tools"></i> Bengkel
-</button>
-<button class="scene-btn" data-scene="kantin">
-<i class="fas fa-utensils"></i> Kantin
-</button>
-</div>
-</div>
-</section>
 <!-- 360° Viewer Section -->
 <section class="viewer-section">
 <div class="container">
