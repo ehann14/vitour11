@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="csrf-token" content="{{ csrf_token() }}">
 <title>Denah Sekolah 360° - SMK Negeri 11 Bandung</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -646,6 +645,38 @@ to { transform: translateY(0); opacity: 1; }
 <p>Explore lingkungan sekolah kami dengan pengalaman virtual 360° yang interaktif. Putar, zoom, dan jelajahi setiap sudut kampus kami secara virtual!</p>
 </div>
 </section>
+<!-- Scene Selector -->
+<div class="scene-selector">
+<div class="scene-selector-header">
+<h3><i class="fas fa-map-marked-alt"></i> Pilih Lokasi</h3>
+</div>
+<div class="scene-buttons">
+<button class="scene-btn active" data-scene="halaman-depan">
+<i class="fas fa-home"></i>
+<span>Halaman Depan</span>
+</button>
+<button class="scene-btn" data-scene="lapangan">
+<i class="fas fa-field"></i>
+<span>Lapangan</span>
+</button>
+<button class="scene-btn" data-scene="ruang-kelas">
+<i class="fas fa-chalkboard"></i>
+<span>Ruang Kelas</span>
+</button>
+<button class="scene-btn" data-scene="laboratorium">
+<i class="fas fa-flask"></i>
+<span>Laboratorium</span>
+</button>
+<button class="scene-btn" data-scene="perpustakaan">
+<i class="fas fa-book"></i>
+<span>Perpustakaan</span>
+</button>
+<button class="scene-btn" data-scene="kantin">
+<i class="fas fa-utensils"></i>
+<span>Kantin</span>
+</button>
+</div>
+</div>
 <!-- 360° Viewer Section -->
 <section class="viewer-section">
 <div class="container">
@@ -717,7 +748,7 @@ Kembali ke Beranda
 <i class="fas fa-graduation-cap"></i>
 <span>SMK NEGERI 11 BANDUNG</span>
 </div>
-<p class="footer-text">© {{ date('Y') }} SMK Negeri 11 Bandung | Sekolah Kejuruan Unggulan</p>
+<p class="footer-text">© 2026 SMK Negeri 11 Bandung | Sekolah Kejuruan Unggulan</p>
 </div>
 </footer>
 <!-- Pannellum 360° Viewer JS -->
@@ -754,13 +785,13 @@ viewer = pannellum.viewer('panorama', {
 "halaman-depan": {
 "title": "Halaman Depan SMK Negeri 11 Bandung",
 "type": "equirectangular",
-"panorama": "{{ asset('image/360/Gerbang.jpg') }}",
+"panorama": "image/360/Gerbang.jpg",
 "hotSpots": [
 {
 "pitch": -4.53,
-"yaw": -40.48,
+"yaw": -35.48,
 "type": "scene",
-"sceneId": "Lapangan",
+"sceneId": "lapangan",
 "targetYaw": -90,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
@@ -768,17 +799,17 @@ viewer = pannellum.viewer('panorama', {
 },
 {
 "pitch": -10,
-"yaw": -45,
+"yaw": -55,
 "type": "info",
 "text": "Gerbang Utama Sekolah - Pintu masuk utama untuk siswa dan guru",
 "id": "info-gerbang"
 },
 {
-"pitch": -12.41,
-"yaw": -40.48,
+"pitch": -4.53,
+"yaw": -46.48,
 "type": "scene",
 "text": "Parkiran",
-"sceneId": "Parkiran",
+"sceneId": "parkiran",
 "targetYaw": 0,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
@@ -786,11 +817,11 @@ viewer = pannellum.viewer('panorama', {
 }
 ]
 },
-// ===== SCENE 2: Lapang =====
-"gedung-utama": {
+// ===== SCENE 2: Lapangan =====
+"lapangan": {
 "title": "Lapangan",
 "type": "equirectangular",
-"panorama": "{{ asset('image/360/lapang.jpg') }}",
+"panorama": "image/360/lapang.jpg",
 "hotSpots": [
 {
 "pitch": 0,
@@ -845,11 +876,11 @@ viewer = pannellum.viewer('panorama', {
 "yaw": -90,
 "type": "scene",
 "text": "Kembali ke Gedung Utama",
-"sceneId": "gedung-utama",
+"sceneId": "lapangan",
 "targetYaw": 180,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Gedung Utama"
+"createTooltipArgs": "Lapangan"
 },
 {
 "pitch": 5,
@@ -882,11 +913,11 @@ viewer = pannellum.viewer('panorama', {
 "yaw": -180,
 "type": "scene",
 "text": "Kembali ke Gedung Utama",
-"sceneId": "gedung-utama",
+"sceneId": "lapangan",
 "targetYaw": 180,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Gedung Utama"
+"createTooltipArgs": "Lapangan"
 },
 {
 "pitch": 10,
@@ -946,7 +977,7 @@ viewer = pannellum.viewer('panorama', {
 ]
 },
 // ===== SCENE 6: LAPANGAN OLAHRAGA =====
-"lapangan": {
+"lapangan-olahraga": {
 "title": "Lapangan Olahraga",
 "type": "equirectangular",
 "panorama": "https://pannellum.org/images/bma-5.jpg",
