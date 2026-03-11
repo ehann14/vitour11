@@ -754,18 +754,17 @@ viewer = pannellum.viewer('panorama', {
 "halaman-depan": {
 "title": "Halaman Depan SMK Negeri 11 Bandung",
 "type": "equirectangular",
-"panorama": "{{ asset('image/360/panorama.jpg') }}",
+"panorama": "{{ asset('image/360/Gerbang.jpg') }}",
 "hotSpots": [
 {
-"pitch": -4.72,
-"yaw": 169.09,
+"pitch": -4.53,
+"yaw": -40.48,
 "type": "scene",
-"text": "Masuk ke Gedung Utama",
-"sceneId": "gedung-utama",
+"sceneId": "Lapangan",
 "targetYaw": -90,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Gedung Utama"
+"createTooltipArgs": "Lapangan"
 },
 {
 "pitch": -10,
@@ -775,23 +774,23 @@ viewer = pannellum.viewer('panorama', {
 "id": "info-gerbang"
 },
 {
-"pitch": 15,
-"yaw": 120,
+"pitch": -12.41,
+"yaw": -40.48,
 "type": "scene",
-"text": "Ke Lapangan Olahraga",
-"sceneId": "lapangan",
+"text": "Parkiran",
+"sceneId": "Parkiran",
 "targetYaw": 0,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Lapangan Olahraga"
+"createTooltipArgs": "Parkiran"
 }
 ]
 },
-// ===== SCENE 2: GEDUNG UTAMA =====
+// ===== SCENE 2: Lapang =====
 "gedung-utama": {
-"title": "Gedung Utama & Lobi",
+"title": "Lapangan",
 "type": "equirectangular",
-"panorama": "{{ asset('image/360/Tangga_tecno.jpg') }}",
+"panorama": "{{ asset('image/360/lapang.jpg') }}",
 "hotSpots": [
 {
 "pitch": 0,
