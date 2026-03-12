@@ -971,12 +971,12 @@ viewer = pannellum.viewer('panorama', {
 "pitch": 0,
 "yaw": 30,
 "type": "scene",
-"text": "Ke Masjid",
-"sceneId": "masjid",
+"text": "Ke RAT",
+"sceneId": "Rat",
 "targetYaw": 0,
 "targetPitch": 0,
 "createTooltipFunc": hotspotTooltip,
-"createTooltipArgs": "Masjid"
+"createTooltipArgs": "Rat"
 },
 {
 "pitch": 0,
