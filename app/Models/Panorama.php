@@ -2,10 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Panorama extends Model
 {
+    use HasFactory;
+
+    // Nama tabel (opsional jika sesuai konvensi)
+    protected $table = 'panoramas';
+
+    // Kolom yang BOLEH diisi mass-assignment
     protected $fillable = [
         'name',
         'scene_id',
@@ -14,17 +21,13 @@ class Panorama extends Model
         'order',
         'is_active',
         'hotspots',
-        'icon'
+        'icon',
     ];
 
+    // Kolom yang harus di-cast ke tipe data tertentu
     protected $casts = [
-        'hotspots' => 'array',
         'is_active' => 'boolean',
-        'order' => 'integer'
+        'order' => 'integer',
+        'hotspots' => 'array', // Otomatis decode JSON ke array
     ];
-
-    public function getRouteKeyName()
-    {
-        return 'scene_id';
-    }
 }

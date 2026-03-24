@@ -263,10 +263,14 @@
         // Build scenes config for Pannellum
         const scenesConfig = {};
         panoramas.forEach(p => {
+            // ✅ FIX: Ambil nama file saja, tanpa prefix 'storage/'
+            const fileName = p.image_path.replace('storage/', '').split('/').pop();
+            
             scenesConfig[p.scene_id] = {
                 title: p.name,
                 type: p.type === '360' ? 'equirectangular' : 'flat',
-                panorama: '/storage/' + p.image_path,
+                // ✅ FIX: Path langsung ke /panoramas/filename.jpg
+                panorama: '/panoramas/' + fileName,
                 hotSpots: (p.hotspots || []).map(h => ({
                     pitch: h.pitch || 0,
                     yaw: h.yaw || 0,

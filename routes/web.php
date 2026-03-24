@@ -1,66 +1,45 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PanoramaController;
+use App\Http\Controllers\Auth\LoginController;
 
-// ================= PUBLIC ROUTES =================
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+*/
 
-// Halaman Utama
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+// Public Routes (Website Utama)
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/denah', [HomeController::class, 'denah'])->name('denah');
+Route::get('/view/{scene_id}', [HomeController::class, 'view'])->name('view');
 
-// Viewer 360° (Denah)
-Route::get('/denah', [PanoramaController::class, 'viewer'])->name('denah');
+// ✅ ADMIN LOGIN ROUTES (WAJIB ADA UNTUK MENGATASI 404)
+Route::get('/admin/login', [LoginController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [LoginController::class, 'login'])->name('admin.login.post');
+Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.logout');
 
-// ================= ADMIN ROUTES =================
-
-// Halaman Login Admin
-Route::get('/admin/login', function () {
-    return view('admin');
-})->name('admin.login');
-
-// Proses Autentikasi Admin
-Route::post('/admin/authenticate', function (\Illuminate\Http\Request $request) {
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required'
-    ]);
-
-    if ($request->email === 'admin123@gmail.com' && $request->password === 'Hann11gg') {
-        session(['admin_logged_in' => true]);
-        return redirect()->route('admin.dashboard');
-    }
-
-    return back()->withErrors(['login' => 'Email atau password salah!'])->withInput();
-})->name('admin.authenticate');
-
-// Dashboard Admin (dengan proteksi di dalam closure)
-Route::get('/admin/dashboard', [PanoramaController::class, 'dashboard'])
-    ->name('admin.dashboard');
-
-// Upload Scene Baru
-Route::post('/admin/panorama/store', [PanoramaController::class, 'store'])
-    ->name('admin.panorama.store');
-
-// Update Scene
-Route::put('/admin/panorama/{id}', [PanoramaController::class, 'update'])
-    ->name('admin.panorama.update');
-
-// Update Order
-Route::post('/admin/panorama/order', [PanoramaController::class, 'updateOrder'])
-    ->name('admin.panorama.order');
-
-// Hapus Scene
-Route::delete('/admin/panorama/{id}', [PanoramaController::class, 'destroy'])
-    ->name('admin.panorama.destroy');
-
-// Get Scenes API
-Route::get('/admin/panorama/scenes', [PanoramaController::class, 'getScenes'])
-    ->name('admin.panorama.scenes');
-
-// Logout Admin
-Route::post('/admin/logout', function () {
-    session()->forget('admin_logged_in');
-    return redirect()->route('home');
-})->name('admin.logout');
+// Admin Routes (Harus Login)
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+    
+    // Dashboard
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    
+    // Panorama Management
+    Route::prefix('panorama')->name('panorama.')->group(function () {
+        Route::get('/', [PanoramaController::class, 'index'])->name('index');
+        Route::get('/create', [PanoramaController::class, 'create'])->name('create');
+        Route::post('/store', [PanoramaController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [PanoramaController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [PanoramaController::class, 'update'])->name('update');
+        Route::delete('/{id}', [PanoramaController::class, 'destroy'])->name('destroy');
+        
+        // AJAX Routes
+        Route::post('/{id}/toggle-status', [PanoramaController::class, 'toggleStatus'])->name('toggle-status');
+        Route::post('/bulk-toggle', [PanoramaController::class, 'bulkToggle'])->name('bulk-toggle');
+        Route::post('/bulk-delete', [PanoramaController::class, 'bulkDelete'])->name('bulk-delete');
+    });
+});

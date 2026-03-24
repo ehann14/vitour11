@@ -2,135 +2,228 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Panorama;
 use Illuminate\Http\Request;
+use App\Models\Panorama;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Schema;
 
 class PanoramaController extends Controller
 {
-    // Viewer untuk public
-    public function viewer()
+    /**
+     * Display a listing of panoramas.
+     */
+    public function index(Request $request)
     {
-        $panoramas = Panorama::where('is_active', true)
-            ->orderBy('order')
-            ->get();
+        $query = Panorama::query();
         
-        return view('denah', compact('panoramas'));
-    }
-
-    // Admin Dashboard
-    public function dashboard()
-    {
-        if (!session('admin_logged_in')) {
-            return redirect()->route('admin.login');
+        // Search filter
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('scene_id', 'like', "%{$search}%");
+            });
         }
-
-        $panoramas = Panorama::orderBy('order')->get();
-        return view('admin.dashboard', compact('panoramas'));
+        
+        // Type filter
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+        
+        // Status filter
+        if ($request->filled('status')) {
+            $query->where('is_active', $request->status === 'active');
+        }
+        
+        // Pagination
+        $perPage = $request->get('per_page', 10);
+        $panoramas = $query->orderBy('order')->orderBy('created_at', 'desc')->paginate($perPage);
+        
+        return view('admin.panorama.index', compact('panoramas'));
     }
 
-    // Upload gambar baru
+    /**
+     * Show the form for creating a new panorama.
+     */
+    public function create()
+    {
+        return view('admin.panorama.create');
+    }
+
+    /**
+     * Store a newly created panorama in storage.
+     * ⚠️ INI BAGIAN PENTING UNTUK UPLOAD FILE
+     */
     public function store(Request $request)
     {
-        if (!session('admin_logged_in')) {
-            return redirect()->route('admin.login');
+        try {
+            // 1. VALIDASI INPUT
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'scene_id' => 'required|string|max:255|unique:panoramas,scene_id',
+                'image_path' => 'required|image|mimes:jpeg,jpg,png,webp|max:10240', // Max 10MB
+                'type' => 'required|in:360,normal',
+                'order' => 'nullable|integer|min:0',
+                'is_active' => 'nullable|boolean',
+                'hotspots' => 'nullable|json',
+                'icon' => 'nullable|string|max:255',
+            ], [
+                'image_path.required' => 'Gambar wajib diupload.',
+                'image_path.image' => 'File harus berupa gambar.',
+                'image_path.mimes' => 'Format gambar harus: jpeg, jpg, png, webp.',
+                'image_path.max' => 'Ukuran gambar maksimal 10MB.',
+                'scene_id.unique' => 'Scene ID ini sudah digunakan.',
+            ]);
+
+            // 2. PROSES UPLOAD FILE
+            if ($request->hasFile('image_path')) {
+                // Simpan file ke disk 'public' (folder: storage/app/public/panoramas)
+                $path = $request->file('image_path')->store('panoramas', 'public');
+                
+                // Simpan path relatif ke database (storage/panoramas/xxx.jpg)
+                $validated['image_path'] = 'panoramas/' . basename($path);
+                
+                Log::info('File uploaded successfully: ' . $validated['image_path']);
+            } else {
+                Log::error('No file uploaded in request.');
+                return redirect()->back()->with('error', 'Gagal mengupload gambar. File tidak terdeteksi.');
+            }
+
+            // 3. SIMPAN KE DATABASE
+            Panorama::create($validated);
+
+            return redirect()->route('admin.panorama.index')
+                ->with('success', 'Panorama berhasil ditambahkan!');
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation Error: ' . json_encode($e->errors()));
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        } catch (\Exception $e) {
+            Log::error('Store Critical Error: ' . $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine());
+            return redirect()->back()
+                ->with('error', 'Gagal menyimpan: ' . $e->getMessage())
+                ->withInput();
         }
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'scene_id' => 'required|string|max:100|unique:panoramas,scene_id',
-            'image' => 'required|image|mimes:jpeg,png,jpg|max:20480',
-            'type' => 'required|in:360,normal',
-            'icon' => 'required|string'
-        ]);
-
-        $path = $request->file('image')->store('panoramas', 'public');
-
-        Panorama::create([
-            'name' => $request->name,
-            'scene_id' => $request->scene_id,
-            'image_path' => $path,
-            'type' => $request->type,
-            'order' => Panorama::max('order') + 1,
-            'hotspots' => [],
-            'icon' => $request->icon,
-            'is_active' => true
-        ]);
-
-        return redirect()->back()->with('success', 'Scene berhasil ditambahkan!');
     }
 
-    // Update scene & hotspots
+    /**
+     * Show the form for editing the specified panorama.
+     */
+    public function edit($id)
+    {
+        $panorama = Panorama::findOrFail($id);
+        return view('admin.panorama.edit', compact('panorama'));
+    }
+
+    /**
+     * Update the specified panorama in storage.
+     */
     public function update(Request $request, $id)
     {
-        if (!session('admin_logged_in')) {
-            return redirect()->route('admin.login');
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'image_path' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:10240',
+                'type' => 'required|in:360,normal',
+                'order' => 'nullable|integer|min:0',
+                'is_active' => 'nullable|boolean',
+                'hotspots' => 'nullable|json',
+                'icon' => 'nullable|string|max:255',
+            ]);
+
+            $panorama = Panorama::findOrFail($id);
+            
+            // Handle file upload jika ada file baru
+            if ($request->hasFile('image_path')) {
+                // Hapus file lama dari storage jika ada
+                if ($panorama->image_path) {
+                    $oldPath = str_replace('storage/', 'public/', $panorama->image_path);
+                    if (Storage::exists($oldPath)) {
+                        Storage::delete($oldPath);
+                    }
+                }
+                
+                // Simpan file baru
+                $path = $request->file('image_path')->store('panoramas', 'public');
+                $validated['image_path'] = 'panoramas/' . basename($path);
+            }
+            
+            $panorama->update($validated);
+
+            return redirect()->route('admin.panorama.index')
+                ->with('success', 'Panorama berhasil diperbarui!');
+                
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation Error: ' . json_encode($e->errors()));
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        } catch (\Exception $e) {
+            Log::error('Update Error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Gagal memperbarui: ' . $e->getMessage())
+                ->withInput();
         }
-
-        $panorama = Panorama::findOrFail($id);
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'type' => 'required|in:360,normal',
-            'icon' => 'required|string',
-            'is_active' => 'boolean',
-            'hotspots' => 'nullable|array'
-        ]);
-
-        $data = [
-            'name' => $request->name,
-            'type' => $request->type,
-            'icon' => $request->icon,
-            'is_active' => $request->has('is_active'),
-            'hotspots' => $request->hotspots ?? []
-        ];
-
-        // Upload gambar baru jika ada
-        if ($request->hasFile('image')) {
-            Storage::disk('public')->delete($panorama->image_path);
-            $data['image_path'] = $request->file('image')->store('panoramas', 'public');
-        }
-
-        $panorama->update($data);
-
-        return redirect()->back()->with('success', 'Scene berhasil diupdate!');
     }
 
-    // Update order (drag & drop)
-    public function updateOrder(Request $request)
-    {
-        if (!session('admin_logged_in')) {
-            return response()->json(['success' => false], 403);
-        }
-
-        foreach ($request->orders as $id => $order) {
-            Panorama::where('id', $id)->update(['order' => $order]);
-        }
-
-        return response()->json(['success' => true]);
-    }
-
-    // Hapus scene
+    /**
+     * Remove the specified panorama from storage.
+     */
     public function destroy($id)
     {
-        if (!session('admin_logged_in')) {
-            return redirect()->route('admin.login');
+        try {
+            $panorama = Panorama::findOrFail($id);
+            
+            // Hapus file gambar terkait dari storage
+            if ($panorama->image_path) {
+                $filePath = str_replace('storage/', 'public/', $panorama->image_path);
+                if (Storage::exists($filePath)) {
+                    Storage::delete($filePath);
+                }
+            }
+            
+            $panorama->delete();
+
+            return redirect()->route('admin.panorama.index')
+                ->with('success', 'Panorama berhasil dihapus!');
+        } catch (\Exception $e) {
+            Log::error('Delete Error: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Gagal menghapus: ' . $e->getMessage());
         }
-
-        $panorama = Panorama::findOrFail($id);
-        Storage::disk('public')->delete($panorama->image_path);
-        $panorama->delete();
-
-        return redirect()->back()->with('success', 'Scene berhasil dihapus!');
     }
 
-    // Get all scenes for hotspot target selection
-    public function getScenes()
-    {
-        $panoramas = Panorama::where('is_active', true)
-            ->orderBy('order')
-            ->get(['id', 'name', 'scene_id']);
-        
-        return response()->json($panoramas);
+    // ... (Method AJAX toggleStatus, bulkToggle, bulkDelete tetap sama seperti sebelumnya) ...
+    public function toggleStatus(Request $request, $id) {
+        try {
+            $panorama = Panorama::findOrFail($id);
+            $panorama->update(['is_active' => $request->boolean('is_active')]);
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+    public function bulkToggle(Request $request) {
+        try {
+            Panorama::whereIn('id', $request->input('ids', []))->update(['is_active' => $request->boolean('is_active')]);
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+    public function bulkDelete(Request $request) {
+        try {
+            $ids = $request->input('ids', []);
+            foreach(Panorama::whereIn('id', $ids)->get() as $p) {
+                if($p->image_path) Storage::delete(str_replace('storage/', 'public/', $p->image_path));
+            }
+            Panorama::whereIn('id', $ids)->delete();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 }
