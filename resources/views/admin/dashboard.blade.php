@@ -96,11 +96,9 @@
             border-radius: 6px;
             border: 1px solid #dee2e6;
             background: #f8f9fa;
-        }
-        .table img {
             transition: transform 0.2s;
         }
-        .table img:hover {
+        .preview-thumb:hover {
             transform: scale(1.1);
         }
     </style>
@@ -127,7 +125,8 @@
                         <i class="fas fa-external-link-alt me-2"></i>Lihat Website
                     </a>
                 </nav>
-                <div class="p-3 border-top" style="border-color: rgba(255,255,255,0.2) !important;">
+                <div class="p-3 border-top mt-auto" style="border-color: rgba(255,255,255,0.2) !important;">
+                    <!-- ✅ FIX: Ganti auth.logout → admin.logout -->
                     <form method="POST" action="{{ route('admin.logout') }}">
                         @csrf
                         <button type="submit" class="logout-btn">
@@ -155,6 +154,7 @@
 
                 <!-- Dashboard Content -->
                 <div class="p-4">
+                    <!-- Alert Messages -->
                     @if(session('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
@@ -239,7 +239,6 @@
                                             <tr>
                                                 <td>
                                                     @php
-                                                        // ✅ FIX: URL langsung ke /panoramas/filename.jpg
                                                         $previewUrl = '/' . ($panorama->image_path ?? '');
                                                         $onErrorScript = "this.src='https://via.placeholder.com/60x40/1e3c72/ffffff?text=No+Image&font=roboto'";
                                                     @endphp
@@ -310,6 +309,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Auto-dismiss alerts after 5 seconds
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
                 setTimeout(() => {

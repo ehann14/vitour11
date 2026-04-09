@@ -18,6 +18,7 @@ class PanoramaController extends Controller
     {
         $query = Panorama::query();
         
+        // Search filter
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -26,20 +27,26 @@ class PanoramaController extends Controller
             });
         }
         
+        // Type filter
         if ($request->filled('type')) {
             $query->where('type', $request->type);
         }
         
+        // Status filter
         if ($request->filled('status')) {
             $query->where('is_active', $request->status === 'active');
         }
         
+        // Pagination
         $perPage = $request->get('per_page', 10);
         $panoramas = $query->orderBy('order')->orderBy('created_at', 'desc')->paginate($perPage);
         
         return view('admin.panorama.index', compact('panoramas'));
     }
 
+    /**
+     * Show the form for creating a new panorama.
+     */
     public function create()
     {
         return view('admin.panorama.create');
@@ -52,6 +59,7 @@ class PanoramaController extends Controller
     public function store(Request $request)
     {
         try {
+            // 1. VALIDASI INPUT
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'scene_id' => 'required|string|max:255|unique:panoramas,scene_id',
@@ -69,20 +77,21 @@ class PanoramaController extends Controller
                 'scene_id.unique' => 'Scene ID ini sudah digunakan.',
             ]);
 
+            // 2. PROSES UPLOAD FILE (Windows-fix: bypass symlink)
             if ($request->hasFile('image_path')) {
                 $file = $request->file('image_path');
                 
                 // Generate nama file unik
                 $filename = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
                 
-                // ✅ FIX: Simpan LANGSUNG ke public/panoramas
+                // Simpan LANGSUNG ke public/panoramas
                 $destinationPath = public_path('panoramas');
                 if (!file_exists($destinationPath)) {
                     mkdir($destinationPath, 0755, true);
                 }
                 $file->move($destinationPath, $filename);
                 
-                // Simpan path relatif ke database (tanpa prefix)
+                // Simpan path relatif ke database
                 $validated['image_path'] = 'panoramas/' . $filename;
                 
                 Log::info('File uploaded to public/panoramas: ' . $validated['image_path']);
@@ -91,6 +100,7 @@ class PanoramaController extends Controller
                 return redirect()->back()->with('error', 'Gagal mengupload gambar. File tidak terdeteksi.');
             }
 
+            // 3. SIMPAN KE DATABASE
             Panorama::create($validated);
 
             return redirect()->route('admin.panorama.index')
@@ -109,6 +119,9 @@ class PanoramaController extends Controller
         }
     }
 
+    /**
+     * Show the form for editing the specified panorama.
+     */
     public function edit($id)
     {
         $panorama = Panorama::findOrFail($id);
@@ -134,7 +147,7 @@ class PanoramaController extends Controller
 
             $panorama = Panorama::findOrFail($id);
             
-            // ✅ FIX: Hanya proses upload jika ada file baru
+            // Hanya proses upload jika ada file baru
             if ($request->hasFile('image_path') && $request->file('image_path')->isValid()) {
                 // Hapus file lama dari public/panoramas
                 if ($panorama->image_path && file_exists(public_path($panorama->image_path))) {
@@ -154,7 +167,7 @@ class PanoramaController extends Controller
                 // Update path di array validated
                 $validated['image_path'] = 'panoramas/' . $filename;
             } else {
-                // ✅ PENTING: Hapus image_path dari validated agar tidak overwrite data lama
+                // PENTING: Hapus image_path dari validated agar tidak overwrite data lama
                 unset($validated['image_path']);
             }
             
@@ -185,6 +198,7 @@ class PanoramaController extends Controller
         try {
             $panorama = Panorama::findOrFail($id);
             
+            // Hapus file gambar terkait dari public folder
             if ($panorama->image_path) {
                 $filePath = public_path($panorama->image_path);
                 if (file_exists($filePath)) {

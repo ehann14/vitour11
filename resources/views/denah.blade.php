@@ -28,6 +28,8 @@
             min-height: 100vh;
         }
         .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Navbar */
         .navbar {
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -64,6 +66,8 @@
             transition: color 0.3s;
         }
         .nav-menu a:hover, .nav-menu a.active { color: var(--primary-blue); }
+        
+        /* Header */
         .header {
             text-align: center;
             padding: 40px 0;
@@ -86,6 +90,8 @@
             max-width: 700px;
             margin: 0 auto;
         }
+        
+        /* Scene Selector */
         .scene-selector {
             background: var(--white);
             border-radius: 30px;
@@ -128,6 +134,8 @@
             background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
             color: var(--white);
         }
+        
+        /* Viewer */
         .viewer-container {
             background: var(--white);
             border-radius: 30px;
@@ -164,6 +172,8 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Back Button */
         .btn-back {
             display: inline-flex;
             align-items: center;
@@ -178,6 +188,7 @@
             transition: transform 0.3s;
         }
         .btn-back:hover { transform: translateY(-3px); }
+        
         @media (max-width: 768px) {
             .header h1 { font-size: 1.9rem; }
             .scene-buttons { grid-template-columns: repeat(3, 1fr); }
@@ -248,13 +259,13 @@
     <script>
         let viewer = null;
         
-        // ✅ FIX: Parse hotspots di Laravel sebelum dikirim ke JS
+        // ✅ FIX: Parse hotspots di Laravel sebelum dikirim ke JS (Windows-safe)
         @php
             $panoramasWithUrl = $panoramas->map(function($p) {
-                // Path gambar langsung ke /panoramas/filename.jpg
+                // Path gambar langsung ke /panoramas/filename.jpg (bypass symlink)
                 $p->image_url = '/' . ($p->image_path ?? '');
                 
-                // ✅ FIX: Parse hotspots dari JSON string ke array
+                // Parse hotspots dari JSON string ke array
                 $hotspotsRaw = $p->hotspots ?? '[]';
                 if (is_string($hotspotsRaw)) {
                     try {
@@ -274,16 +285,18 @@
         @endphp
         const panoramas = @json($panoramasWithUrl);
 
+        // Build scenes config for Pannellum
         const scenesConfig = {};
         panoramas.forEach(p => {
             console.log('Loading scene:', p.scene_id, 'with URL:', p.image_url);
             
-            // ✅ FIX: Gunakan hotspots_array yang sudah diparse
+            // Gunakan hotspots_array yang sudah diparse di PHP
             const hotspots = p.hotspots_array || [];
             
             scenesConfig[p.scene_id] = {
                 title: p.name,
                 type: p.type === '360' ? 'equirectangular' : 'flat',
+                // ✅ FIX: Path langsung ke /panoramas/filename.jpg (Windows-fix)
                 panorama: p.image_url,
                 hotSpots: hotspots.map(h => ({
                     pitch: h.pitch ?? h.x ?? 0,
@@ -315,10 +328,13 @@
                 scenes: scenesConfig
             });
 
+            // Hide loading spinner after 2 seconds or when image loads
             setTimeout(() => {
-                document.querySelector('.loading').style.display = 'none';
+                const loadingEl = document.querySelector('.loading');
+                if (loadingEl) loadingEl.style.display = 'none';
             }, 2000);
 
+            // Scene button clicks
             document.querySelectorAll('.scene-btn').forEach(button => {
                 button.addEventListener('click', function() {
                     const sceneId = this.getAttribute('data-scene');

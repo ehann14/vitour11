@@ -180,6 +180,8 @@
         .file-size-error.show {
             display: block;
         }
+        
+        /* Hotspot JSON Editor Styles */
         .hotspot-editor {
             background: var(--gray-100);
             border-radius: 12px;
@@ -202,9 +204,19 @@
             gap: 0.75rem;
             align-items: flex-start;
         }
-        .hotspot-item .form-control { flex: 1; min-width: 120px; }
-        .hotspot-item .form-control-sm { padding: 0.35rem 0.75rem; font-size: 0.875rem; }
-        .hotspot-actions { display: flex; gap: 0.5rem; align-items: center; }
+        .hotspot-item .form-control {
+            flex: 1;
+            min-width: 120px;
+        }
+        .hotspot-item .form-control-sm {
+            padding: 0.35rem 0.75rem;
+            font-size: 0.875rem;
+        }
+        .hotspot-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
         .hotspot-preview {
             background: var(--gray-200);
             border-radius: 8px;
@@ -223,7 +235,9 @@
             margin-top: 0.5rem;
             display: none;
         }
-        .json-error.show { display: block; }
+        .json-error.show {
+            display: block;
+        }
         .badge-hotspot {
             background: var(--accent-teal);
             color: white;
@@ -237,7 +251,11 @@
             padding: 2rem;
             color: var(--gray-600);
         }
-        .empty-state i { font-size: 3rem; opacity: 0.3; margin-bottom: 1rem; }
+        .empty-state i {
+            font-size: 3rem;
+            opacity: 0.3;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -311,11 +329,12 @@
                     @endif
 
                     <div class="form-card">
-                        <!-- ✅ FIX: Form utama untuk UPDATE (PUT) -->
+                        <!-- Form utama untuk UPDATE (PUT) -->
                         <form method="POST" action="{{ route('admin.panorama.update', $panorama->id) }}" enctype="multipart/form-data" id="panoramaForm">
                             @csrf
                             @method('PUT')
 
+                            <!-- Hidden ID -->
                             <input type="hidden" name="id" value="{{ $panorama->id }}">
 
                             <div class="row g-4">
@@ -329,7 +348,7 @@
                                     <small class="form-text">Nama yang akan ditampilkan di website</small>
                                 </div>
 
-                                <!-- Scene ID (Read-only) -->
+                                <!-- Scene ID (Read-only saat edit) -->
                                 <div class="col-md-6">
                                     <label for="scene_id" class="form-label">Scene ID</label>
                                     <input type="text" class="form-control" id="scene_id" 
@@ -348,7 +367,7 @@
                                     @error('type') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
 
-                                <!-- Order -->
+                                <!-- Order / Urutan -->
                                 <div class="col-md-6">
                                     <label for="order" class="form-label">Urutan Tampil</label>
                                     <input type="number" class="form-control @error('order') is-invalid @enderror" 
@@ -357,10 +376,11 @@
                                     <small class="form-text">Semakin kecil angka, semakin awal ditampilkan</small>
                                 </div>
 
-                                <!-- Upload Gambar -->
+                                <!-- Upload Gambar (MAX 10 MB) -->
                                 <div class="col-12">
                                     <label class="form-label">Gambar Saat Ini</label>
                                     @if($panorama->image_path)
+                                        <!-- ✅ FIX: Path langsung ke /panoramas/filename.jpg (bypass symlink Windows) -->
                                         <img src="{{ '/' . $panorama->image_path }}" alt="{{ $panorama->name }}" class="current-image">
                                     @else
                                         <div class="current-image d-flex align-items-center justify-content-center" style="background: var(--gray-200);">
@@ -398,7 +418,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Hotspots JSON Editor -->
+                                <!-- HOTSPOTS JSON EDITOR -->
                                 <div class="col-12">
                                     <label class="form-label d-flex align-items-center gap-2">
                                         <i class="fas fa-map-marked-alt"></i>
@@ -407,11 +427,13 @@
                                     </label>
                                     <small class="form-text d-block mb-3">Tambahkan titik interaktif yang muncul saat user menjelajahi panorama 360°</small>
                                     
+                                    <!-- Visual Hotspot Editor -->
                                     <div class="hotspot-editor">
                                         <div id="hotspotList" class="hotspot-list"></div>
                                         <button type="button" class="btn btn-teal btn-sm" id="addHotspotBtn">
                                             <i class="fas fa-plus me-1"></i>Tambah Hotspot
                                         </button>
+                                        <!-- JSON Preview (Read-only) -->
                                         <div class="mt-3">
                                             <small class="form-text fw-semibold">Preview JSON:</small>
                                             <div id="jsonPreview" class="hotspot-preview"></div>
@@ -420,6 +442,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Hidden textarea for form submission -->
                                     <textarea class="d-none" id="hotspots" name="hotspots">{{ old('hotspots', $panorama->hotspots ?? '[]') }}</textarea>
                                     @error('hotspots') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                     <small class="form-text mt-2">
@@ -429,7 +453,7 @@
                                 </div>
                             </div>
 
-                            <!-- Submit Buttons - TANPA Form Delete di Dalamnya -->
+                            <!-- Submit Buttons -->
                             <div class="d-flex gap-3 mt-4 pt-3 border-top">
                                 <button type="submit" class="btn btn-primary-custom" id="submitBtn">
                                     <i class="fas fa-save me-2"></i>Update Panorama
@@ -437,7 +461,7 @@
                                 <a href="{{ route('admin.panorama.index') }}" class="btn btn-secondary-custom">
                                     <i class="fas fa-times me-2"></i>Batal
                                 </a>
-                                <!-- ✅ FIX: Tombol hapus DIPISAHKAN dari form utama -->
+                                <!-- ✅ FIX: Tombol hapus DIPISAHKAN dari form utama (AJAX) -->
                                 <button type="button" class="btn btn-danger-custom" id="deleteBtn" data-id="{{ $panorama->id }}">
                                     <i class="fas fa-trash me-1"></i>Hapus
                                 </button>
@@ -457,6 +481,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Format ukuran file ke human-readable
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
@@ -465,40 +490,75 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
+        // Format JSON dengan indentasi
         function formatJSON(json) {
-            try { return JSON.stringify(JSON.parse(json), null, 2); } catch (e) { return json; }
+            try {
+                return JSON.stringify(JSON.parse(json), null, 2);
+            } catch (e) {
+                return json;
+            }
         }
 
+        // Parse hotspots dari JSON string ke array
         function parseHotspots(jsonString) {
-            try { const parsed = JSON.parse(jsonString); return Array.isArray(parsed) ? parsed : []; } catch (e) { return []; }
+            try {
+                const parsed = JSON.parse(jsonString);
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (e) {
+                return [];
+            }
         }
 
+        // Render hotspot list dari array
         function renderHotspots(hotspots) {
             const container = document.getElementById('hotspotList');
+            
             if (!hotspots || hotspots.length === 0) {
-                container.innerHTML = `<div class="empty-state"><i class="fas fa-map-pin"></i><p>Belum ada hotspot. Klik "Tambah Hotspot" untuk menambahkan.</p></div>`;
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-map-pin"></i>
+                        <p>Belum ada hotspot. Klik "Tambah Hotspot" untuk menambahkan.</p>
+                    </div>
+                `;
                 return;
             }
+            
             container.innerHTML = hotspots.map((hotspot, index) => `
                 <div class="hotspot-item" data-index="${index}">
-                    <input type="number" class="form-control form-control-sm hotspot-x" placeholder="X (%)" value="${hotspot.x ?? 50}" min="0" max="100" step="0.1" style="max-width: 80px;">
-                    <input type="number" class="form-control form-control-sm hotspot-y" placeholder="Y (%)" value="${hotspot.y ?? 50}" min="0" max="100" step="0.1" style="max-width: 80px;">
-                    <input type="text" class="form-control form-control-sm hotspot-text" placeholder="Teks tooltip" value="${hotspot.text ?? ''}">
-                    <input type="text" class="form-control form-control-sm hotspot-link" placeholder="Link (opsional)" value="${hotspot.link ?? ''}">
+                    <input type="number" class="form-control form-control-sm hotspot-x" 
+                           placeholder="X (%)" value="${hotspot.x ?? 50}" min="0" max="100" step="0.1"
+                           style="max-width: 80px;">
+                    <input type="number" class="form-control form-control-sm hotspot-y" 
+                           placeholder="Y (%)" value="${hotspot.y ?? 50}" min="0" max="100" step="0.1"
+                           style="max-width: 80px;">
+                    <input type="text" class="form-control form-control-sm hotspot-text" 
+                           placeholder="Teks tooltip" value="${hotspot.text ?? ''}">
+                    <input type="text" class="form-control form-control-sm hotspot-link" 
+                           placeholder="Link (opsional)" value="${hotspot.link ?? ''}">
                     <div class="hotspot-actions">
-                        <button type="button" class="btn btn-danger-custom btn-sm remove-hotspot" title="Hapus"><i class="fas fa-trash"></i></button>
+                        <button type="button" class="btn btn-danger-custom btn-sm remove-hotspot" title="Hapus">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
                 </div>
             `).join('');
+            
+            // Update badge count
             document.querySelector('.badge-hotspot').textContent = `${hotspots.length} item`;
+            
+            // Update JSON preview
             updateJSONPreview();
         }
 
+        // Update JSON preview dan hidden textarea
         function updateJSONPreview() {
             const hotspots = getHotspotsFromUI();
             const jsonString = JSON.stringify(hotspots, null, 2);
+            
             document.getElementById('jsonPreview').textContent = jsonString;
             document.getElementById('hotspots').value = jsonString;
+            
+            // Validate JSON
             const jsonError = document.getElementById('jsonError');
             try {
                 JSON.parse(jsonString);
@@ -510,83 +570,134 @@
             }
         }
 
+        // Get hotspots array from UI inputs
         function getHotspotsFromUI() {
             const items = document.querySelectorAll('.hotspot-item');
             const hotspots = [];
+            
             items.forEach(item => {
                 const x = parseFloat(item.querySelector('.hotspot-x').value) || 50;
                 const y = parseFloat(item.querySelector('.hotspot-y').value) || 50;
                 const text = item.querySelector('.hotspot-text').value || '';
                 const link = item.querySelector('.hotspot-link').value || '';
-                if (text.trim()) hotspots.push({ x, y, text, link: link || null });
+                
+                if (text.trim()) {
+                    hotspots.push({ x, y, text, link: link || null });
+                }
             });
+            
             return hotspots;
         }
 
+        // Add new hotspot
         function addHotspot() {
             const hotspots = getHotspotsFromUI();
             hotspots.push({ x: 50, y: 50, text: '', link: '' });
             renderHotspots(hotspots);
+            
+            // Focus on new text input
             const newItem = document.querySelector('.hotspot-item:last-child .hotspot-text');
             if (newItem) newItem.focus();
         }
 
+        // Remove hotspot
         function removeHotspot(btn) {
-            btn.closest('.hotspot-item').remove();
+            const item = btn.closest('.hotspot-item');
+            item.remove();
             updateJSONPreview();
+            
+            // Update badge
             const count = document.querySelectorAll('.hotspot-item').length;
             document.querySelector('.badge-hotspot').textContent = `${count} item`;
+            
+            // Show empty state if no items
             if (count === 0) {
-                document.getElementById('hotspotList').innerHTML = `<div class="empty-state"><i class="fas fa-map-pin"></i><p>Belum ada hotspot. Klik "Tambah Hotspot" untuk menambahkan.</p></div>`;
+                document.getElementById('hotspotList').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-map-pin"></i>
+                        <p>Belum ada hotspot. Klik "Tambah Hotspot" untuk menambahkan.</p>
+                    </div>
+                `;
             }
         }
 
-        // Image Preview + File Size Validation
-        document.getElementById('image_path')?.addEventListener('change', function(e) {
+        // Image Preview + File Size Validation (MAX 10 MB)
+        document.getElementById('image_path').addEventListener('change', function(e) {
             const preview = document.getElementById('imagePreview');
             const fileSizeError = document.getElementById('fileSizeError');
             const submitBtn = document.getElementById('submitBtn');
             const file = e.target.files[0];
-            const maxSize = 10485760;
+            const maxSize = 10485760; // 10 MB in bytes
+            
+            // Reset error
             fileSizeError.classList.remove('show');
             submitBtn.disabled = false;
+            
             if (file) {
+                // Validasi ukuran file
                 if (file.size > maxSize) {
                     fileSizeError.classList.add('show');
-                    fileSizeError.innerHTML = '<i class="fas fa-exclamation-triangle me-1"></i>Ukuran file (' + formatFileSize(file.size) + ') melebihi batas maksimal 10 MB!';
+                    fileSizeError.innerHTML = 
+                        '<i class="fas fa-exclamation-triangle me-1"></i>' +
+                        'Ukuran file (' + formatFileSize(file.size) + ') melebihi batas maksimal 10 MB!';
                     submitBtn.disabled = true;
                     preview.classList.remove('show');
                     this.value = '';
                     return;
                 }
+                
+                // Preview gambar
                 const reader = new FileReader();
-                reader.onload = function(event) { preview.src = event.target.result; preview.classList.add('show'); }
+                reader.onload = function(event) {
+                    preview.src = event.target.result;
+                    preview.classList.add('show');
+                }
                 reader.readAsDataURL(file);
-            } else { preview.classList.remove('show'); }
+            } else {
+                preview.classList.remove('show');
+            }
+        });
+
+        // Auto-format scene_id display (read-only)
+        document.getElementById('scene_id').addEventListener('input', function(e) {
+            this.value = this.value.toLowerCase().replace(/\s+/g, '-');
         });
 
         // Hotspot event listeners
-        document.getElementById('addHotspotBtn')?.addEventListener('click', addHotspot);
-        document.getElementById('hotspotList')?.addEventListener('click', function(e) {
-            if (e.target.closest('.remove-hotspot')) removeHotspot(e.target.closest('.remove-hotspot'));
+        document.getElementById('addHotspotBtn').addEventListener('click', addHotspot);
+        
+        document.getElementById('hotspotList').addEventListener('click', function(e) {
+            if (e.target.closest('.remove-hotspot')) {
+                removeHotspot(e.target.closest('.remove-hotspot'));
+            }
         });
-        document.getElementById('hotspotList')?.addEventListener('input', function(e) {
-            if (e.target.classList.contains('hotspot-x') || e.target.classList.contains('hotspot-y') || e.target.classList.contains('hotspot-text') || e.target.classList.contains('hotspot-link')) {
+        
+        // Real-time update on input change
+        document.getElementById('hotspotList').addEventListener('input', function(e) {
+            if (e.target.classList.contains('hotspot-x') || 
+                e.target.classList.contains('hotspot-y') ||
+                e.target.classList.contains('hotspot-text') ||
+                e.target.classList.contains('hotspot-link')) {
                 updateJSONPreview();
             }
         });
 
-        // Prevent form submit if JSON invalid
-        document.getElementById('panoramaForm')?.addEventListener('submit', function(e) {
+        // Prevent form submit if JSON is invalid
+        document.getElementById('panoramaForm').addEventListener('submit', function(e) {
             const hotspotsValue = document.getElementById('hotspots').value;
-            try { JSON.parse(hotspotsValue); } catch (err) {
+            try {
+                JSON.parse(hotspotsValue);
+            } catch (err) {
                 e.preventDefault();
                 alert('Format hotspot JSON tidak valid. Silakan periksa kembali.');
                 document.getElementById('jsonError').classList.add('show');
             }
+            
+            // Check file size again (backup validation)
             const fileInput = document.getElementById('image_path');
-            const file = fileInput?.files[0];
+            const file = fileInput.files[0];
             const maxSize = 10485760;
+            
             if (file && file.size > maxSize) {
                 e.preventDefault();
                 alert('Ukuran file gambar melebihi 10 MB. Silakan pilih file yang lebih kecil.');
@@ -594,8 +705,8 @@
             }
         });
 
-        // ✅ FIX: Handle delete button separately (bukan nested form)
-        document.getElementById('deleteBtn')?.addEventListener('click', function() {
+        // ✅ FIX: Handle delete button separately (AJAX, bukan nested form)
+        document.getElementById('deleteBtn').addEventListener('click', function() {
             if (confirm('Yakin ingin menghapus panorama ini? Tindakan ini tidak dapat dibatalkan.')) {
                 const id = this.getAttribute('data-id');
                 const deleteForm = document.getElementById('deleteForm');
@@ -604,10 +715,16 @@
             }
         });
 
-        // Initialize
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
-            const initialHotspots = parseHotspots(document.getElementById('hotspots')?.value || '[]');
+            const initialHotspots = parseHotspots(document.getElementById('hotspots').value);
             renderHotspots(initialHotspots);
+            
+            // Show current image if exists
+            const currentImg = document.querySelector('.current-image');
+            if (currentImg && currentImg.src && !currentImg.src.includes('fa-image')) {
+                // Image already loaded via src attribute
+            }
         });
     </script>
 </body>
