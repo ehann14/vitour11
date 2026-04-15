@@ -12,12 +12,17 @@ use App\Http\Controllers\Auth\LoginController;
 |--------------------------------------------------------------------------
 */
 
-// Public Routes (Website Utama)
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// ✅ Splash Screen - Halaman Pertama
+Route::get('/', function () {
+    return view('splash');
+})->name('splash');
+
+// ✅ Home Utama - Pindah ke /beranda
+Route::get('/beranda', [HomeController::class, 'index'])->name('home');
 Route::get('/denah', [HomeController::class, 'denah'])->name('denah');
 Route::get('/view/{scene_id}', [HomeController::class, 'view'])->name('view');
 
-// ✅ ADMIN LOGIN ROUTES (WAJIB ADA UNTUK MENGATASI 404)
+// ✅ ADMIN LOGIN ROUTES
 Route::get('/admin/login', [LoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [LoginController::class, 'login'])->name('admin.login.post');
 Route::post('/admin/logout', [LoginController::class, 'logout'])->name('admin.logout');

@@ -1,72 +1,154 @@
-// Splash Screen JavaScript
 document.addEventListener('DOMContentLoaded', function() {
-    const loadingProgress = document.querySelector('.loading-progress');
-    const percentageText = document.querySelector('.percentage');
-    const loadingDots = document.querySelector('.loading-dots');
-    const splashContainer = document.querySelector('.splash-container');
-    
+    // ===== CONFIG =====
+    const CONFIG = {
+        duration: 3000,           // Total durasi splash (ms)
+        redirectUrl: '/beranda',  // URL tujuan setelah splash
+        enableSkip: false,         // Aktifkan tombol skip
+        rememberSession: true     // Ingat sesi (tidak tampilkan splash lagi di tab yang sama)
+    };
+
+    // ===== ELEMENTS =====
+    const elements = {
+        loadingBar: document.getElementById('loadingBar'),
+        percentage: document.getElementById('percentage'),
+        loadingText: document.getElementById('loadingText'),
+        loadingDots: document.getElementById('loadingDots'),
+        skipBtn: document.getElementById('skipBtn'),
+        splashWrapper: document.querySelector('.splash-wrapper'),
+        splashBg: document.querySelector('.splash-bg')
+    };
+
+    // ===== STATE =====
     let progress = 0;
-    const duration = 3000; // 3 detik
-    const interval = 20; // Update setiap 20ms
-    const increment = (100 / (duration / interval));
+    let animationInterval;
+    let isExiting = false;
 
-    // Simulasi loading progress
-    const loadingInterval = setInterval(() => {
-        progress += increment;
+    // ===== CHECK SESSION (Opsional) =====
+    if (CONFIG.rememberSession && sessionStorage.getItem('splash_seen_' + window.location.hostname)) {
+        redirectToHome();
+        return;
+    }
+
+    // ===== START LOADING ANIMATION =====
+    function startLoading() {
+        const startTime = Date.now();
         
-        if (progress >= 100) {
-            progress = 100;
-            clearInterval(loadingInterval);
+        animationInterval = setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            const newProgress = Math.min(100, Math.floor((elapsed / CONFIG.duration) * 100));
             
-            // Setelah loading selesai, fade out splash screen
-            setTimeout(() => {
-                splashContainer.style.opacity = '0';
-                splashContainer.style.transform = 'scale(0.95)';
-                
-                // Redirect ke halaman utama setelah fade out
-                setTimeout(() => {
-                    window.location.href = '/home';
-                }, 500);
-            }, 300);
+            if (newProgress > progress) {
+                progress = newProgress;
+                updateUI(progress);
+            }
+            
+            if (progress >= 100) {
+                completeLoading();
+            }
+        }, 30);
+    }
+
+    // ===== UPDATE UI =====
+    function updateUI(value) {
+        if (elements.loadingBar) {
+            elements.loadingBar.style.width = value + '%';
+        }
+        if (elements.percentage) {
+            elements.percentage.textContent = value + '%';
         }
         
-        // Update progress bar dan percentage
-        loadingProgress.style.width = `${progress}%`;
-        percentageText.textContent = `${Math.round(progress)}%`;
+        // Animasi dots
+        const dotCount = Math.floor(value / 25) % 4;
+        if (elements.loadingDots) {
+            elements.loadingDots.style.setProperty('--dots', '.'.repeat(dotCount));
+        }
+    }
+
+    // ===== COMPLETE & REDIRECT =====
+    function completeLoading() {
+        clearInterval(animationInterval);
         
-    }, interval);
-
-    // Fallback: jika loading terlalu lama, langsung redirect
-    setTimeout(() => {
-        if (progress < 100) {
-            clearInterval(loadingInterval);
-            loadingProgress.style.width = '100%';
-            percentageText.textContent = '100%';
-            
-            setTimeout(() => {
-                splashContainer.style.opacity = '0';
-                splashContainer.style.transform = 'scale(0.95)';
-                
-                setTimeout(() => {
-                    window.location.href = '/home';
-                }, 500);
-            }, 300);
+        // Set session flag
+        if (CONFIG.rememberSession) {
+            sessionStorage.setItem('splash_seen_' + window.location.hostname, 'true');
         }
-    }, duration + 1000);
+        
+        // Trigger exit animation
+        triggerExit();
+    }
 
-    // Optional: Skip splash screen dengan klik
-    splashContainer.addEventListener('click', function(e) {
-        if (e.target === splashContainer) {
-            clearInterval(loadingInterval);
-            loadingProgress.style.width = '100%';
-            percentageText.textContent = '100%';
-            
-            splashContainer.style.opacity = '0';
-            splashContainer.style.transform = 'scale(0.95)';
-            
-            setTimeout(() => {
-                window.location.href = '/home';
-            }, 500);
+    // ===== EXIT ANIMATION =====
+    function triggerExit() {
+        if (isExiting) return;
+        isExiting = true;
+        
+        // Tambahkan class animasi
+        if (elements.splashWrapper) {
+            elements.splashWrapper.classList.add('splash-exit');
         }
-    });
+        if (elements.splashBg) {
+            elements.splashBg.classList.add('splash-exit');
+        }
+        
+        // Redirect setelah animasi selesai
+        setTimeout(redirectToHome, 500);
+    }
+
+    // ===== REDIRECT =====
+    function redirectToHome() {
+        window.location.href = CONFIG.redirectUrl;
+    }
+
+    // ===== SKIP BUTTON =====
+    function setupSkipButton() {
+        if (!CONFIG.enableSkip || !elements.skipBtn) return;
+        
+        elements.skipBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Set session flag jika di-skip
+            if (CONFIG.rememberSession) {
+                sessionStorage.setItem('splash_seen_' + window.location.hostname, 'true');
+            }
+            
+            clearInterval(animationInterval);
+            triggerExit();
+        });
+        
+        // Tampilkan tombol setelah 1.5 detik
+        setTimeout(() => {
+            if (elements.skipBtn) {
+                elements.skipBtn.style.opacity = '1';
+                elements.skipBtn.style.transform = 'translateY(0)';
+            }
+        }, 1500);
+    }
+
+    // ===== INIT =====
+    function init() {
+        // Setup initial state skip button
+        if (elements.skipBtn) {
+            elements.skipBtn.style.opacity = '0';
+            elements.skipBtn.style.transform = 'translateY(10px)';
+            elements.skipBtn.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        }
+        
+        // Start animation
+        startLoading();
+        
+        // Setup skip button
+        setupSkipButton();
+        
+        // Handle visibility change (jika tab tidak aktif, pause animasi visual)
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden && animationInterval) {
+                clearInterval(animationInterval);
+            } else if (!document.hidden && progress < 100) {
+                startLoading();
+            }
+        });
+    }
+
+    // Jalankan
+    init();
 });

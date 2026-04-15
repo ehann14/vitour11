@@ -532,7 +532,7 @@
                 </div>
                 <div class="hero-images">
                     <div class="hero-img hero-img-1">
-                        <img src="{{ asset('image/b/11.png') }}" alt="Banner">
+                        <img src="{{ asset('image/b/SMK11.Jpeg') }}" alt="Banner">
                     </div>
                     <div class="hero-img">
                         <img src="{{ asset('image/360/slide_1.jpg') }}" alt="Sekolah">
@@ -632,8 +632,8 @@
     <section class="gallery" id="gallery">
         <div class="container">
             <div class="section-header">
-                <h2><i class="fas fa-images"></i> Galeri Kegiatan</h2>
-                <p>Momen berharga di SMK Negeri 11 Bandung</p>
+                <h2><i class="fas fa-images"></i> Galeri Sekolah</h2>
+                <p>Berbagai kegiatan dan fasilitas di SMK Negeri 11 Bandung</p>
             </div>
             <div class="gallery-grid">
                 <div class="gallery-item">
@@ -649,12 +649,12 @@
                     <div class="gallery-overlay"><h4>Ekstrakurikuler</h4><p>Pengembangan minat dan bakat siswa</p></div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop" alt="Upacara Bendera">
-                    <div class="gallery-overlay"><h4>Upacara Bendera</h4><p>Pembentukan karakter disiplin</p></div>
+                    <img src="{{ asset('image/b/Belajar.Jpeg') }}" alt="Upacara Bendera">
+                    <div class="gallery-overlay"><h4>Kegiatan belajar</h4><p>Proses pembelajaran interaktif di dalam kelas</p></div>
                 </div>
                 <div class="gallery-item">
                     <img src="{{ asset('image/b/slide_2a.jpeg') }}" alt="Banner">
-                    <div class="gallery-overlay"><h4>Taman</h4><p>Sumber belajar yang lengkap</p></div>
+                    <div class="gallery-overlay"><h4>Taman</h4><p>Sebagai ruang belajar alami dan cocok untuk bersantai</p></div>
                 </div>
                 <div class="gallery-item">
                     <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop" alt="Prestasi Siswa">

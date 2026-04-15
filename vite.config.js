@@ -5,8 +5,10 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/css/splash.css',
-                'resources/js/splash.js',
+                'resources/css/app.css',
+                'resources/js/app.js',
+                'resources/css/splash.css',  // ✅ Splash CSS
+                'resources/js/splash.js',    // ✅ Splash JS
             ],
             refresh: true,
         }),
