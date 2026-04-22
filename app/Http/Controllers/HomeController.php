@@ -4,51 +4,97 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Panorama;
-use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
     /**
-     * Home Page - SMK Negeri 11 Bandung (pakai home.blade.php yang sudah ada)
+     * Halaman utama /beranda
      */
     public function index()
     {
-        return view('home');
+        // Load panorama aktif untuk ditampilkan di homepage
+        $panoramas = Panorama::where('is_active', true)
+            ->orderBy('order', 'asc')
+            ->get();
+        
+        return view('home', compact('panoramas'));
     }
 
     /**
-     * Denah Sekolah - Halaman denah/venue map
+     * Halaman denah sekolah
+     * FIX: Tambahkan $panoramas agar view denah.blade.php bisa akses
      */
-    public function denah()
+public function denah()
+{
+    $panoramas = Panorama::where('is_active', true)
+        ->orderBy('order', 'asc')
+        ->get([
+            'id', 
+            'name', 
+            'scene_id', 
+            'type', 
+            'icon', 
+            'image_path', 
+            'order',
+            'hotspots'  // ← PENTING: ambil field hotspots
+        ]);
+    
+    return view('denah', compact('panoramas'));
+}
+
+    /**
+     * Viewer panorama berdasarkan scene_id
+     * URL: /view/{scene_id}
+     */
+    public function view(string $scene_id)
     {
-        try {
-            $panoramas = Panorama::where('is_active', true)
-                ->orderBy('order')
-                ->get();
-            
-            return view('denah', compact('panoramas'));
-            
-        } catch (\Exception $e) {
-            Log::error('Denah Error: ' . $e->getMessage());
-            return view('denah', ['panoramas' => collect()]);
-        }
+        // Cari panorama berdasarkan scene_id
+        $panorama = Panorama::where('scene_id', $scene_id)
+            ->where('is_active', true)
+            ->firstOrFail();
+        
+        // Load semua scene aktif untuk navigasi
+        $allScenes = Panorama::where('is_active', true)
+            ->orderBy('order', 'asc')
+            ->get(['id', 'name', 'scene_id', 'type', 'icon', 'image_path']);
+        
+        return view('viewer.index', compact('panorama', 'allScenes'));
     }
 
     /**
-     * Viewer - Lihat panorama 360
+     * API Endpoint: Load data scene untuk navigasi AJAX
+     * URL: /api/panorama/{scene_id}
      */
-    public function view($scene_id)
+    public function apiShow(string $scene_id)
     {
         try {
             $panorama = Panorama::where('scene_id', $scene_id)
                 ->where('is_active', true)
                 ->firstOrFail();
             
-            return view('viewer', compact('panorama'));
-            
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'id' => $panorama->id,
+                    'name' => $panorama->name,
+                    'scene_id' => $panorama->scene_id,
+                    'image_path' => asset($panorama->image_path),
+                    'type' => $panorama->type,
+                    'hotspots' => $panorama->hotspots,
+                    'icon' => $panorama->icon,
+                ]
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Scene tidak ditemukan'
+            ], 404);
         } catch (\Exception $e) {
-            Log::error('View Error: ' . $e->getMessage());
-            abort(404, 'Panorama tidak ditemukan');
+            \Log::error('API Panorama Error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false, 
+                'message' => 'Terjadi kesalahan server'
+            ], 500);
         }
     }
 }

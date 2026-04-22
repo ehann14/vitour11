@@ -8,724 +8,553 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { 
-            --primary-blue: #1e3c72; 
-            --secondary-blue: #2a5298; 
-            --accent-teal: #00c9b1; 
-            --white: #ffffff;
+        :root {
+            --primary-blue: #1e3c72;
+            --secondary-blue: #2a5298;
+            --accent-teal: #00c9b1;
             --gray-100: #f8f9fa;
             --gray-200: #e9ecef;
             --gray-300: #dee2e6;
             --gray-600: #6c757d;
             --gray-700: #495057;
-            --success: #28a745;
             --danger: #dc3545;
-            --warning: #ffc107;
         }
-        body { 
-            background: #f8f9fa; 
-            font-family: 'Poppins', 'Segoe UI', sans-serif; 
-        }
-        .sidebar { 
-            min-height: 100vh; 
-            background: var(--primary-blue); 
-            color: white; 
-        }
-        .sidebar a { 
-            color: rgba(255,255,255,0.9); 
-            text-decoration: none; 
-            padding: 12px 20px; 
-            display: block; 
-            border-radius: 8px;
-            margin: 4px 0;
-            transition: all 0.3s;
-        }
-        .sidebar a:hover, .sidebar a.active { 
-            background: var(--secondary-blue); 
-            color: white; 
-        }
-        .sidebar .logout-btn {
-            background: none;
-            border: none;
-            color: rgba(255,255,255,0.9);
-            padding: 12px 20px;
-            text-align: left;
+        body { background: #f8f9fa; font-family: 'Poppins', 'Segoe UI', sans-serif; }
+        .sidebar { min-height: 100vh; background: var(--primary-blue); color: white; }
+        .sidebar a { color: rgba(255,255,255,0.9); text-decoration: none; padding: 12px 20px; display: block; border-radius: 8px; margin: 4px 0; transition: all 0.3s; }
+        .sidebar a:hover, .sidebar a.active { background: var(--secondary-blue); color: white; }
+        .sidebar .logout-btn { background: none; border: none; color: rgba(255,255,255,0.9); padding: 12px 20px; text-align: left; width: 100%; font-size: 1rem; cursor: pointer; }
+        .navbar-admin { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.08); padding: 1rem 2rem; }
+        .form-card { background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 2rem; margin-bottom: 2rem; }
+        .form-label { font-weight: 600; color: var(--gray-600); margin-bottom: 0.5rem; }
+        .form-control:focus, .form-select:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 0.25rem rgba(30,60,114,0.25); }
+        .btn-primary-custom { background: var(--primary-blue); border: none; padding: 0.75rem 2rem; border-radius: 25px; font-weight: 600; color: white; transition: all 0.3s; }
+        .btn-primary-custom:hover { background: var(--secondary-blue); transform: translateY(-2px); color: white; }
+        .btn-secondary-custom { background: var(--gray-200); border: none; padding: 0.75rem 2rem; border-radius: 25px; font-weight: 600; color: var(--gray-600); transition: all 0.3s; }
+        .btn-secondary-custom:hover { background: var(--gray-300); color: var(--gray-700); }
+        .btn-danger-custom { background: var(--danger); border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 500; color: white; transition: all 0.3s; }
+        .btn-danger-custom:hover { background: #bd2130; color: white; }
+        .btn-teal { background: var(--accent-teal); border: none; padding: 0.4rem 1rem; border-radius: 8px; font-weight: 500; color: white; transition: all 0.3s; }
+        .btn-teal:hover { background: #00b39d; color: white; }
+        .alert-custom { border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
+        .alert-success-custom { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .alert-error-custom { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .form-text { font-size: 0.85rem; color: var(--gray-600); }
+        .file-size-error { color: var(--danger); font-weight: 600; display: none; margin-top: 0.5rem; }
+        .file-size-error.show { display: block; }
+
+        /* ── IMAGE HOTSPOT CANVAS ── */
+        .image-canvas-wrapper {
+            position: relative;
+            display: inline-block;
             width: 100%;
-            font-size: 1rem;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: crosshair;
+            background: var(--gray-200);
+            min-height: 200px;
+        }
+        .image-canvas-wrapper img {
+            width: 100%;
+            display: block;
+            border-radius: 12px;
+            user-select: none;
+            pointer-events: none;
+        }
+        .canvas-placeholder {
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            min-height: 220px;
+            color: var(--gray-600); gap: 0.75rem;
+        }
+        .canvas-placeholder i { font-size: 3rem; opacity: 0.35; }
+
+        /* hotspot pin */
+        .hotspot-pin {
+            position: absolute;
+            transform: translate(-50%, -100%);
             cursor: pointer;
-            transition: all 0.3s;
+            z-index: 10;
+            display: flex; flex-direction: column; align-items: center;
+            transition: transform 0.15s;
         }
-        .sidebar .logout-btn:hover {
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
-        .navbar-admin {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            padding: 1rem 2rem;
-        }
-        .form-card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        .form-label {
-            font-weight: 600;
-            color: var(--gray-600);
-            margin-bottom: 0.5rem;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 0.25rem rgba(30,60,114,0.25);
-        }
-        .btn-primary-custom {
-            background: var(--primary-blue);
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: 25px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        .btn-primary-custom:hover {
-            background: var(--secondary-blue);
-            transform: translateY(-2px);
-            color: white;
-        }
-        .btn-secondary-custom {
-            background: var(--gray-200);
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: 25px;
-            font-weight: 600;
-            color: var(--gray-600);
-            transition: all 0.3s;
-        }
-        .btn-secondary-custom:hover {
-            background: var(--gray-300);
-            color: var(--gray-700);
-        }
-        .btn-danger-custom {
-            background: var(--danger);
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-weight: 500;
-            color: white;
-            transition: all 0.3s;
-        }
-        .btn-danger-custom:hover {
-            background: #bd2130;
-            color: white;
-        }
-        .btn-teal {
+        .hotspot-pin:hover { transform: translate(-50%, -100%) scale(1.15); }
+        .hotspot-pin .pin-head {
+            width: 28px; height: 28px;
             background: var(--accent-teal);
-            border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 8px;
-            font-weight: 500;
-            color: white;
-            transition: all 0.3s;
+            border: 3px solid white;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+            display: flex; align-items: center; justify-content: center;
         }
-        .btn-teal:hover {
-            background: #00b39d;
-            color: white;
+        .hotspot-pin .pin-head i { transform: rotate(45deg); font-size: 11px; color: white; }
+        .hotspot-pin .pin-line { width: 2px; height: 6px; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+        .hotspot-pin .pin-label {
+            background: rgba(0,0,0,0.75); color: white;
+            font-size: 11px; padding: 2px 7px; border-radius: 4px;
+            white-space: nowrap; max-width: 120px;
+            overflow: hidden; text-overflow: ellipsis;
+            margin-top: 3px; pointer-events: none;
         }
-        .preview-image {
-            width: 100%;
-            max-height: 300px;
-            object-fit: cover;
-            border-radius: 12px;
-            display: none;
-            margin-top: 1rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        .hotspot-pin .pin-remove {
+            position: absolute; top: -6px; right: -6px;
+            width: 16px; height: 16px;
+            background: var(--danger); border-radius: 50%; border: none;
+            color: white; font-size: 9px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 20;
+            opacity: 0; transition: opacity 0.2s;
         }
-        .preview-image.show {
-            display: block;
+        .hotspot-pin:hover .pin-remove { opacity: 1; }
+
+        .click-ripple {
+            position: absolute;
+            width: 30px; height: 30px;
+            border: 2px solid var(--accent-teal);
+            border-radius: 50%;
+            transform: translate(-50%,-50%) scale(0);
+            animation: ripple 0.4s ease-out forwards;
+            pointer-events: none; z-index: 5;
         }
-        .current-image {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        @keyframes ripple { to { transform: translate(-50%,-50%) scale(2.5); opacity: 0; } }
+
+        /* hotspot modal */
+        .hotspot-modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.2s;
         }
-        .alert-custom {
-            border-radius: 12px;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1.5rem;
+        .hotspot-modal-overlay.show { opacity: 1; pointer-events: all; }
+        .hotspot-modal {
+            background: white; border-radius: 16px; padding: 1.75rem;
+            width: 440px; max-width: 95vw;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            transform: translateY(20px); transition: transform 0.2s;
         }
-        .alert-success-custom {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-        }
-        .alert-error-custom {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-        .form-text {
-            font-size: 0.85rem;
-            color: var(--gray-600);
-        }
-        .file-size-error {
-            color: var(--danger);
-            font-weight: 600;
-            display: none;
-            margin-top: 0.5rem;
-        }
-        .file-size-error.show {
-            display: block;
-        }
-        
-        /* Hotspot JSON Editor Styles */
-        .hotspot-editor {
-            background: var(--gray-100);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 1rem;
-        }
-        .hotspot-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        .hotspot-item {
-            background: white;
-            border: 1px solid var(--gray-300);
-            border-radius: 10px;
-            padding: 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            align-items: flex-start;
-        }
-        .hotspot-item .form-control {
-            flex: 1;
-            min-width: 120px;
-        }
-        .hotspot-item .form-control-sm {
-            padding: 0.35rem 0.75rem;
-            font-size: 0.875rem;
-        }
-        .hotspot-actions {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        .hotspot-preview {
-            background: var(--gray-200);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-top: 1rem;
-            font-family: monospace;
-            font-size: 0.85rem;
-            max-height: 200px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-        .json-error {
-            color: var(--danger);
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-        .json-error.show {
-            display: block;
-        }
-        .badge-hotspot {
-            background: var(--accent-teal);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 2rem;
-            color: var(--gray-600);
-        }
-        .empty-state i {
-            font-size: 3rem;
-            opacity: 0.3;
-            margin-bottom: 1rem;
-        }
+        .hotspot-modal-overlay.show .hotspot-modal { transform: translateY(0); }
+        .hotspot-modal h6 { font-weight: 700; color: var(--primary-blue); margin-bottom: 1.25rem; }
+        .modal-btn-row { display: flex; gap: 0.75rem; margin-top: 1.25rem; }
+
+        /* hotspot table */
+        .hotspot-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin-top: 0.75rem; }
+        .hotspot-table th { background: var(--gray-100); padding: 8px 12px; text-align: left; font-weight: 600; color: var(--gray-700); border-bottom: 1px solid var(--gray-300); }
+        .hotspot-table td { padding: 8px 12px; border-bottom: 1px solid var(--gray-200); vertical-align: middle; }
+        .hotspot-table tr:last-child td { border-bottom: none; }
+        .badge-hotspot { background: var(--accent-teal); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+
+        .canvas-tip { font-size: 0.8rem; color: var(--gray-600); margin-top: 0.5rem; display: flex; align-items: center; gap: 0.4rem; }
+
+        /* image replace section */
+        .image-replace-toggle { font-size: 0.85rem; color: var(--primary-blue); cursor: pointer; font-weight: 600; }
+        .image-replace-toggle:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-2 sidebar p-0">
-                <div class="p-3 border-bottom" style="border-color: rgba(255,255,255,0.2) !important;">
-                    <h5 class="mb-0 fw-bold">
-                        <i class="fas fa-graduation-cap me-2"></i>
-                        Admin SMK 11
-                    </h5>
-                </div>
-                <nav class="mt-3 p-2">
-                    <a href="{{ route('admin.dashboard') }}">
-                        <i class="fas fa-home me-2"></i>Dashboard
-                    </a>
-                    <a href="{{ route('admin.panorama.index') }}" class="active">
-                        <i class="fas fa-images me-2"></i>Kelola Panorama
-                    </a>
-                    <a href="{{ route('home') }}" target="_blank">
-                        <i class="fas fa-external-link-alt me-2"></i>Lihat Website
-                    </a>
-                </nav>
-                <div class="mt-auto p-3 border-top" style="border-color: rgba(255,255,255,0.2) !important;">
-                    <form method="POST" action="{{ route('admin.logout') }}">
-                        @csrf
-                        <button type="submit" class="logout-btn">
-                            <i class="fas fa-sign-out-alt me-2"></i>Logout
-                        </button>
-                    </form>
-                </div>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar p-0">
+            <div class="p-3 border-bottom" style="border-color:rgba(255,255,255,0.2)!important">
+                <h5 class="mb-0 fw-bold"><i class="fas fa-graduation-cap me-2"></i>Admin SMK 11</h5>
             </div>
+            <nav class="mt-3 p-2">
+                <a href="{{ route('admin.dashboard') }}"><i class="fas fa-home me-2"></i>Dashboard</a>
+                <a href="{{ route('admin.panorama.index') }}" class="active"><i class="fas fa-images me-2"></i>Kelola Panorama</a>
+                <a href="{{ route('home') }}" target="_blank"><i class="fas fa-external-link-alt me-2"></i>Lihat Website</a>
+            </nav>
+            <div class="mt-auto p-3 border-top" style="border-color:rgba(255,255,255,0.2)!important">
+                <form method="POST" action="{{ route('admin.logout') }}">@csrf
+                    <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt me-2"></i>Logout</button>
+                </form>
+            </div>
+        </div>
 
-            <!-- Main Content -->
-            <div class="col-md-10">
-                <!-- Top Navbar -->
-                <nav class="navbar-admin">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0 fw-bold" style="color: var(--primary-blue);">
-                            <i class="fas fa-edit me-2"></i>Edit Panorama
-                        </h4>
-                        <a href="{{ route('admin.panorama.index') }}" class="btn btn-secondary-custom btn-sm">
-                            <i class="fas fa-arrow-left me-1"></i>Kembali
-                        </a>
+        <!-- Main Content -->
+        <div class="col-md-10">
+            <nav class="navbar-admin">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 fw-bold" style="color:var(--primary-blue)"><i class="fas fa-edit me-2"></i>Edit Panorama</h4>
+                    <a href="{{ route('admin.panorama.index') }}" class="btn btn-secondary-custom btn-sm"><i class="fas fa-arrow-left me-1"></i>Kembali</a>
+                </div>
+            </nav>
+
+            <div class="p-4">
+                @if(session('success'))
+                    <div class="alert-custom alert-success-custom"><i class="fas fa-check-circle me-2"></i>{{ session('success') }}</div>
+                @endif
+                @if(session('error'))
+                    <div class="alert-custom alert-error-custom"><i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}</div>
+                @endif
+                @if($errors->any())
+                    <div class="alert-custom alert-error-custom">
+                        <i class="fas fa-exclamation-circle me-2"></i><strong>Terjadi kesalahan:</strong>
+                        <ul class="mb-0 mt-2">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
                     </div>
-                </nav>
+                @endif
 
-                <!-- Form Content -->
-                <div class="p-4">
-                    @if(session('success'))
-                        <div class="alert-custom alert-success-custom">
-                            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                        </div>
-                    @endif
-                    @if(session('error'))
-                        <div class="alert-custom alert-error-custom">
-                            <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
-                        </div>
-                    @endif
-                    @if($errors->any())
-                        <div class="alert-custom alert-error-custom">
-                            <i class="fas fa-exclamation-circle me-2"></i>
-                            <strong>Terjadi kesalahan:</strong>
-                            <ul class="mb-0 mt-2">
-                                @foreach($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+                <div class="form-card">
+                    <form method="POST" action="{{ route('admin.panorama.update', $panorama->id) }}" enctype="multipart/form-data" id="panoramaForm">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="id" value="{{ $panorama->id }}">
 
-                    <div class="form-card">
-                        <!-- Form utama untuk UPDATE (PUT) -->
-                        <form method="POST" action="{{ route('admin.panorama.update', $panorama->id) }}" enctype="multipart/form-data" id="panoramaForm">
-                            @csrf
-                            @method('PUT')
+                        <div class="row g-4">
+                            <!-- Nama -->
+                            <div class="col-md-6">
+                                <label class="form-label">Nama Panorama <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                       name="name" value="{{ old('name', $panorama->name) }}" required placeholder="Contoh: Gerbang Utama">
+                                @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            </div>
+                            <!-- Scene ID (readonly) -->
+                            <div class="col-md-6">
+                                <label class="form-label">Scene ID</label>
+                                <input type="text" class="form-control" value="{{ $panorama->scene_id }}" readonly
+                                       style="background:var(--gray-100);cursor:not-allowed">
+                                <small class="form-text">Scene ID tidak dapat diubah setelah dibuat</small>
+                            </div>
+                            <!-- Tipe -->
+                            <div class="col-md-6">
+                                <label class="form-label">Tipe Panorama <span class="text-danger">*</span></label>
+                                <select class="form-select @error('type') is-invalid @enderror" name="type" required>
+                                    <option value="360" {{ old('type', $panorama->type) == '360' ? 'selected' : '' }}>360° Virtual Tour</option>
+                                    <option value="normal" {{ old('type', $panorama->type) == 'normal' ? 'selected' : '' }}>Gambar Normal</option>
+                                </select>
+                                @error('type')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            </div>
+                            <!-- Order -->
+                            <div class="col-md-6">
+                                <label class="form-label">Urutan Tampil</label>
+                                <input type="number" class="form-control @error('order') is-invalid @enderror"
+                                       name="order" value="{{ old('order', $panorama->order) }}" min="0">
+                                @error('order')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                <small class="form-text">Semakin kecil angka, semakin awal ditampilkan</small>
+                            </div>
 
-                            <!-- Hidden ID -->
-                            <input type="hidden" name="id" value="{{ $panorama->id }}">
+                            <!-- Gambar + Hotspot Canvas (gabung jadi satu area) -->
+                            <div class="col-12">
+                                <label class="form-label d-flex align-items-center gap-2">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                    Gambar &amp; Hotspots
+                                    <span class="badge-hotspot" id="hotspotCount">0 item</span>
+                                </label>
+                                <small class="form-text d-block mb-2">
+                                    <strong>Klik langsung di gambar</strong> untuk menambah hotspot. Hover pin untuk menghapus.
+                                </small>
 
-                            <div class="row g-4">
-                                <!-- Nama Panorama -->
-                                <div class="col-md-6">
-                                    <label for="name" class="form-label">Nama Panorama <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" 
-                                           id="name" name="name" value="{{ old('name', $panorama->name) }}" 
-                                           placeholder="Contoh: Gerbang Utama" required>
-                                    @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                    <small class="form-text">Nama yang akan ditampilkan di website</small>
-                                </div>
-
-                                <!-- Scene ID (Read-only saat edit) -->
-                                <div class="col-md-6">
-                                    <label for="scene_id" class="form-label">Scene ID</label>
-                                    <input type="text" class="form-control" id="scene_id" 
-                                           value="{{ $panorama->scene_id }}" readonly
-                                           style="background: var(--gray-100); cursor: not-allowed;">
-                                    <small class="form-text">Scene ID tidak dapat diubah setelah dibuat</small>
-                                </div>
-
-                                <!-- Tipe Panorama -->
-                                <div class="col-md-6">
-                                    <label for="type" class="form-label">Tipe Panorama <span class="text-danger">*</span></label>
-                                    <select class="form-select @error('type') is-invalid @enderror" id="type" name="type" required>
-                                        <option value="360" {{ old('type', $panorama->type) == '360' ? 'selected' : '' }}>360° Virtual Tour</option>
-                                        <option value="normal" {{ old('type', $panorama->type) == 'normal' ? 'selected' : '' }}>Gambar Normal</option>
-                                    </select>
-                                    @error('type') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                </div>
-
-                                <!-- Order / Urutan -->
-                                <div class="col-md-6">
-                                    <label for="order" class="form-label">Urutan Tampil</label>
-                                    <input type="number" class="form-control @error('order') is-invalid @enderror" 
-                                           id="order" name="order" value="{{ old('order', $panorama->order) }}" min="0" placeholder="0">
-                                    @error('order') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                    <small class="form-text">Semakin kecil angka, semakin awal ditampilkan</small>
-                                </div>
-
-                                <!-- Upload Gambar (MAX 10 MB) -->
-                                <div class="col-12">
-                                    <label class="form-label">Gambar Saat Ini</label>
+                                <!-- Canvas -->
+                                <div class="image-canvas-wrapper has-image" id="imageCanvas">
                                     @if($panorama->image_path)
-                                        <!-- ✅ FIX: Path langsung ke /panoramas/filename.jpg (bypass symlink Windows) -->
-                                        <img src="{{ '/' . $panorama->image_path }}" alt="{{ $panorama->name }}" class="current-image">
+                                        <img src="{{ '/' . $panorama->image_path }}" id="canvasImg" alt="{{ $panorama->name }}" draggable="false">
                                     @else
-                                        <div class="current-image d-flex align-items-center justify-content-center" style="background: var(--gray-200);">
-                                            <i class="fas fa-image text-muted" style="font-size: 3rem;"></i>
+                                        <div class="canvas-placeholder" id="canvasPlaceholder">
+                                            <i class="fas fa-image"></i>
+                                            <p>Belum ada gambar</p>
                                         </div>
                                     @endif
-                                    
-                                    <label for="image_path" class="form-label mt-3">Ganti Gambar (Opsional)</label>
-                                    <input type="file" class="form-control @error('image_path') is-invalid @enderror" 
-                                           id="image_path" name="image_path" accept="image/*" data-max-size="10485760">
-                                    @error('image_path') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                    <small class="form-text">Kosongkan jika tidak ingin mengganti. Format: JPG, PNG, JPEG. <strong>Maksimal 10 MB</strong></small>
-                                    <div id="fileSizeError" class="file-size-error">
-                                        <i class="fas fa-exclamation-triangle me-1"></i>Ukuran file melebihi 10 MB!
-                                    </div>
-                                    <img id="imagePreview" class="preview-image" alt="Preview">
+                                </div>
+                                <div class="canvas-tip">
+                                    <i class="fas fa-info-circle" style="color:var(--accent-teal)"></i>
+                                    Klik pada gambar = tambah hotspot &nbsp;|&nbsp; Hover pin = hapus
                                 </div>
 
-                                <!-- Icon -->
-                                <div class="col-md-6">
-                                    <label for="icon" class="form-label">Icon (Font Awesome)</label>
-                                    <input type="text" class="form-control @error('icon') is-invalid @enderror" 
-                                           id="icon" name="icon" value="{{ old('icon', $panorama->icon) }}" placeholder="fas fa-building">
-                                    @error('icon') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                    <small class="form-text">Contoh: fas fa-building, fas fa-tree <a href="https://fontawesome.com/icons" target="_blank">Lihat semua icon</a></small>
+                                <!-- Hotspot table -->
+                                <div id="hotspotTableWrapper" style="display:none; margin-top:1rem;">
+                                    <table class="hotspot-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Posisi (X%, Y%)</th>
+                                                <th>Teks Tooltip</th>
+                                                <th>Link Scene</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="hotspotTableBody"></tbody>
+                                    </table>
                                 </div>
 
-                                <!-- Status Aktif -->
-                                <div class="col-md-6">
-                                    <label class="form-label">Status</label>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1"
-                                               {{ old('is_active', $panorama->is_active) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="is_active">Aktifkan panorama ini</label>
-                                    </div>
-                                </div>
+                                <!-- Hidden hotspots textarea -->
+                                <textarea class="d-none" id="hotspots" name="hotspots">{{ old('hotspots', $panorama->hotspots ?? '[]') }}</textarea>
+                                @error('hotspots')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
 
-                                <!-- HOTSPOTS JSON EDITOR -->
-                                <div class="col-12">
-                                    <label class="form-label d-flex align-items-center gap-2">
-                                        <i class="fas fa-map-marked-alt"></i>
-                                        Hotspots Interaktif
-                                        <span class="badge-hotspot">{{ count(json_decode($panorama->hotspots ?? '[]', true)) }} item</span>
-                                    </label>
-                                    <small class="form-text d-block mb-3">Tambahkan titik interaktif yang muncul saat user menjelajahi panorama 360°</small>
-                                    
-                                    <!-- Visual Hotspot Editor -->
-                                    <div class="hotspot-editor">
-                                        <div id="hotspotList" class="hotspot-list"></div>
-                                        <button type="button" class="btn btn-teal btn-sm" id="addHotspotBtn">
-                                            <i class="fas fa-plus me-1"></i>Tambah Hotspot
-                                        </button>
-                                        <!-- JSON Preview (Read-only) -->
-                                        <div class="mt-3">
-                                            <small class="form-text fw-semibold">Preview JSON:</small>
-                                            <div id="jsonPreview" class="hotspot-preview"></div>
-                                            <div id="jsonError" class="json-error">
-                                                <i class="fas fa-exclamation-triangle me-1"></i>Format JSON tidak valid!
-                                            </div>
+                                <!-- Ganti gambar (collapsible) -->
+                                <div class="mt-3">
+                                    <span class="image-replace-toggle" id="replaceToggle">
+                                        <i class="fas fa-sync me-1"></i>Ganti Gambar (opsional)
+                                    </span>
+                                    <div id="replaceSection" style="display:none; margin-top:0.75rem;">
+                                        <input type="file" class="form-control @error('image_path') is-invalid @enderror"
+                                               id="image_path" name="image_path" accept="image/*">
+                                        @error('image_path')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                        <small class="form-text">Format: JPG, PNG, JPEG. <strong>Maksimal 10 MB.</strong> Hotspot akan tetap tersimpan.</small>
+                                        <div id="fileSizeError" class="file-size-error">
+                                            <i class="fas fa-exclamation-triangle me-1"></i>Ukuran file melebihi 10 MB!
                                         </div>
                                     </div>
-                                    
-                                    <!-- Hidden textarea for form submission -->
-                                    <textarea class="d-none" id="hotspots" name="hotspots">{{ old('hotspots', $panorama->hotspots ?? '[]') }}</textarea>
-                                    @error('hotspots') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
-                                    <small class="form-text mt-2">
-                                        <i class="fas fa-info-circle me-1"></i>
-                                        Setiap hotspot memiliki: <strong>x</strong> (posisi horizontal %), <strong>y</strong> (posisi vertikal %), <strong>text</strong> (teks tooltip), <strong>link</strong> (opsional)
-                                    </small>
                                 </div>
                             </div>
 
-                            <!-- Submit Buttons -->
-                            <div class="d-flex gap-3 mt-4 pt-3 border-top">
-                                <button type="submit" class="btn btn-primary-custom" id="submitBtn">
-                                    <i class="fas fa-save me-2"></i>Update Panorama
-                                </button>
-                                <a href="{{ route('admin.panorama.index') }}" class="btn btn-secondary-custom">
-                                    <i class="fas fa-times me-2"></i>Batal
-                                </a>
-                                <!-- ✅ FIX: Tombol hapus DIPISAHKAN dari form utama (AJAX) -->
-                                <button type="button" class="btn btn-danger-custom" id="deleteBtn" data-id="{{ $panorama->id }}">
-                                    <i class="fas fa-trash me-1"></i>Hapus
-                                </button>
+                            <!-- Icon -->
+                            <div class="col-md-6">
+                                <label class="form-label">Icon (Font Awesome)</label>
+                                <input type="text" class="form-control @error('icon') is-invalid @enderror"
+                                       name="icon" value="{{ old('icon', $panorama->icon) }}" placeholder="fas fa-building">
+                                @error('icon')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                <small class="form-text"><a href="https://fontawesome.com/icons" target="_blank">Lihat semua icon →</a></small>
                             </div>
-                        </form>
-                    </div>
+                            <!-- Status -->
+                            <div class="col-md-6">
+                                <label class="form-label">Status</label>
+                                <div class="form-check form-switch mt-2">
+                                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1"
+                                           {{ old('is_active', $panorama->is_active) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="is_active">Aktifkan panorama ini</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="d-flex gap-3 mt-4 pt-3 border-top">
+                            <button type="submit" class="btn btn-primary-custom" id="submitBtn">
+                                <i class="fas fa-save me-2"></i>Update Panorama
+                            </button>
+                            <a href="{{ route('admin.panorama.index') }}" class="btn btn-secondary-custom">
+                                <i class="fas fa-times me-2"></i>Batal
+                            </a>
+                            <button type="button" class="btn btn-danger-custom" id="deleteBtn" data-id="{{ $panorama->id }}">
+                                <i class="fas fa-trash me-1"></i>Hapus
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- ✅ FIX: Form DELETE terpisah, di LUAR form utama -->
-    <form id="deleteForm" method="POST" style="display: none;">
-        @csrf
-        @method('DELETE')
-    </form>
+<!-- DELETE form (separate) -->
+<form id="deleteForm" method="POST" style="display:none">@csrf @method('DELETE')</form>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Format ukuran file ke human-readable
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
+<!-- Hotspot Modal -->
+<div class="hotspot-modal-overlay" id="hotspotModal">
+    <div class="hotspot-modal">
+        <h6><i class="fas fa-map-pin me-2" style="color:var(--accent-teal)"></i>Tambah Hotspot</h6>
+        <div class="mb-3">
+            <label class="form-label">Teks Tooltip <span class="text-danger">*</span></label>
+            <input type="text" id="modalText" class="form-control" placeholder="Contoh: Menuju Lapangan">
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Link ke Scene (Scene ID)</label>
+            <select id="modalLink" class="form-select">
+                <option value="">— Tidak ada link —</option>
+                {{-- List semua panorama kecuali diri sendiri --}}
+                @foreach($allPanoramas ?? [] as $p)
+                    @if($p->id !== $panorama->id)
+                        <option value="{{ $p->scene_id }}">{{ $p->name }} ({{ $p->scene_id }})</option>
+                    @endif
+                @endforeach
+            </select>
+            <small class="form-text text-muted">Pilih panorama tujuan saat hotspot ini diklik</small>
+        </div>
+        <div class="modal-btn-row">
+            <button class="btn btn-primary-custom btn-sm" id="modalSaveBtn"><i class="fas fa-check me-1"></i>Simpan Hotspot</button>
+            <button class="btn btn-secondary-custom btn-sm" id="modalCancelBtn">Batal</button>
+        </div>
+    </div>
+</div>
 
-        // Format JSON dengan indentasi
-        function formatJSON(json) {
-            try {
-                return JSON.stringify(JSON.parse(json), null, 2);
-            } catch (e) {
-                return json;
-            }
-        }
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ── State: load existing hotspots ──
+let hotspots = [];
+let pendingX = 0, pendingY = 0;
 
-        // Parse hotspots dari JSON string ke array
-        function parseHotspots(jsonString) {
-            try {
-                const parsed = JSON.parse(jsonString);
-                return Array.isArray(parsed) ? parsed : [];
-            } catch (e) {
-                return [];
-            }
-        }
+function parseHotspots(str) {
+    try { const p = JSON.parse(str); return Array.isArray(p) ? p : []; }
+    catch(e) { return []; }
+}
 
-        // Render hotspot list dari array
-        function renderHotspots(hotspots) {
-            const container = document.getElementById('hotspotList');
-            
-            if (!hotspots || hotspots.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-map-pin"></i>
-                        <p>Belum ada hotspot. Klik "Tambah Hotspot" untuk menambahkan.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = hotspots.map((hotspot, index) => `
-                <div class="hotspot-item" data-index="${index}">
-                    <input type="number" class="form-control form-control-sm hotspot-x" 
-                           placeholder="X (%)" value="${hotspot.x ?? 50}" min="0" max="100" step="0.1"
-                           style="max-width: 80px;">
-                    <input type="number" class="form-control form-control-sm hotspot-y" 
-                           placeholder="Y (%)" value="${hotspot.y ?? 50}" min="0" max="100" step="0.1"
-                           style="max-width: 80px;">
-                    <input type="text" class="form-control form-control-sm hotspot-text" 
-                           placeholder="Teks tooltip" value="${hotspot.text ?? ''}">
-                    <input type="text" class="form-control form-control-sm hotspot-link" 
-                           placeholder="Link (opsional)" value="${hotspot.link ?? ''}">
-                    <div class="hotspot-actions">
-                        <button type="button" class="btn btn-danger-custom btn-sm remove-hotspot" title="Hapus">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-            
-            // Update badge count
-            document.querySelector('.badge-hotspot').textContent = `${hotspots.length} item`;
-            
-            // Update JSON preview
-            updateJSONPreview();
-        }
+// ── Canvas click → add hotspot ──
+document.getElementById('imageCanvas').addEventListener('click', function(e) {
+    if (!document.getElementById('canvasImg')) return;
+    // Don't trigger if clicking the remove button
+    if (e.target.closest('.pin-remove')) return;
 
-        // Update JSON preview dan hidden textarea
-        function updateJSONPreview() {
-            const hotspots = getHotspotsFromUI();
-            const jsonString = JSON.stringify(hotspots, null, 2);
-            
-            document.getElementById('jsonPreview').textContent = jsonString;
-            document.getElementById('hotspots').value = jsonString;
-            
-            // Validate JSON
-            const jsonError = document.getElementById('jsonError');
-            try {
-                JSON.parse(jsonString);
-                jsonError.classList.remove('show');
-                document.getElementById('submitBtn').disabled = false;
-            } catch (e) {
-                jsonError.classList.add('show');
-                document.getElementById('submitBtn').disabled = true;
-            }
-        }
+    const rect = this.getBoundingClientRect();
+    const x = parseFloat(((e.clientX - rect.left) / rect.width * 100).toFixed(1));
+    const y = parseFloat(((e.clientY - rect.top) / rect.height * 100).toFixed(1));
+    pendingX = x; pendingY = y;
 
-        // Get hotspots array from UI inputs
-        function getHotspotsFromUI() {
-            const items = document.querySelectorAll('.hotspot-item');
-            const hotspots = [];
-            
-            items.forEach(item => {
-                const x = parseFloat(item.querySelector('.hotspot-x').value) || 50;
-                const y = parseFloat(item.querySelector('.hotspot-y').value) || 50;
-                const text = item.querySelector('.hotspot-text').value || '';
-                const link = item.querySelector('.hotspot-link').value || '';
-                
-                if (text.trim()) {
-                    hotspots.push({ x, y, text, link: link || null });
-                }
-            });
-            
-            return hotspots;
-        }
+    const ripple = document.createElement('div');
+    ripple.className = 'click-ripple';
+    ripple.style.left = x + '%';
+    ripple.style.top = y + '%';
+    this.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 500);
 
-        // Add new hotspot
-        function addHotspot() {
-            const hotspots = getHotspotsFromUI();
-            hotspots.push({ x: 50, y: 50, text: '', link: '' });
-            renderHotspots(hotspots);
-            
-            // Focus on new text input
-            const newItem = document.querySelector('.hotspot-item:last-child .hotspot-text');
-            if (newItem) newItem.focus();
-        }
+    openModal();
+});
 
-        // Remove hotspot
-        function removeHotspot(btn) {
-            const item = btn.closest('.hotspot-item');
-            item.remove();
-            updateJSONPreview();
-            
-            // Update badge
-            const count = document.querySelectorAll('.hotspot-item').length;
-            document.querySelector('.badge-hotspot').textContent = `${count} item`;
-            
-            // Show empty state if no items
-            if (count === 0) {
-                document.getElementById('hotspotList').innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-map-pin"></i>
-                        <p>Belum ada hotspot. Klik "Tambah Hotspot" untuk menambahkan.</p>
-                    </div>
-                `;
-            }
-        }
+// ── Modal ──
+function openModal() {
+    document.getElementById('modalText').value = '';
+    document.getElementById('modalLink').value = '';
+    document.getElementById('hotspotModal').classList.add('show');
+    setTimeout(() => document.getElementById('modalText').focus(), 100);
+}
+function closeModal() {
+    document.getElementById('hotspotModal').classList.remove('show');
+}
+document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
+document.getElementById('hotspotModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+document.getElementById('modalSaveBtn').addEventListener('click', function() {
+    const text = document.getElementById('modalText').value.trim();
+    if (!text) { document.getElementById('modalText').focus(); return; }
+    const link = document.getElementById('modalLink').value;
+    hotspots.push({ x: pendingX, y: pendingY, text, link: link || null });
+    closeModal();
+    renderPins();
+    renderTable();
+    syncJSON();
+});
+document.getElementById('modalText').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('modalSaveBtn').click();
+});
 
-        // Image Preview + File Size Validation (MAX 10 MB)
-        document.getElementById('image_path').addEventListener('change', function(e) {
-            const preview = document.getElementById('imagePreview');
-            const fileSizeError = document.getElementById('fileSizeError');
-            const submitBtn = document.getElementById('submitBtn');
-            const file = e.target.files[0];
-            const maxSize = 10485760; // 10 MB in bytes
-            
-            // Reset error
-            fileSizeError.classList.remove('show');
-            submitBtn.disabled = false;
-            
-            if (file) {
-                // Validasi ukuran file
-                if (file.size > maxSize) {
-                    fileSizeError.classList.add('show');
-                    fileSizeError.innerHTML = 
-                        '<i class="fas fa-exclamation-triangle me-1"></i>' +
-                        'Ukuran file (' + formatFileSize(file.size) + ') melebihi batas maksimal 10 MB!';
-                    submitBtn.disabled = true;
-                    preview.classList.remove('show');
-                    this.value = '';
-                    return;
-                }
-                
-                // Preview gambar
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    preview.src = event.target.result;
-                    preview.classList.add('show');
-                }
-                reader.readAsDataURL(file);
-            } else {
-                preview.classList.remove('show');
-            }
+// ── Render pins ──
+function renderPins() {
+    const canvas = document.getElementById('imageCanvas');
+    canvas.querySelectorAll('.hotspot-pin').forEach(p => p.remove());
+
+    hotspots.forEach((hs, i) => {
+        const pin = document.createElement('div');
+        pin.className = 'hotspot-pin';
+        pin.style.left = hs.x + '%';
+        pin.style.top = hs.y + '%';
+        pin.innerHTML = `
+            <button class="pin-remove" data-index="${i}" title="Hapus hotspot"><i class="fas fa-times"></i></button>
+            <div class="pin-head"><i class="fas fa-map-pin"></i></div>
+            <div class="pin-line"></div>
+            ${hs.text ? `<div class="pin-label">${hs.text}</div>` : ''}
+        `;
+        pin.querySelector('.pin-remove').addEventListener('click', function(e) {
+            e.stopPropagation();
+            hotspots.splice(+this.dataset.index, 1);
+            renderPins(); renderTable(); syncJSON();
         });
+        canvas.appendChild(pin);
+    });
 
-        // Auto-format scene_id display (read-only)
-        document.getElementById('scene_id').addEventListener('input', function(e) {
-            this.value = this.value.toLowerCase().replace(/\s+/g, '-');
-        });
+    document.getElementById('hotspotCount').textContent = hotspots.length + ' item';
+}
 
-        // Hotspot event listeners
-        document.getElementById('addHotspotBtn').addEventListener('click', addHotspot);
-        
-        document.getElementById('hotspotList').addEventListener('click', function(e) {
-            if (e.target.closest('.remove-hotspot')) {
-                removeHotspot(e.target.closest('.remove-hotspot'));
-            }
-        });
-        
-        // Real-time update on input change
-        document.getElementById('hotspotList').addEventListener('input', function(e) {
-            if (e.target.classList.contains('hotspot-x') || 
-                e.target.classList.contains('hotspot-y') ||
-                e.target.classList.contains('hotspot-text') ||
-                e.target.classList.contains('hotspot-link')) {
-                updateJSONPreview();
-            }
-        });
+// ── Render table ──
+function renderTable() {
+    const wrapper = document.getElementById('hotspotTableWrapper');
+    const tbody = document.getElementById('hotspotTableBody');
+    if (hotspots.length === 0) { wrapper.style.display = 'none'; return; }
+    wrapper.style.display = 'block';
+    tbody.innerHTML = hotspots.map((hs, i) => `
+        <tr>
+            <td>${i + 1}</td>
+            <td><span style="font-family:monospace;font-size:0.8rem">${hs.x}%, ${hs.y}%</span></td>
+            <td>${hs.text}</td>
+            <td>${hs.link
+                ? `<span style="color:var(--accent-teal);font-weight:600">${hs.link}</span>`
+                : '<span style="color:#aaa">—</span>'}</td>
+            <td>
+                <button type="button"
+                    style="background:var(--danger);color:white;border:none;border-radius:6px;padding:2px 8px;cursor:pointer"
+                    onclick="removeHotspot(${i})">
+                    <i class="fas fa-trash" style="font-size:11px"></i>
+                </button>
+            </td>
+        </tr>
+    `).join('');
+}
 
-        // Prevent form submit if JSON is invalid
-        document.getElementById('panoramaForm').addEventListener('submit', function(e) {
-            const hotspotsValue = document.getElementById('hotspots').value;
-            try {
-                JSON.parse(hotspotsValue);
-            } catch (err) {
-                e.preventDefault();
-                alert('Format hotspot JSON tidak valid. Silakan periksa kembali.');
-                document.getElementById('jsonError').classList.add('show');
-            }
-            
-            // Check file size again (backup validation)
-            const fileInput = document.getElementById('image_path');
-            const file = fileInput.files[0];
-            const maxSize = 10485760;
-            
-            if (file && file.size > maxSize) {
-                e.preventDefault();
-                alert('Ukuran file gambar melebihi 10 MB. Silakan pilih file yang lebih kecil.');
-                fileInput.focus();
-            }
-        });
+function removeHotspot(i) {
+    hotspots.splice(i, 1);
+    renderPins(); renderTable(); syncJSON();
+}
 
-        // ✅ FIX: Handle delete button separately (AJAX, bukan nested form)
-        document.getElementById('deleteBtn').addEventListener('click', function() {
-            if (confirm('Yakin ingin menghapus panorama ini? Tindakan ini tidak dapat dibatalkan.')) {
-                const id = this.getAttribute('data-id');
-                const deleteForm = document.getElementById('deleteForm');
-                deleteForm.action = `/admin/panorama/${id}`;
-                deleteForm.submit();
-            }
-        });
+function syncJSON() {
+    document.getElementById('hotspots').value = JSON.stringify(hotspots);
+}
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const initialHotspots = parseHotspots(document.getElementById('hotspots').value);
-            renderHotspots(initialHotspots);
-            
-            // Show current image if exists
-            const currentImg = document.querySelector('.current-image');
-            if (currentImg && currentImg.src && !currentImg.src.includes('fa-image')) {
-                // Image already loaded via src attribute
-            }
-        });
-    </script>
+// ── Replace image → refresh canvas + keep pins ──
+document.getElementById('replaceToggle').addEventListener('click', function() {
+    const section = document.getElementById('replaceSection');
+    section.style.display = section.style.display === 'none' ? 'block' : 'none';
+});
+
+document.getElementById('image_path').addEventListener('change', function() {
+    const fileSizeError = document.getElementById('fileSizeError');
+    const file = this.files[0];
+    fileSizeError.classList.remove('show');
+
+    if (!file) return;
+    if (file.size > 10485760) {
+        fileSizeError.innerHTML = '<i class="fas fa-exclamation-triangle me-1"></i>Ukuran file (' + formatFileSize(file.size) + ') melebihi 10 MB!';
+        fileSizeError.classList.add('show');
+        this.value = ''; return;
+    }
+    const reader = new FileReader();
+    reader.onload = e => {
+        const canvas = document.getElementById('imageCanvas');
+        // keep or create img element
+        let img = document.getElementById('canvasImg');
+        if (!img) {
+            canvas.innerHTML = '';
+            img = document.createElement('img');
+            img.id = 'canvasImg';
+            img.draggable = false;
+            canvas.appendChild(img);
+            canvas.classList.add('has-image');
+        }
+        img.src = e.target.result;
+        renderPins(); // re-add pins on new image
+    };
+    reader.readAsDataURL(file);
+});
+
+function formatFileSize(bytes) {
+    const k = 1024, sizes = ['Bytes','KB','MB','GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// ── Delete ──
+document.getElementById('deleteBtn').addEventListener('click', function() {
+    if (confirm('Yakin ingin menghapus panorama ini? Tindakan ini tidak dapat dibatalkan.')) {
+        const id = this.dataset.id;
+        const form = document.getElementById('deleteForm');
+        form.action = `/admin/panorama/${id}`;
+        form.submit();
+    }
+});
+
+// ── Form submit guard ──
+document.getElementById('panoramaForm').addEventListener('submit', function(e) {
+    const file = document.getElementById('image_path').files[0];
+    if (file && file.size > 10485760) {
+        e.preventDefault();
+        alert('Ukuran file gambar melebihi 10 MB.');
+    }
+});
+
+// ── Init: load existing hotspots ──
+document.addEventListener('DOMContentLoaded', function() {
+    hotspots = parseHotspots(document.getElementById('hotspots').value);
+    renderPins();
+    renderTable();
+});
+</script>
 </body>
 </html>

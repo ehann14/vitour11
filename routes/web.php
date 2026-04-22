@@ -17,10 +17,15 @@ Route::get('/', function () {
     return view('splash');
 })->name('splash');
 
-// ✅ Home Utama - Pindah ke /beranda
+// ✅ Home Utama
 Route::get('/beranda', [HomeController::class, 'index'])->name('home');
 Route::get('/denah', [HomeController::class, 'denah'])->name('denah');
+
+// ✅ FIX: Route view panorama (typo sudah diperbaiki)
 Route::get('/view/{scene_id}', [HomeController::class, 'view'])->name('view');
+
+// ✅ API: Load data scene untuk navigasi AJAX (tanpa reload halaman)
+Route::get('/api/panorama/{scene_id}', [HomeController::class, 'apiShow'])->name('api.panorama.show');
 
 // ✅ ADMIN LOGIN ROUTES
 Route::get('/admin/login', [LoginController::class, 'showLoginForm'])->name('admin.login');

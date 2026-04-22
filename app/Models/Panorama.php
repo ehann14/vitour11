@@ -9,7 +9,7 @@ class Panorama extends Model
 {
     use HasFactory;
 
-    // Nama tabel (opsional jika sesuai konvensi)
+    // Nama tabel (opsional jika sesuai konvensi Laravel)
     protected $table = 'panoramas';
 
     // Kolom yang BOLEH diisi mass-assignment
@@ -28,6 +28,6 @@ class Panorama extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'order' => 'integer',
-        'hotspots' => 'array', // Otomatis decode JSON ke array
+        'hotspots' => 'array', // ← PENTING: Otomatis decode JSON string ke array PHP
     ];
 }
