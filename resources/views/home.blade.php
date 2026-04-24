@@ -658,7 +658,7 @@
                 </div>
                 <div class="gallery-item">
                     <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop" alt="Prestasi Siswa">
-                    <div class="gallery-overlay"><h4>Prestasi Siswa</h4><p>Penghargaan tingkat nasional</p></div>
+                    <div class="gallery-overlay"><h4>Laboratorium Komputer</h4><p>Fasilitas komputer terbaru</p></div>
                 </div>
             </div>
         </div>
