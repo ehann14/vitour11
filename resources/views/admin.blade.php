@@ -167,7 +167,7 @@
             const errorText = document.getElementById('errorText');
 
             // Validasi sesuai preferensi user
-            if (email !== 'admin123@gmail.com' || password !== 'Hann11gg') {
+            if (email !== 'ferhanganteng@gmail.com' || password !== 'Hann11gg') {
                 e.preventDefault();
                 errorText.textContent = 'Email atau password salah!';
                 errorMessage.classList.add('show');
