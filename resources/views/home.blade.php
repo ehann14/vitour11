@@ -535,7 +535,7 @@
                         <img src="{{ asset('image/b/SMK11.Jpeg') }}" alt="Banner">
                     </div>
                     <div class="hero-img">
-                        <img src="{{ asset('image/360/slide_1.jpg') }}" alt="Sekolah">
+                        <img src="{{ asset('image/b/slide_1.jpg') }}" alt="Sekolah">
                     </div>
                     <div class="hero-img">
                         <img src="{{ asset('image/b/slide_3a.jpeg') }}" alt="Banner">
