@@ -641,8 +641,8 @@
                     <div class="gallery-overlay"><h4>Kegiatan Upacara</h4><p>Siswa aktif dalam proses pembelajaran</p></div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=600&fit=crop" alt="Laboratorium Komputer">
-                    <div class="gallery-overlay"><h4>Laboratorium Komputer</h4><p>Fasilitas komputer terbaru</p></div>
+                    <img src="{{ asset('image/b/ehan.jpeg') }}" alt="My Owner">
+                    <div class="gallery-overlay"><h4>My Owner</h4><p>Akulah Sang Pembuat Vitour11</p></div>
                 </div>
                 <div class="gallery-item">
                     <img src="{{ asset('image/b/eskul.jpg') }}" alt="Ekstrakurikuler">
