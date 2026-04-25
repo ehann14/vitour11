@@ -141,7 +141,7 @@
                                                 <form action="{{ route('admin.achievements.toggle-status', $item) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     <button type="submit" class="btn btn-sm {{ $item->is_active ? 'btn-success' : 'btn-secondary' }}">
-                                                        {{ $item->is_active ? '✅ Aktif' : '⏸ Nonaktif' }}
+                                                        {{ $item->is_active ? 'Aktif' : '⏸ Nonaktif' }}
                                                     </button>
                                                 </form>
                                             </td>

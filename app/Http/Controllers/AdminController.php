@@ -4,45 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Panorama;
-use App\Models\Scene; // Jika ada model Scene
-use Illuminate\Support\Facades\Auth;
+use App\Models\Achievement; // ← ✅ PASTIKAN INI ADA (pake Models, bukan Controllers)
 
 class AdminController extends Controller
 {
-    /**
-     * Handle the admin dashboard page.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index(Request $request)
+    public function index()
     {
-        // Pastikan hanya user yang login bisa akses
-        if (!Auth::check()) {
-            return redirect()->route('auth.login');
-        }
-
-        // Ambil statistik untuk dashboard
+        // Stats Panorama
         $totalPanoramas = Panorama::count();
         $activePanoramas = Panorama::where('is_active', true)->count();
-        $totalScenes = class_exists('App\Models\Scene') ? Scene::count() : 0;
+        $recentPanoramas = Panorama::orderBy('created_at', 'desc')->take(5)->get();
         
-        // Ambil data panorama terbaru untuk ditampilkan
-        $recentPanoramas = Panorama::orderBy('created_at', 'desc')->limit(5)->get();
-
+        // ✅ Stats & Recent Achievements
+        $totalAchievements = Achievement::count();
+        $activeAchievements = Achievement::where('is_active', true)->count();
+        $recentAchievements = Achievement::orderBy('created_at', 'desc')->take(5)->get();
+        
         return view('admin.dashboard', compact(
             'totalPanoramas',
             'activePanoramas', 
-            'totalScenes',
-            'recentPanoramas'
+            'recentPanoramas',
+            'totalAchievements',
+            'activeAchievements',
+            'recentAchievements'
         ));
-    }
-
-    /**
-     * Optional: Method dashboard() jika route masih pakai @dashboard
-     * (Bisa dihapus jika pakai @index seperti di web.php atas)
-     */
-    public function dashboard(Request $request)
-    {
-        return $this->index($request);
     }
 }
