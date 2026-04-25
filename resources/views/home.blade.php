@@ -516,7 +516,7 @@
                 <div class="hero-text">
                     <div class="hero-badge">
                         <i class="fas fa-star"></i>
-                        <span>SEKOLAH UNGGULAN</span>
+                        <span>SEKOLAH PUSAT KEUNGGULAN</span>
                     </div>
                     <h1>Selamat Datang di <span>SMK Negeri 11 Bandung</span></h1>
                     <p class="hero-subtitle">Sekolah unggulan yang memadukan tradisi pendidikan berkualitas dengan inovasi pembelajaran modern</p>
@@ -605,7 +605,7 @@
                         <div class="info-item"><span class="info-label">Status</span><span class="info-value">Negeri</span></div>
                         <div class="info-item"><span class="info-label">Akreditasi</span><span class="info-value"><span class="info-badge badge-success">A (Unggul)</span></span></div>
                         <div class="info-item"><span class="info-label">Tahun Berdiri</span><span class="info-value">1980</span></div>
-                        <div class="info-item"><span class="info-label">Kepala Sekolah</span><span class="info-value">Eka Rachman, S. Kom., M. M. Pd.</span></div>
+                        <div class="info-item"><span class="info-label">Kepala Sekolah</span><span class="info-value">Eka Rachman, S.Kom., M.M.Pd</span></div>
                     </div>
                 </div>
                 <div class="address-card" id="contact">
