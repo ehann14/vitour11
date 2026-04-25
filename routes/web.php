@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PanoramaController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\AchievementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,7 @@ Route::get('/', function () {
 
 Route::get('/beranda', [HomeController::class, 'index'])->name('home');
 Route::get('/denah', [HomeController::class, 'denah'])->name('denah');
+Route::get('/prestasi', [HomeController::class, 'prestasi'])->name('prestasi');
 
 Route::get('/view/{scene_id}', [HomeController::class, 'view'])->name('view');
 
@@ -32,6 +34,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     // Dashboard
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
+    // Panorama Routes
     Route::prefix('panorama')->name('panorama.')->group(function () {
         Route::get('/', [PanoramaController::class, 'index'])->name('index');
         Route::get('/create', [PanoramaController::class, 'create'])->name('create');
@@ -43,5 +46,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         Route::post('/{id}/toggle-status', [PanoramaController::class, 'toggleStatus'])->name('toggle-status');
         Route::post('/bulk-toggle', [PanoramaController::class, 'bulkToggle'])->name('bulk-toggle');
         Route::post('/bulk-delete', [PanoramaController::class, 'bulkDelete'])->name('bulk-delete');
+    });
+
+    // Achievement Routes (BARU)
+    Route::prefix('achievements')->name('achievements.')->group(function () {
+        Route::get('/', [AchievementController::class, 'index'])->name('index');
+        Route::get('/create', [AchievementController::class, 'create'])->name('create');
+        Route::post('/store', [AchievementController::class, 'store'])->name('store');
+        Route::get('/{achievement}/edit', [AchievementController::class, 'edit'])->name('edit');
+        Route::put('/{achievement}', [AchievementController::class, 'update'])->name('update');
+        Route::delete('/{achievement}', [AchievementController::class, 'destroy'])->name('destroy');
+        Route::post('/{achievement}/toggle-status', [AchievementController::class, 'toggleStatus'])->name('toggle-status');
     });
 });

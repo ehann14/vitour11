@@ -243,13 +243,18 @@
                     </h5>
                 </div>
                 <nav class="mt-3 p-2">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <i class="fas fa-home"></i>
                         <span>Dashboard</span>
                     </a>
-                    <a href="{{ route('admin.panorama.index') }}" class="active">
+                    <a href="{{ route('admin.panorama.index') }}" class="{{ request()->routeIs('admin.panorama.*') ? 'active' : '' }}">
                         <i class="fas fa-images"></i>
                         <span>Kelola Panorama</span>
+                    </a>
+                    <!-- ✅ BARU: Menu Kelola Prestasi -->
+                    <a href="{{ route('admin.achievements.index') }}" class="{{ request()->routeIs('admin.achievements.*') ? 'active' : '' }}">
+                        <i class="fas fa-trophy"></i>
+                        <span>Kelola Prestasi</span>
                     </a>
                     <a href="{{ route('home') }}" target="_blank">
                         <i class="fas fa-external-link-alt"></i>
@@ -391,7 +396,6 @@
                                 <tbody>
                                     @forelse($panoramas as $panorama)
                                     @php
-                                        // ✅ FIX: Handle hotspots yang bisa berupa string JSON atau array
                                         $hotspots = $panorama->hotspots;
                                         if (is_string($hotspots)) {
                                             $hotspots = json_decode($hotspots, true) ?? [];

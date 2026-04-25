@@ -487,16 +487,17 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <a href="/" class="nav-brand">
+            <a href="{{ route('home') }}" class="nav-brand">
                 <i class="fas fa-graduation-cap"></i>
                 <span>SMK NEGERI 11 BANDUNG</span>
             </a>
             <ul class="nav-menu">
-                <li><a href="#home" class="active">Beranda</a></li>
-                <li><a href="#profile">Profil</a></li>
-                <li><a href="#gallery">Galeri</a></li>
-                <li><a href="#achievement">Prestasi</a></li>
-                <li><a href="#contact">Kontak</a></li>
+                <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
+                <li><a href="{{ route('home') }}#profile">Profil</a></li>
+                <li><a href="{{ route('home') }}#gallery">Galeri</a></li>
+                <!-- ✅ LINK PRESTASI DIUBAH KE ROUTE -->
+                <li><a href="{{ route('prestasi') }}" class="{{ request()->routeIs('prestasi') ? 'active' : '' }}">Prestasi</a></li>
+                <li><a href="{{ route('home') }}#contact">Kontak</a></li>
             </ul>
             <!-- Tombol Login Admin -->
             <a href="{{ route('admin.login') }}" class="nav-login-btn">
@@ -682,26 +683,44 @@
     </footer>
 
     <script>
-        // Mobile Navigation Toggle
-        document.querySelector('.nav-toggle').addEventListener('click', function() {
-            document.querySelector('.nav-menu').classList.toggle('active');
+    // Ambil URL prestasi dari Blade (dikonversi ke JS string yang aman)
+    const prestasiUrl = @json(route('prestasi'));
+    
+    // Mobile Navigation Toggle
+    document.querySelector('.nav-toggle')?.addEventListener('click', function() {
+        document.querySelector('.nav-menu')?.classList.toggle('active');
+    });
+    
+    // Close mobile menu when clicking a link
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.addEventListener('click', function() {
+            document.querySelector('.nav-menu')?.classList.remove('active');
         });
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', function() {
-                document.querySelector('.nav-menu').classList.remove('active');
-            });
+    });
+    
+    // Smooth scroll untuk anchor links (hanya untuk link di halaman yang sama)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            
+            // Skip smooth scroll jika:
+            // 1. Link kosong (#)
+            // 2. Link ke route lain (mengandung /)
+            // 3. Link ke halaman prestasi
+            if (href === '#' || href.includes('/') || href === prestasiUrl) {
+                return;
+            }
+            
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                window.scrollTo({ 
+                    top: target.offsetTop - 70, 
+                    behavior: 'smooth' 
+                });
+            }
         });
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    window.scrollTo({ top: target.offsetTop - 70, behavior: 'smooth' });
-                }
-            });
-        });
-    </script>
+    });
+</script>
 </body>
 </html>

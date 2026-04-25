@@ -122,12 +122,15 @@
                     <a href="{{ route('admin.panorama.index') }}" class="{{ request()->routeIs('admin.panorama.*') ? 'active' : '' }}">
                         <i class="fas fa-images me-2"></i>Kelola Panorama
                     </a>
+                    <!-- ✅ BARU: Menu Kelola Prestasi -->
+                    <a href="{{ route('admin.achievements.index') }}" class="{{ request()->routeIs('admin.achievements.*') ? 'active' : '' }}">
+                        <i class="fas fa-trophy me-2"></i>Kelola Prestasi
+                    </a>
                     <a href="{{ route('home') }}" target="_blank">
                         <i class="fas fa-external-link-alt me-2"></i>Lihat Website
                     </a>
                 </nav>
                 <div class="p-3 border-top mt-auto" style="border-color: rgba(255,255,255,0.2) !important;">
-                    <!-- ✅ FIX: Ganti auth.logout → admin.logout -->
                     <form method="POST" action="{{ route('admin.logout') }}">
                         @csrf
                         <button type="submit" class="logout-btn">
