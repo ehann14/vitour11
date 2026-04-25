@@ -93,6 +93,45 @@
             transition: width 0.3s ease; border-radius: 3px;
         }
         .nav-menu a:hover::after, .nav-menu a.active::after { width: 100%; }
+        
+        /* ✅ DROPDOWN MENU STYLES */
+        .nav-menu li.dropdown { position: relative; }
+        .nav-menu li.dropdown > a {
+            display: flex; align-items: center; gap: 4px;
+            cursor: pointer;
+        }
+        .nav-menu li.dropdown > a::after {
+            content: '\f107'; font-family: 'Font Awesome 6 Free';
+            font-weight: 900; font-size: 0.8rem; position: static;
+            width: auto; height: auto; background: none;
+        }
+        .nav-menu li.dropdown:hover > .dropdown-menu {
+            opacity: 1; visibility: visible; transform: translateY(0);
+        }
+        .dropdown-menu {
+            position: absolute; top: 100%; left: 0;
+            min-width: 220px; background: var(--white);
+            border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: 10px 0; margin-top: 8px;
+            opacity: 0; visibility: hidden;
+            transform: translateY(-10px); transition: all 0.3s ease;
+            z-index: 1001; border: 1px solid var(--gray-200);
+        }
+        .dropdown-menu a {
+            display: block; padding: 10px 20px;
+            color: var(--gray-700); font-weight: 500;
+            font-size: 0.9rem; text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .dropdown-menu a:hover {
+            background: rgba(0,201,177,0.1);
+            color: var(--primary-blue);
+            padding-left: 25px;
+        }
+        .dropdown-menu a i {
+            width: 20px; color: var(--accent-teal);
+        }
+        
         .nav-toggle {
             display: none; background: none; border: none;
             font-size: 1.4rem; color: var(--primary-blue);
@@ -443,6 +482,31 @@
             .nav-menu.active { right: 0; }
             .nav-menu li { margin-bottom: 20px; }
             .nav-menu a { font-size: 1.1rem; display: block; }
+            
+            /* ✅ Mobile Dropdown Styles */
+            .nav-menu li.dropdown > a::after {
+                position: absolute; right: 20px; transform: rotate(-90deg);
+                transition: transform 0.3s ease;
+            }
+            .nav-menu li.dropdown.active > a::after {
+                transform: rotate(0deg);
+            }
+            .nav-menu li.dropdown .dropdown-menu {
+                position: static; opacity: 1; visibility: visible;
+                transform: none; box-shadow: none;
+                border: none; padding: 0; margin: 0;
+                max-height: 0; overflow: hidden;
+                transition: max-height 0.3s ease;
+                background: rgba(0,201,177,0.05);
+                border-radius: 8px; margin-left: 20px;
+            }
+            .nav-menu li.dropdown.active .dropdown-menu {
+                max-height: 200px; padding: 10px 0;
+            }
+            .nav-menu li.dropdown .dropdown-menu a {
+                padding: 8px 20px; font-size: 0.95rem;
+            }
+            
             .hero h1 { font-size: 2rem; }
             .hero h1 span { font-size: 2.2rem; }
             .hero-buttons { flex-direction: column; align-items: center; }
@@ -456,7 +520,6 @@
             .info-item { padding: 10px 0; flex-direction: column; align-items: flex-start; }
             .info-label { margin-bottom: 6px; }
             .info-value { text-align: left; width: 100%; }
-            /* Hide login button text on small mobile, show icon only */
             .nav-login-btn span { display: none; }
             .nav-login-btn { padding: 10px 16px; }
             .nav-login-btn i { font-size: 1.1rem; }
@@ -493,12 +556,30 @@
             </a>
             <ul class="nav-menu">
                 <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
-                <li><a href="{{ route('home') }}#profile">Profil</a></li>
+                
+                <!-- ✅ PROFIL SEKOLAH (KEMBALI) -->
+                <li><a href="{{ route('home') }}#profile">Profil Sekolah</a></li>
+                
+                <!-- ✅ DROPDOWN: Program Akademik -->
+                <li class="dropdown">
+                    <a href="javascript:void(0)">
+                        Program
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="{{ route('program.keahlian') }}">
+                            Program Keahlian
+                        </a>
+                        <a href="{{ route('konsentrasi.keahlian') }}">
+                            Konsentrasi Keahlian
+                        </a>
+                    </div>
+                </li>
+                
                 <li><a href="{{ route('home') }}#gallery">Galeri</a></li>
-                <!-- ✅ LINK PRESTASI DIUBAH KE ROUTE -->
                 <li><a href="{{ route('prestasi') }}" class="{{ request()->routeIs('prestasi') ? 'active' : '' }}">Prestasi</a></li>
                 <li><a href="{{ route('home') }}#contact">Kontak</a></li>
             </ul>
+            
             <!-- Tombol Login Admin -->
             <a href="{{ route('admin.login') }}" class="nav-login-btn">
                 <i class="fas fa-user-shield"></i>
@@ -534,7 +615,7 @@
                 </div>
                 <div class="hero-images">
                     <div class="hero-img hero-img-1">
-                        <img src="{{ asset('image/b/SMK11.Jpeg') }}" alt="Banner">
+                        <img src="{{ asset('image/b/SMKN 11 IN NIGHT.png') }}" alt="Banner">
                     </div>
                     <div class="hero-img">
                         <img src="{{ asset('image/b/slide_1.jpg') }}" alt="Sekolah">
@@ -694,8 +775,37 @@
     // Close mobile menu when clicking a link
     document.querySelectorAll('.nav-menu a').forEach(link => {
         link.addEventListener('click', function() {
+            // Close dropdown if open
+            document.querySelectorAll('.nav-menu li.dropdown').forEach(dd => {
+                dd.classList.remove('active');
+            });
             document.querySelector('.nav-menu')?.classList.remove('active');
         });
+    });
+    
+    // ✅ Mobile Dropdown Toggle for Program Akademik
+    document.querySelectorAll('.nav-menu li.dropdown > a').forEach(trigger => {
+        trigger.addEventListener('click', function(e) {
+            // Only toggle on mobile
+            if (window.innerWidth <= 768) {
+                e.preventDefault();
+                const dropdown = this.parentElement;
+                // Close other dropdowns
+                document.querySelectorAll('.nav-menu li.dropdown').forEach(dd => {
+                    if (dd !== dropdown) dd.classList.remove('active');
+                });
+                dropdown.classList.toggle('active');
+            }
+        });
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.nav-menu')) {
+            document.querySelectorAll('.nav-menu li.dropdown').forEach(dd => {
+                dd.classList.remove('active');
+            });
+        }
     });
     
     // Smooth scroll untuk anchor links (hanya untuk link di halaman yang sama)

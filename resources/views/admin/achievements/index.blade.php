@@ -24,7 +24,12 @@
         .badge-provinsi { background: #3b82f6; color: white; }
         .badge-nasional { background: #8b5cf6; color: white; }
         .badge-internasional { background: #ef4444; color: white; }
+        .badge-status-aktif { background: #28a745; color: white; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
+        .badge-status-nonaktif { background: #6c757d; color: white; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
         .btn-action { padding: 6px 12px; border-radius: 6px; }
+        .alert-custom { border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+        .alert-success-custom { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .alert-error-custom { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
     </style>
 </head>
 <body>
@@ -44,6 +49,13 @@
                     </a>
                     <a href="{{ route('admin.achievements.index') }}" class="{{ request()->routeIs('admin.achievements.*') ? 'active' : '' }}">
                         <i class="fas fa-trophy me-2"></i>Kelola Prestasi
+                    </a>
+                    <!-- ✅ BARU: Menu Program & Konsentrasi -->
+                    <a href="{{ route('admin.program.index') }}" class="{{ request()->routeIs('admin.program.*') ? 'active' : '' }}">
+                        <i class="fas fa-layer-group me-2"></i>Kelola Program
+                    </a>
+                    <a href="{{ route('admin.konsentrasi.index') }}" class="{{ request()->routeIs('admin.konsentrasi.*') ? 'active' : '' }}">
+                        <i class="fas fa-sitemap me-2"></i>Kelola Konsentrasi
                     </a>
                     <a href="{{ route('home') }}" target="_blank">
                         <i class="fas fa-external-link-alt me-2"></i>Lihat Website
@@ -141,7 +153,7 @@
                                                 <form action="{{ route('admin.achievements.toggle-status', $item) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     <button type="submit" class="btn btn-sm {{ $item->is_active ? 'btn-success' : 'btn-secondary' }}">
-                                                        {{ $item->is_active ? 'Aktif' : '⏸ Nonaktif' }}
+                                                        {{ $item->is_active ? 'Aktif' : 'Nonaktif' }}
                                                     </button>
                                                 </form>
                                             </td>

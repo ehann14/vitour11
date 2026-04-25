@@ -23,10 +23,12 @@
         .bg-teal-light { background: rgba(0,201,177,0.15); color: var(--accent-teal); }
         .bg-blue-light { background: rgba(30,60,114,0.15); color: var(--primary-blue); }
         .bg-gold-light { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .bg-purple-light { background: rgba(139,92,246,0.15); color: #8b5cf6; }
         .navbar-admin { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.08); padding: 1rem 2rem; }
         .preview-thumb { width: 60px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid #dee2e6; background: #f8f9fa; transition: transform 0.2s; }
         .preview-thumb:hover { transform: scale(1.1); }
         .preview-achievement { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 1px solid #dee2e6; background: #f8f9fa; }
+        .preview-program { width: 60px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid #dee2e6; background: #f8f9fa; }
         .section-card { border: none; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
         .section-header { background: white; border-radius: 16px 16px 0 0; padding: 1rem 1.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .section-header h5 { margin: 0; color: var(--primary-blue); font-weight: 700; }
@@ -58,6 +60,13 @@
                     </a>
                     <a href="{{ route('admin.achievements.index') }}" class="{{ request()->routeIs('admin.achievements.*') ? 'active' : '' }}">
                         <i class="fas fa-trophy me-2"></i>Kelola Prestasi
+                    </a>
+                    <!-- ✅ BARU: Menu Program & Konsentrasi -->
+                    <a href="{{ route('admin.program.index') }}" class="{{ request()->routeIs('admin.program.*') ? 'active' : '' }}">
+                        <i class="fas fa-layer-group me-2"></i>Kelola Program
+                    </a>
+                    <a href="{{ route('admin.konsentrasi.index') }}" class="{{ request()->routeIs('admin.konsentrasi.*') ? 'active' : '' }}">
+                        <i class="fas fa-sitemap me-2"></i>Kelola Konsentrasi
                     </a>
                     <a href="{{ route('home') }}" target="_blank">
                         <i class="fas fa-external-link-alt me-2"></i>Lihat Website
@@ -101,10 +110,10 @@
                     </div>
                     @endif
 
-                    <!-- Stats Cards (4 Cards) -->
+                    <!-- Stats Cards (6 Cards - 2 Rows) -->
                     <div class="row g-3 mb-4">
-                        <!-- Panorama Stats -->
-                        <div class="col-md-3">
+                        <!-- Row 1: Panorama & Achievements -->
+                        <div class="col-md-2">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-teal-light"><i class="fas fa-images"></i></div>
@@ -112,7 +121,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="fas fa-check-circle"></i></div>
@@ -120,8 +129,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Achievement Stats -->
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-gold-light"><i class="fas fa-trophy"></i></div>
@@ -129,7 +137,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="fas fa-medal"></i></div>
@@ -137,16 +145,33 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Row 2: Program & Konsentrasi (BARU) -->
+                        <div class="col-md-2">
+                            <div class="card stat-card p-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon bg-purple-light"><i class="fas fa-layer-group"></i></div>
+                                    <div><p class="text-muted mb-0 small">Total Program</p><h4 class="fw-bold mb-0">{{ $totalPrograms ?? 0 }}</h4></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card stat-card p-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon bg-purple-light"><i class="fas fa-sitemap"></i></div>
+                                    <div><p class="text-muted mb-0 small">Total Konsentrasi</p><h4 class="fw-bold mb-0">{{ $totalKonsentrasi ?? 0 }}</h4></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Two Columns: Panorama & Achievements -->
+                    <!-- Three Columns: Panorama, Achievements, Programs -->
                     <div class="row g-4">
                         
                         <!-- Column 1: Recent Panoramas -->
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="section-card">
                                 <div class="section-header">
-                                    <h5><i class="fas fa-images me-2"></i>Panorama Terbaru</h5>
+                                    <h5><i class="fas fa-images me-2"></i>Panorama</h5>
                                     <a href="{{ route('admin.panorama.create') }}" class="btn btn-sm" style="background: var(--primary-blue); color: white; border-radius: 20px;">
                                         <i class="fas fa-plus me-1"></i>Tambah
                                     </a>
@@ -157,39 +182,23 @@
                                         <table class="table table-hover align-middle mb-0">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th width="80">Preview</th>
+                                                    <th width="70">Preview</th>
                                                     <th>Nama</th>
-                                                    <th width="80">Tipe</th>
-                                                    <th width="90">Status</th>
-                                                    <th width="80">Aksi</th>
+                                                    <th width="60">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($recentPanoramas as $panorama)
+                                                @foreach($recentPanoramas->take(4) as $panorama)
                                                 <tr>
                                                     <td>
                                                         @php $previewUrl = $panorama->image_path ? asset($panorama->image_path) : 'https://via.placeholder.com/60x40/1e3c72/ffffff?text=No+Image'; @endphp
                                                         <img src="{{ $previewUrl }}" alt="{{ $panorama->name }}" class="preview-thumb" onerror="this.src='https://via.placeholder.com/60x40/1e3c72/ffffff?text=No+Image'">
                                                     </td>
                                                     <td>
-                                                        <div class="fw-bold text-truncate" style="max-width: 150px;" title="{{ $panorama->name }}">{{ $panorama->name }}</div>
-                                                        <small class="text-muted">#{{ $panorama->id }}</small>
+                                                        <div class="fw-bold text-truncate" style="max-width: 120px;" title="{{ $panorama->name }}">{{ $panorama->name }}</div>
                                                     </td>
                                                     <td>
-                                                        <span class="badge" style="background: {{ $panorama->type == '360' ? 'var(--accent-teal)' : 'var(--primary-blue)' }}; color: white; font-size: 0.75rem;">
-                                                            {{ $panorama->type == '360' ? '360°' : 'Normal' }}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <!-- ✅ STATUS TEKS (bukan icon) -->
-                                                        @if($panorama->is_active)
-                                                            <span class="badge-status-aktif">Aktif</span>
-                                                        @else
-                                                            <span class="badge-status-nonaktif">Nonaktif</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ route('admin.panorama.edit', $panorama->id) }}" class="btn btn-outline-primary btn-sm py-0 px-2"><i class="fas fa-edit"></i></a>
+                                                        @if($panorama->is_active)<span class="badge-status-aktif">Aktif</span>@else<span class="badge-status-nonaktif">Nonaktif</span>@endif
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -200,7 +209,6 @@
                                     <div class="empty-state">
                                         <i class="fas fa-images"></i>
                                         <p class="mb-0">Belum ada panorama</p>
-                                        <a href="{{ route('admin.panorama.create') }}" class="btn btn-sm btn-primary mt-2">Tambah Pertama</a>
                                     </div>
                                     @endif
                                 </div>
@@ -208,10 +216,10 @@
                         </div>
 
                         <!-- Column 2: Recent Achievements -->
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="section-card">
                                 <div class="section-header">
-                                    <h5><i class="fas fa-trophy me-2"></i>Prestasi Terbaru</h5>
+                                    <h5><i class="fas fa-trophy me-2"></i>Prestasi</h5>
                                     <a href="{{ route('admin.achievements.create') }}" class="btn btn-sm" style="background: #f59e0b; color: white; border-radius: 20px;">
                                         <i class="fas fa-plus me-1"></i>Tambah
                                     </a>
@@ -222,42 +230,26 @@
                                         <table class="table table-hover align-middle mb-0">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th width="80">Foto</th>
+                                                    <th width="70">Foto</th>
                                                     <th>Judul</th>
-                                                    <th width="90">Level</th>
-                                                    <th width="90">Status</th>
-                                                    <th width="80">Aksi</th>
+                                                    <th width="60">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($recentAchievements as $achievement)
+                                                @foreach($recentAchievements->take(4) as $achievement)
                                                 <tr>
                                                     <td>
                                                         @if($achievement->image_path)
                                                         <img src="{{ asset('storage/' . $achievement->image_path) }}" alt="{{ $achievement->title }}" class="preview-achievement">
                                                         @else
-                                                        <div class="preview-achievement d-flex align-items-center justify-content-center bg-light">
-                                                            <i class="fas fa-trophy text-muted"></i>
-                                                        </div>
+                                                        <div class="preview-achievement d-flex align-items-center justify-content-center bg-light"><i class="fas fa-trophy text-muted"></i></div>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <div class="fw-bold text-truncate" style="max-width: 150px;" title="{{ $achievement->title }}">{{ $achievement->title }}</div>
-                                                        <small class="text-muted">{{ $achievement->student_name }}</small>
+                                                        <div class="fw-bold text-truncate" style="max-width: 120px;" title="{{ $achievement->title }}">{{ $achievement->title }}</div>
                                                     </td>
                                                     <td>
-                                                        <span class="badge-level badge-{{ strtolower($achievement->level) }}">{{ $achievement->level }}</span>
-                                                    </td>
-                                                    <td>
-                                                        <!-- ✅ STATUS TEKS (bukan icon) -->
-                                                        @if($achievement->is_active)
-                                                            <span class="badge-status-aktif">Aktif</span>
-                                                        @else
-                                                            <span class="badge-status-nonaktif">Nonaktif</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ route('admin.achievements.edit', $achievement) }}" class="btn btn-outline-warning btn-sm py-0 px-2" style="border-color: #f59e0b; color: #f59e0b;"><i class="fas fa-edit"></i></a>
+                                                        @if($achievement->is_active)<span class="badge-status-aktif">Aktif</span>@else<span class="badge-status-nonaktif">Nonaktif</span>@endif
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -268,7 +260,58 @@
                                     <div class="empty-state">
                                         <i class="fas fa-trophy"></i>
                                         <p class="mb-0">Belum ada prestasi</p>
-                                        <a href="{{ route('admin.achievements.create') }}" class="btn btn-sm" style="background: #f59e0b; color: white;" class="mt-2">Tambah Pertama</a>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column 3: Recent Programs (BARU) -->
+                        <div class="col-lg-4">
+                            <div class="section-card">
+                                <div class="section-header">
+                                    <h5><i class="fas fa-layer-group me-2"></i>Program</h5>
+                                    <a href="{{ route('admin.program.create') }}" class="btn btn-sm" style="background: #8b5cf6; color: white; border-radius: 20px;">
+                                        <i class="fas fa-plus me-1"></i>Tambah
+                                    </a>
+                                </div>
+                                <div class="card-body p-0">
+                                    @if(isset($recentPrograms) && $recentPrograms->count() > 0)
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th width="70">Logo</th>
+                                                    <th>Nama</th>
+                                                    <th width="60">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($recentPrograms->take(4) as $program)
+                                                <tr>
+                                                    <td>
+                                                        @if($program->logo)
+                                                        <img src="{{ asset('storage/' . $program->logo) }}" alt="{{ $program->nama }}" class="preview-program">
+                                                        @else
+                                                        <div class="preview-program d-flex align-items-center justify-content-center bg-light"><i class="fas fa-layer-group text-muted"></i></div>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <div class="fw-bold text-truncate" style="max-width: 120px;" title="{{ $program->nama }}">{{ $program->nama }}</div>
+                                                        <small class="text-muted">{{ $program->singkatan }}</small>
+                                                    </td>
+                                                    <td>
+                                                        @if($program->is_active)<span class="badge-status-aktif">Aktif</span>@else<span class="badge-status-nonaktif">Nonaktif</span>@endif
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @else
+                                    <div class="empty-state">
+                                        <i class="fas fa-layer-group"></i>
+                                        <p class="mb-0">Belum ada program</p>
                                     </div>
                                     @endif
                                 </div>
