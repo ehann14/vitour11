@@ -640,7 +640,7 @@
             </div>
             <div class="gallery-grid">
                 <div class="gallery-item">
-                    <img src="{{ asset('image/b/banner-1.png') }}" alt="Banner">
+                    <img src="{{ asset('image/b/banner-1.png') }}" alt="Kegiatan Upacara">
                     <div class="gallery-overlay"><h4>Kegiatan Upacara</h4><p>Siswa aktif dalam proses pembelajaran</p></div>
                 </div>
                 <div class="gallery-item">
@@ -652,15 +652,15 @@
                     <div class="gallery-overlay"><h4>Ekstrakurikuler</h4><p>Pengembangan minat dan bakat siswa</p></div>
                 </div>
                 <div class="gallery-item">
-                    <img src="{{ asset('image/b/Belajar.Jpeg') }}" alt="Upacara Bendera">
+                    <img src="{{ asset('image/b/Belajar.Jpeg') }}" alt="Kegiatan Pembelajaran">
                     <div class="gallery-overlay"><h4>Kegiatan belajar</h4><p>Proses pembelajaran interaktif di dalam kelas</p></div>
                 </div>
                 <div class="gallery-item">
-                    <img src="{{ asset('image/b/slide_2a.jpeg') }}" alt="Banner">
+                    <img src="{{ asset('image/b/slide_2a.jpeg') }}" alt="Taman">
                     <div class="gallery-overlay"><h4>Taman</h4><p>Sebagai ruang belajar alami dan cocok untuk bersantai</p></div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop" alt="Prestasi Siswa">
+                    <img src="{{ asset('image/b/Lab.png') }}" alt="Laboratorium Komputer">
                     <div class="gallery-overlay"><h4>Laboratorium Komputer</h4><p>Fasilitas komputer yang dapat di gunakan untuk kebutuhan pembelajaran</p></div>
                 </div>
             </div>

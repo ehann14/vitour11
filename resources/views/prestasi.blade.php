@@ -420,7 +420,7 @@
     <!-- Page Header -->
     <section class="page-header">
         <div class="container">
-            <h1><i class="fas fa-trophy"></i> Prestasi Kami</h1>
+            <h1><i class="fas fa-trophy"></i> Prestasi Siswa</h1>
             <p>Berbagai pencapaian membanggakan siswa-siswi SMK Negeri 11 Bandung di berbagai bidang</p>
         </div>
     </section>
