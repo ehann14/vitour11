@@ -566,11 +566,11 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
-                        <div class="stat-info"><h3>1.648</h3><p>Siswa Aktif</p></div>
+                        <div class="stat-info"><h3>1.645</h3><p>Siswa Aktif</p></div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-                        <div class="stat-info"><h3>95</h3><p>Tenaga Pendidik</p></div>
+                        <div class="stat-info"><h3>94</h3><p>Tenaga Pendidik</p></div>
                     </div>
                 </div>
 
@@ -578,16 +578,16 @@
                 <div class="vision-mission">
                     <div class="vision-card">
                         <div class="card-header"><i class="fas fa-bullseye"></i><h3>Visi Sekolah</h3></div>
-                        <p class="vision-text">Menjadi lembaga pendidikan kejuruan yang unggul dalam prestasi, inovatif dalam pembelajaran, dan berwawasan global untuk menghasilkan lulusan yang kompeten dan berakhlak mulia.</p>
+                        <p class="vision-text">Menghasilkan lulusan yang BERKUALITAS (Berakhlak mulia, Empatik, Rasional, Kreatif, Unggul, Adaptif, LIterat, dan Tangguh serta Siap bersaing dalam dunia karier dan usaha).</p>
                     </div>
                     <div class="mission-card">
                         <div class="card-header"><i class="fas fa-tasks"></i><h3>Misi Sekolah</h3></div>
                         <ul class="mission-list">
-                            <li><i class="fas fa-check-circle"></i> Menyelenggarakan pendidikan kejuruan yang berkualitas dan relevan dengan kebutuhan industri</li>
-                            <li><i class="fas fa-check-circle"></i> Mengembangkan kompetensi peserta didik sesuai standar kompetensi kerja nasional</li>
-                            <li><i class="fas fa-check-circle"></i> Membentuk karakter peserta didik yang berakhlak mulia dan berjiwa wirausaha</li>
-                            <li><i class="fas fa-check-circle"></i> Menjalin kerjasama dengan dunia usaha dan dunia industri untuk peningkatan mutu pendidikan</li>
-                            <li><i class="fas fa-check-circle"></i> Mengembangkan budaya mutu dan inovasi dalam penyelenggaraan pendidikan</li>
+                            <li><i class="fas fa-check-circle"></i> Membentuk murid berakhlak mulia dan empatik melalui penguatan nilai-nilai Pancawaluya dalam budaya sekolah.</li>
+                            <li><i class="fas fa-check-circle"></i> Menyelenggarakan pembelajaran yang rasional, kreatif, dan literat berbasis proyek, pemecahan masalah, dan teknologi.</li>
+                            <li><i class="fas fa-check-circle"></i> Mengembangkan kompetensi unggul dan berintegritas agar peserta didik memiliki daya saing di dunia kerja dan dunia usaha.</li>
+                            <li><i class="fas fa-check-circle"></i> Menumbuhkan karakter tangguh dan adaptif dalam menghadapi perubahan dan tantangan global.</li>
+                            <li><i class="fas fa-check-circle"></i> Mendorong kemandirian dan jiwa kewirausahaan melalui pengalaman belajar nyata dan kolaborasi dengan dunia usaha dan industri.</li>
                         </ul>
                     </div>
                 </div>
@@ -602,7 +602,7 @@
                         <div class="info-item"><span class="info-label">NPSN</span><span class="info-value">20216789</span></div>
                         <div class="info-item"><span class="info-label">Status</span><span class="info-value">Negeri</span></div>
                         <div class="info-item"><span class="info-label">Akreditasi</span><span class="info-value"><span class="info-badge badge-success">A (Unggul)</span></span></div>
-                        <div class="info-item"><span class="info-label">Tahun Berdiri</span><span class="info-value">1985</span></div>
+                        <div class="info-item"><span class="info-label">Tahun Berdiri</span><span class="info-value">1980</span></div>
                         <div class="info-item"><span class="info-label">Kepala Sekolah</span><span class="info-value">Eka Rachman, S. Kom., M. M. Pd.</span></div>
                     </div>
                 </div>
@@ -611,9 +611,9 @@
                     <div class="address-grid">
                         <div class="address-item"><i class="fas fa-map-pin"></i><div><span class="address-label">Alamat</span><p class="address-text">Jl. Raya Cilember, RT.01/RW.04, Sukaraja, Kec. Cicendo, Kota Bandung, Jawa Barat 40136</p></div></div>
                         <div class="address-item"><i class="fas fa-phone"></i><div><span class="address-label">Telepon</span><p class="address-text">(022) 6652442</p></div></div>
-                        <div class="address-item"><i class="fas fa-envelope"></i><div><span class="address-label">Email</span><p class="address-text">info@smkn11bandung.sch.id</p></div></div>
+                        <div class="address-item"><i class="fas fa-envelope"></i><div><span class="address-label">Email</span><p class="address-text">official@smkn11bdg.sch.id</p></div></div>
                         <div class="address-item"><i class="fas fa-globe"></i><div><span class="address-label">Website</span><p class="address-text">www.smkn11bandung.sch.id</p></div></div>
-                        <div class="address-item"><i class="fab fa-instagram"></i><div><span class="address-label">Instagram</span><p class="address-text">@smkn11bandung</p></div></div>
+                        <div class="address-item"><i class="fab fa-instagram"></i><div><span class="address-label">Instagram</span><p class="address-text">@info.smkn11bandung</p></div></div>
                     </div>
                 </div>
             </div>
@@ -658,7 +658,7 @@
                 </div>
                 <div class="gallery-item">
                     <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=600&fit=crop" alt="Prestasi Siswa">
-                    <div class="gallery-overlay"><h4>Laboratorium Komputer</h4><p>Fasilitas komputer terbaru</p></div>
+                    <div class="gallery-overlay"><h4>Laboratorium Komputer</h4><p>Fasilitas komputer yang dapat di gunakan untuk kebutuhan pembelajaran</p></div>
                 </div>
             </div>
         </div>
