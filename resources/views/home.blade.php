@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>SMK Negeri 11 Bandung - Sekolah Unggulan</title>
+    <link rel="icon" type="image/png" href="{{ asset('image/b/SMK11.jpeg') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -599,7 +600,8 @@
                     <div class="info-header"><i class="fas fa-id-card"></i><h3>Identitas Sekolah</h3></div>
                     <div class="info-grid">
                         <div class="info-item"><span class="info-label">Nama Sekolah</span><span class="info-value">SMK Negeri 11 Bandung</span></div>
-                        <div class="info-item"><span class="info-label">NPSN</span><span class="info-value">20216789</span></div>
+                        <div class="info-item"><span class="info-label">NPSN</span><span class="info-value">20219175</span></div>
+                        <div class="info-item"><span class="info-label">NSS</span><span class="info-value">341026003001</span></div>
                         <div class="info-item"><span class="info-label">Status</span><span class="info-value">Negeri</span></div>
                         <div class="info-item"><span class="info-label">Akreditasi</span><span class="info-value"><span class="info-badge badge-success">A (Unggul)</span></span></div>
                         <div class="info-item"><span class="info-label">Tahun Berdiri</span><span class="info-value">1980</span></div>
@@ -611,8 +613,8 @@
                     <div class="address-grid">
                         <div class="address-item"><i class="fas fa-map-pin"></i><div><span class="address-label">Alamat</span><p class="address-text">Jl. Raya Cilember, RT.01/RW.04, Sukaraja, Kec. Cicendo, Kota Bandung, Jawa Barat 40136</p></div></div>
                         <div class="address-item"><i class="fas fa-phone"></i><div><span class="address-label">Telepon</span><p class="address-text">(022) 6652442</p></div></div>
-                        <div class="address-item"><i class="fas fa-envelope"></i><div><span class="address-label">Email</span><p class="address-text">official@smkn11bdg.sch.id</p></div></div>
-                        <div class="address-item"><i class="fas fa-globe"></i><div><span class="address-label">Website</span><p class="address-text">www.smkn11bandung.sch.id</p></div></div>
+                        <div class="address-item"><i class="fas fa-envelope"></i><div><span class="address-label">Email</span><p class="address-text">official@smkn11bdg.sch.id & smkn11bdg@gmail.com</p></div></div>
+                        <div class="address-item"><i class="fas fa-globe"></i><div><span class="address-label">Website</span><p class="address-text">https://smkn11bdg.sch.id</p></div></div>
                         <div class="address-item"><i class="fab fa-instagram"></i><div><span class="address-label">Instagram</span><p class="address-text">@info.smkn11bandung</p></div></div>
                     </div>
                 </div>
