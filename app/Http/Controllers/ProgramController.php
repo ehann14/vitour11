@@ -5,60 +5,69 @@ namespace App\Http\Controllers;
 use App\Models\ProgramKeahlian;
 use App\Models\KonsentrasiKeahlian;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProgramController extends Controller
 {
     /**
-     * Halaman Program Keahlian (Public)
+     * Tampilkan halaman Program Keahlian (Public)
+     * Route: GET /program-keahlian
      */
     public function programKeahlian()
     {
-        $programs = ProgramKeahlian::where('is_active', true)
+        $programs = ProgramKeahlian::withCount('konsentrasi')
+            ->where('is_active', true)
             ->orderBy('urutan')
-            ->withCount('konsentrasi')
+            ->latest()
             ->get();
-        
-        return view('program.program-keahlian', compact('programs'));
+            
+        return view('program-keahlian', compact('programs'));
     }
 
     /**
-     * Detail Program Keahlian
+     * Tampilkan detail Program (Public)
+     * Route: GET /program/{slug}
      */
     public function detailProgram($slug)
     {
-        $program = ProgramKeahlian::where('slug', $slug)
-            ->where('is_active', true)
-            ->with('konsentrasi')
-            ->firstOrFail();
+        $program = ProgramKeahlian::with(['konsentrasi' => function($query) {
+            $query->where('is_active', true);
+        }])->where('slug', $slug)
+          ->where('is_active', true)
+          ->firstOrFail();
         
-        return view('program.detail-program', compact('program'));
+        return view('program-detail', compact('program'));
     }
 
     /**
-     * Halaman Konsentrasi Keahlian (Public)
+     * Tampilkan halaman Konsentrasi Keahlian (Public)
+     * Route: GET /konsentrasi-keahlian
      */
     public function konsentrasiKeahlian()
     {
-        $konsentrasi = KonsentrasiKeahlian::where('is_active', true)
-            ->orderBy('urutan')
-            ->with('program')
+        $konsentrasi = KonsentrasiKeahlian::with('program')
+            ->where('is_active', true)
+            ->latest()
             ->get();
+            
+        $groupedKonsentrasi = $konsentrasi->groupBy(function($item) {
+            return $item->program->nama ?? 'Lainnya';
+        });
         
-        $groupedKonsentrasi = $konsentrasi->groupBy('program.nama');
-        
-        return view('program.konsentrasi-keahlian', compact('groupedKonsentrasi'));
+        return view('konsentrasi-keahlian', compact('groupedKonsentrasi', 'konsentrasi'));
     }
 
     /**
-     * Detail Konsentrasi Keahlian
+     * Tampilkan detail Konsentrasi (Public)
+     * Route: GET /konsentrasi/{slug}
      */
     public function detailKonsentrasi($slug)
     {
-        $konsentrasi = KonsentrasiKeahlian::where('slug', $slug)
+        $konsentrasi = KonsentrasiKeahlian::with('program')
+            ->where('slug', $slug)
             ->where('is_active', true)
-            ->with('program')
             ->firstOrFail();
-        
-        return view('program.detail-konsentrasi', compact('konsentrasi'));
+            
+        return view('konsentrasi-detail', compact('konsentrasi'));
     }
 }

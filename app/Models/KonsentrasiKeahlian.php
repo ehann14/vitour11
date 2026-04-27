@@ -13,12 +13,11 @@ class KonsentrasiKeahlian extends Model
     protected $table = 'konsentrasi_keahlian';
 
     protected $fillable = [
-        'program_keahlian_id',
+        'program_keahlian_id',  // ✅ Foreign key
         'nama',
         'slug',
         'deskripsi',
         'kompetensi',
-        'prospek_karir',
         'urutan',
         'is_active',
     ];
@@ -28,9 +27,7 @@ class KonsentrasiKeahlian extends Model
         'urutan' => 'integer',
     ];
 
-    /**
-     * Auto-generate unique slug dari nama
-     */
+    // Auto-generate slug
     public function setNamaAttribute($value)
     {
         $this->attributes['nama'] = $value;
@@ -50,7 +47,7 @@ class KonsentrasiKeahlian extends Model
     }
 
     /**
-     * ✅ RELATIONSHIP: KonsentrasiKeahlian belongs to ProgramKeahlian
+     * ✅ RELATIONSHIP: BelongsTo ProgramKeahlian
      */
     public function program()
     {
