@@ -23,7 +23,7 @@
         }
         .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
         
-        /* Navbar */
+        /* ✅ NAVBAR - Sama dengan home.blade.php */
         .navbar {
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -38,64 +38,84 @@
             font-weight: 700; font-size: 1.2rem;
             color: var(--primary-blue); text-decoration: none;
         }
+        .nav-brand i { font-size: 1.4rem; }
         .nav-menu { display: flex; list-style: none; gap: 20px; }
         .nav-menu a {
             text-decoration: none; color: var(--gray-700);
-            font-weight: 600; padding: 4px 0; transition: color 0.3s;
+            font-weight: 600; font-size: 0.95rem; padding: 4px 0; position: relative;
+            transition: color 0.3s;
         }
         .nav-menu a:hover, .nav-menu a.active { color: var(--primary-blue); }
+        .nav-menu a::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 0; height: 2px; background: var(--accent-teal);
+            transition: width 0.3s ease; border-radius: 3px;
+        }
+        .nav-menu a:hover::after, .nav-menu a.active::after { width: 100%; }
         
-        /* Header */
-        .header { text-align: center; padding: 40px 0; margin-bottom: 30px; }
+        /* ✅ Login Button */
+        .nav-login-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--white);
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(30, 60, 114, 0.25);
+        }
+        .nav-login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+            color: var(--white);
+        }
+        .nav-login-btn i { font-size: 0.95rem; }
+        
+        /* ✅ Mobile Toggle */
+        .nav-toggle {
+            display: none; background: none; border: none;
+            font-size: 1.4rem; color: var(--primary-blue);
+            cursor: pointer; border-radius: 50%; padding: 6px;
+            transition: all 0.3s ease;
+        }
+        .nav-toggle:hover { background: rgba(30, 60, 114, 0.1); }
+        
+        /* Header - Lebih Compact */
+        .header { text-align: center; padding: 20px 0; margin-bottom: 20px; }
         .header h1 {
-            font-size: 2.5rem; font-weight: 800; color: var(--white);
-            margin-bottom: 15px; display: flex; align-items: center;
+            font-size: 2rem; font-weight: 800; color: var(--white);
+            margin-bottom: 10px; display: flex; align-items: center;
             justify-content: center; gap: 15px;
         }
         .header h1 i { color: var(--accent-teal); }
         .header p {
-            font-size: 1.1rem; color: rgba(255, 255, 255, 0.9);
-            max-width: 700px; margin: 0 auto;
+            font-size: 1rem; color: rgba(255, 255, 255, 0.9);
+            max-width: 600px; margin: 0 auto;
         }
         
-        /* Scene Selector */
-        .scene-selector {
-            background: var(--white); border-radius: 30px;
-            padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            margin-bottom: 25px;
-        }
-        .scene-selector-header h3 {
-            font-size: 1.5rem; color: var(--primary-blue);
-            font-weight: 700; margin-bottom: 20px;
-        }
-        .scene-buttons {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px; max-height: 400px; overflow-y: auto; padding: 10px;
-        }
-        .scene-btn {
-            display: flex; align-items: center; justify-content: center;
-            gap: 10px; padding: 14px 12px; background: var(--gray-100);
-            border: 2px solid transparent; border-radius: 20px;
-            font-weight: 600; cursor: pointer; transition: all 0.3s;
-        }
-        .scene-btn:hover { transform: translateY(-2px); border-color: var(--accent-teal); }
-        .scene-btn.active {
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-            color: var(--white);
-        }
-        
-        /* Viewer */
+        /* ✅ Viewer Container - Full Screen Style */
         .viewer-container {
             background: var(--white); border-radius: 30px;
-            padding: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
+            padding: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            margin-bottom: 30px; position: relative;
+        }
+        .viewer-header {
+            text-align: center; margin-bottom: 15px;
         }
         .viewer-header h2 {
-            font-size: 1.8rem; color: var(--primary-blue);
-            font-weight: 700; margin-bottom: 10px;
+            font-size: 1.5rem; color: var(--primary-blue);
+            font-weight: 700; margin-bottom: 5px;
+        }
+        .current-location {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white; padding: 8px 20px; border-radius: 25px;
+            font-weight: 600; font-size: 1rem;
         }
         #panorama {
-            width: 100%; height: 70vh; min-height: 500px;
+            width: 100%; height: 75vh; min-height: 500px;
             border-radius: 20px; background: #f0f0f0; position: relative;
         }
         .loading {
@@ -110,46 +130,195 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         
+        /* ✅ Floating Location Button - Untuk Buka Pilihan Lokasi */
+        .location-toggle-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 100;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        .location-toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        
+        /* ✅ Scene Selector Modal/Overlay - Hidden by Default */
+        .scene-selector-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .scene-selector-overlay.active {
+            display: flex;
+        }
+        .scene-selector-modal {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .scene-selector-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--gray-200);
+        }
+        .scene-selector-header h3 {
+            font-size: 1.5rem; color: var(--primary-blue);
+            font-weight: 700;
+        }
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-600);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .close-modal:hover {
+            background: var(--gray-100);
+            color: var(--primary-blue);
+        }
+        .scene-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .scene-btn {
+            display: flex; align-items: center; justify-content: center;
+            gap: 10px; padding: 14px 12px; background: var(--gray-100);
+            border: 2px solid transparent; border-radius: 20px;
+            font-weight: 600; cursor: pointer; transition: all 0.3s;
+        }
+        .scene-btn:hover { transform: translateY(-2px); border-color: var(--accent-teal); }
+        .scene-btn.active {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--white);
+        }
+        
+        /* Hotspot Counter Badge */
+        .hotspot-debug {
+            position: absolute; bottom: 30px; right: 30px;
+            background: rgba(0,201,177,0.9); color: white;
+            padding: 8px 16px; border-radius: 20px;
+            font-size: 0.85rem; z-index: 100;
+            font-weight: 600;
+        }
+        
         /* Back Button */
         .btn-back {
             display: inline-flex; align-items: center; gap: 10px;
-            padding: 14px 35px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            padding: 12px 25px;
+            background: rgba(255,255,255,0.2);
             color: var(--white); text-decoration: none;
-            border-radius: 40px; font-weight: 700;
-            margin-top: 30px; transition: transform 0.3s;
+            border-radius: 25px; font-weight: 600;
+            margin-top: 20px; transition: all 0.3s;
+            border: 2px solid var(--white);
         }
-        .btn-back:hover { transform: translateY(-3px); }
-        
-        /* Hotspot Debug Badge */
-        .hotspot-debug {
-            position: absolute; bottom: 10px; right: 10px;
-            background: rgba(0,201,177,0.9); color: white;
-            padding: 5px 12px; border-radius: 20px;
-            font-size: 0.75rem; z-index: 100;
+        .btn-back:hover { 
+            background: var(--white);
+            color: var(--primary-blue);
+            transform: translateY(-2px);
         }
         
+        /* ✅ Responsive Navbar */
         @media (max-width: 768px) {
-            .header h1 { font-size: 1.9rem; }
-            .scene-buttons { grid-template-columns: repeat(3, 1fr); }
-            #panorama { height: 55vh; }
+            .nav-toggle { display: block; }
+            .nav-menu {
+                position: fixed; top: 70px; right: -100%;
+                flex-direction: column; background: var(--white);
+                width: 260px; height: calc(100vh - 70px);
+                padding: 35px 25px;
+                box-shadow: -5px 0 20px rgba(0,0,0,0.15);
+                transition: right 0.4s ease;
+                border-radius: 0 0 35px 35px;
+                z-index: 999;
+            }
+            .nav-menu.active { right: 0; }
+            .nav-menu li { margin-bottom: 20px; }
+            .nav-menu a { font-size: 1.1rem; display: block; }
+            .nav-login-btn span { display: none; }
+            .nav-login-btn { padding: 10px 16px; }
+            .nav-login-btn i { font-size: 1.1rem; }
+            
+            .header h1 { font-size: 1.5rem; }
+            .header p { font-size: 0.9rem; }
+            #panorama { height: 65vh; min-height: 400px; }
+            .location-toggle-btn {
+                top: 10px;
+                left: 10px;
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            .scene-buttons { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
+    <!-- ✅ NAVBAR LENGKAP -->
     <nav class="navbar">
         <div class="container">
-            <a href="/" class="nav-brand">
+            <a href="{{ route('home') }}" class="nav-brand">
                 <i class="fas fa-graduation-cap"></i>
                 <span>SMK NEGERI 11 BANDUNG</span>
             </a>
             <ul class="nav-menu">
-                <li><a href="/">Beranda</a></li>
-                <li><a href="/denah" class="active">Denah 360°</a></li>
+                <li><a href="{{ route('home') }}">Beranda</a></li>
+                <li><a href="{{ route('home') }}#profile">Profil Sekolah</a></li>
+                <li><a href="{{ route('program.keahlian') }}">Program</a></li>
+                <li><a href="{{ route('home') }}#gallery">Galeri</a></li>
+                <li><a href="{{ route('prestasi') }}">Prestasi</a></li>
+                <li><a href="{{ route('home') }}#contact">Kontak</a></li>
+                <li><a href="{{ route('denah') }}" class="active">Denah 360°</a></li>
             </ul>
+            <a href="{{ route('admin.login') }}" class="nav-login-btn">
+                <i class="fas fa-user-shield"></i>
+                <span>Login Admin</span>
+            </a>
+            <button class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </nav>
 
+    <!-- Header - Lebih Compact -->
     <section class="header">
         <div class="container">
             <h1><i class="fas fa-compass"></i> Denah Sekolah 360°</h1>
@@ -158,60 +327,125 @@
     </section>
 
     <div class="container">
-        <div class="scene-selector">
-            <div class="scene-selector-header">
-                <h3><i class="fas fa-map-marked-alt"></i> Pilih Lokasi</h3>
-            </div>
-            <div class="scene-buttons" id="sceneButtons">
-                @forelse($panoramas as $panorama)
-                    <button class="scene-btn {{ $loop->first ? 'active' : '' }}" 
-                        data-scene="{{ $panorama->scene_id }}">
-                        <i class="fas {{ $panorama->icon ?? 'fa-image' }}"></i>
-                        <span>{{ $panorama->name }}</span>
-                        @if(is_array($panorama->hotspots) && count($panorama->hotspots) > 0)
-                            <span class="badge bg-teal ms-1" style="background:var(--accent-teal);color:white;font-size:0.7rem;">
-                                {{ count($panorama->hotspots) }}
-                            </span>
-                        @endif
-                    </button>
-                @empty
-                    <p class="text-muted">Belum ada lokasi tersedia</p>
-                @endforelse
-            </div>
-        </div>
-
+        <!-- ✅ Viewer Container dengan Floating Button -->
         <div class="viewer-container">
+            <!-- Floating Button untuk Buka Pilihan Lokasi -->
+            <button class="location-toggle-btn" onclick="toggleSceneSelector()">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Pilih Lokasi</span>
+            </button>
+            
             <div class="viewer-header">
                 <h2><i class="fas fa-vr-cardboard"></i> Virtual Tour 360°</h2>
-                <p class="scene-title" id="current-scene-title">
-                    {{ $panoramas->first()->name ?? 'Memuat...' }}
-                </p>
+                <div class="current-location" id="currentLocationDisplay">
+                    <i class="fas fa-location-arrow"></i>
+                    <span id="current-scene-title">{{ $panoramas->first()->name ?? 'Memuat...' }}</span>
+                </div>
             </div>
+            
             <div id="panorama">
                 <div class="loading">
                     <div class="spinner"></div>
                     <p>Memuat Virtual Tour...</p>
                 </div>
             </div>
+            
             <!-- Hotspot Counter Badge -->
-            <div class="hotspot-debug" id="hotspotCounter">Hotspot: 0</div>
+            <div class="hotspot-debug" id="hotspotCounter">
+                <i class="fas fa-map-signs"></i> Hotspot: 0
+            </div>
         </div>
 
         <div style="text-align: center;">
-            <a href="/" class="btn-back">
+            <a href="{{ route('home') }}" class="btn-back">
                 <i class="fas fa-arrow-left"></i> Kembali ke Beranda
             </a>
         </div>
     </div>
 
+    <!-- ✅ Scene Selector Modal/Overlay (Hidden by Default) -->
+    <div class="scene-selector-overlay" id="sceneSelectorOverlay" onclick="closeSceneSelectorOnOverlay(event)">
+        <div class="scene-selector-modal" onclick="event.stopPropagation()">
+            <div class="scene-selector-header">
+                <h3><i class="fas fa-map-marked-alt"></i> Pilih Lokasi</h3>
+                <button class="close-modal" onclick="toggleSceneSelector()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="scene-buttons" id="sceneButtons">
+                @forelse($panoramas as $panorama)
+                    <button class="scene-btn {{ $loop->first ? 'active' : '' }}" 
+                        data-scene="{{ $panorama->scene_id }}"
+                        onclick="selectScene('{{ $panorama->scene_id }}', '{{ $panorama->name }}')">
+                        <i class="fas {{ $panorama->icon ?? 'fa-image' }}"></i>
+                        <span>{{ $panorama->name }}</span>
+                        @if(is_array($panorama->hotspots) && count($panorama->hotspots) > 0)
+                            <span class="badge bg-teal ms-1" style="background:var(--accent-teal);color:white;font-size:0.7rem;padding:2px 6px;border-radius:10px;">
+                                {{ count($panorama->hotspots) }}
+                            </span>
+                        @endif
+                    </button>
+                @empty
+                    <p class="text-muted" style="grid-column: 1/-1; text-align: center; padding: 20px;">Belum ada lokasi tersedia</p>
+                @endforelse
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
     <script>
+    // ✅ Mobile Navigation Toggle
+    document.querySelector('.nav-toggle')?.addEventListener('click', function() {
+        document.querySelector('.nav-menu')?.classList.toggle('active');
+    });
+    
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.addEventListener('click', function() {
+            document.querySelector('.nav-menu')?.classList.remove('active');
+        });
+    });
+
+    // ✅ Toggle Scene Selector Modal
+    function toggleSceneSelector() {
+        document.getElementById('sceneSelectorOverlay').classList.toggle('active');
+        document.body.style.overflow = document.getElementById('sceneSelectorOverlay').classList.contains('active') ? 'hidden' : '';
+    }
+    
+    function closeSceneSelectorOnOverlay(event) {
+        if (event.target === event.currentTarget) {
+            toggleSceneSelector();
+        }
+    }
+    
+    // ✅ Select Scene Function
+    function selectScene(sceneId, sceneName) {
+        if (!viewer || sceneId === viewer.getScene()) {
+            toggleSceneSelector();
+            return;
+        }
+        
+        // Update active button
+        document.querySelectorAll('.scene-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.scene === sceneId);
+        });
+        
+        // Update current location display
+        document.getElementById('current-scene-title').textContent = sceneName;
+        
+        // Load scene
+        viewer.loadScene(sceneId);
+        
+        // Close modal after short delay
+        setTimeout(() => {
+            toggleSceneSelector();
+        }, 300);
+    }
+
     let viewer = null;
     
-    // ✅ FIX: Parse & transform hotspots di Laravel sebelum dikirim ke JS
+    // ✅ Parse panoramas data
     @php
         $panoramasWithUrl = $panoramas->map(function($p) {
-            // Path gambar: pastikan relatif ke public/
             $imgPath = $p->image_path ?? '';
             if (str_starts_with($imgPath, 'storage/')) {
                 $p->image_url = '/' . $imgPath;
@@ -221,7 +455,6 @@
                 $p->image_url = asset($imgPath);
             }
             
-            // Parse hotspots dari JSON string ke array
             $hotspotsRaw = $p->hotspots ?? '[]';
             if (is_string($hotspotsRaw)) {
                 try {
@@ -239,18 +472,13 @@
     @endphp
     const panoramas = @json($panoramasWithUrl);
 
-    // ✅ Build scenes config for Pannellum dengan mapping hotspot yang benar
+    // ✅ Build scenes config
     const scenesConfig = {};
     
     panoramas.forEach(p => {
-        console.log('📦 Loading scene:', p.scene_id);
-        
         const hotspots = p.hotspots_array || [];
-        console.log('📍 Hotspots raw:', hotspots);
         
-        // Transform hotspots dari format admin (x,y %) ke format Pannellum (pitch,yaw derajat)
         const pannellumHotspots = hotspots.map(h => {
-            // Jika sudah ada pitch/yaw (format 360°), gunakan itu
             if (typeof h.pitch === 'number' && typeof h.yaw === 'number') {
                 return {
                     pitch: h.pitch,
@@ -262,16 +490,10 @@
                 };
             }
             
-            // Jika hanya ada x/y % (format admin), konversi ke pitch/yaw estimasi
-            // ⚠️ Ini hanya estimasi - untuk hasil akurat, simpan pitch/yaw langsung di admin
             const x = typeof h.x === 'number' ? h.x : 50;
             const y = typeof h.y === 'number' ? h.y : 50;
-            
-            // Konversi sederhana: x% → yaw (-180 to 180), y% → pitch (-90 to 90)
-            const yaw = (x - 50) * 3.6;  // 0-100% → -180 to 180
-            const pitch = (50 - y) * 1.8; // 0-100% → 90 to -90 (inverted)
-            
-            console.log(`🔄 Converted hotspot: x:${x}% y:${y}% → yaw:${yaw}° pitch:${pitch}°`);
+            const yaw = (x - 50) * 3.6;
+            const pitch = (50 - y) * 1.8;
             
             return {
                 pitch: pitch,
@@ -288,15 +510,12 @@
             type: p.type === '360' ? 'equirectangular' : 'flat',
             panorama: p.image_url,
             hotSpots: pannellumHotspots,
-            // Untuk gambar normal (non-360), gunakan config khusus
             ...(p.type !== '360' && {
                 hfov: 100,
                 minHfov: 50,
                 maxHfov: 100
             })
         };
-        
-        console.log('✅ Scene config:', scenesConfig[p.scene_id]);
     });
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -307,7 +526,7 @@
             return;
         }
 
-        // ✅ Inisialisasi Pannellum Viewer
+        // ✅ Initialize Pannellum Viewer
         viewer = pannellum.viewer('panorama', {
             default: {
                 firstScene: panoramas[0].scene_id,
@@ -316,31 +535,26 @@
                 showZoomCtrl: true,
                 showFullscreenCtrl: true,
                 compass: true,
-                // Custom hotspot styling
                 hotSpotDebug: false
             },
             scenes: scenesConfig
         });
 
-        // ✅ Event: saat hotspot diklik (navigasi antar scene)
-        viewer.on('scenechangefailed', function(e) {
-            console.error('❌ Scene change failed:', e);
-        });
-        
-        // ✅ Event: saat hotspot scene diklik
+        // ✅ Event: scene change
         viewer.on('scenechange', function(sceneId) {
-            console.log('🔄 Scene changed to:', sceneId);
-            
-            // Update UI: active button & title
+            // Update active button in modal
             document.querySelectorAll('.scene-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.scene === sceneId);
             });
-            document.getElementById('current-scene-title').textContent = 
-                scenesConfig[sceneId]?.title || sceneId;
+            
+            // Update current location display
+            const sceneName = scenesConfig[sceneId]?.title || sceneId;
+            document.getElementById('current-scene-title').textContent = sceneName;
             
             // Update hotspot counter
             const hs = scenesConfig[sceneId]?.hotSpots || [];
-            document.getElementById('hotspotCounter').textContent = `Hotspot: ${hs.length}`;
+            document.getElementById('hotspotCounter').innerHTML = 
+                `<i class="fas fa-map-signs"></i> Hotspot: ${hs.length}`;
         });
 
         // ✅ Hide loading spinner
@@ -349,39 +563,22 @@
             if (loadingEl) loadingEl.style.opacity = '0';
             setTimeout(() => { if (loadingEl) loadingEl.remove(); }, 300);
         }, 1500);
-
-        // ✅ Scene button clicks
-        document.querySelectorAll('.scene-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const sceneId = this.getAttribute('data-scene');
-                if (!sceneId || sceneId === viewer.getScene()) return;
-                
-                // Update active state
-                document.querySelectorAll('.scene-btn').forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Load scene with fade
-                viewer.loadScene(sceneId);
-            });
-        });
-        
-        // ✅ Keyboard navigation (opsional)
-        document.addEventListener('keydown', (e) => {
-            if (!viewer) return;
-            const scenes = Array.from(document.querySelectorAll('.scene-btn'));
-            const activeIdx = scenes.findIndex(btn => btn.classList.contains('active'));
-            
-            if (e.key === 'ArrowRight' && activeIdx < scenes.length - 1) {
-                scenes[activeIdx + 1].click();
-            } else if (e.key === 'ArrowLeft' && activeIdx > 0) {
-                scenes[activeIdx - 1].click();
-            }
-        });
         
         // ✅ Initial hotspot counter
         const firstScene = panoramas[0].scene_id;
         const firstHs = scenesConfig[firstScene]?.hotSpots || [];
-        document.getElementById('hotspotCounter').textContent = `Hotspot: ${firstHs.length}`;
+        document.getElementById('hotspotCounter').innerHTML = 
+            `<i class="fas fa-map-signs"></i> Hotspot: ${firstHs.length}`;
+        
+        // ✅ Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const overlay = document.getElementById('sceneSelectorOverlay');
+                if (overlay.classList.contains('active')) {
+                    toggleSceneSelector();
+                }
+            }
+        });
     });
     </script>
 </body>
