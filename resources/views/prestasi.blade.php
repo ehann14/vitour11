@@ -404,7 +404,9 @@
             </a>
             <ul class="nav-menu">
                 <li><a href="{{ route('home') }}">Beranda</a></li>
-                <li><a href="{{ route('home') }}#profile">Profil</a></li>
+                <li><a href="{{ route('home') }}#profile">Profil Sekolah</a></li>
+                <!-- ✅ Program langsung ke halaman Program Keahlian -->
+                <li><a href="{{ route('program.keahlian') }}">Program Keahlian</a></li>
                 <li><a href="{{ route('home') }}#gallery">Galeri</a></li>
                 <li><a href="{{ route('prestasi') }}" class="active">Prestasi</a></li>
                 <li><a href="{{ route('home') }}#contact">Kontak</a></li>

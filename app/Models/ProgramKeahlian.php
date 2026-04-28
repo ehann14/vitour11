@@ -51,25 +51,6 @@ class ProgramKeahlian extends Model
     }
 
     /**
-     * ✅ RELATIONSHIP: ProgramKeahlian has many KonsentrasiKeahlian
-     */
-    public function konsentrasi()
-    {
-        return $this->hasMany(KonsentrasiKeahlian::class, 'program_keahlian_id')
-            ->where('is_active', true)
-            ->orderBy('urutan');
-    }
-
-    /**
-     * Relationship tanpa filter (untuk admin)
-     */
-    public function semuaKonsentrasi()
-    {
-        return $this->hasMany(KonsentrasiKeahlian::class, 'program_keahlian_id')
-            ->orderBy('urutan');
-    }
-
-    /**
      * Helper: Get URL logo
      */
     public function getLogoUrlAttribute()

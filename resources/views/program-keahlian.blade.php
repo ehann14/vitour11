@@ -29,39 +29,66 @@
             overflow-x: hidden;
             line-height: 1.6;
         }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
         /* === NAVBAR === */
         .navbar {
             background: rgba(255, 255, 255, 0.98);
             box-shadow: 0 2px 20px rgba(0,0,0,0.1);
             position: sticky; top: 0; z-index: 1000;
-            padding: 15px 0;
+            padding: 12px 0;
             border-radius: 0 0 20px 20px;
         }
         .navbar .container {
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: nowrap;
         }
         .nav-brand {
-            display: flex; align-items: center; gap: 12px;
-            font-weight: 700; font-size: 1.3rem; color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary-blue);
             text-decoration: none;
+            flex-shrink: 0;
+            white-space: nowrap;
         }
-        .nav-brand i { font-size: 1.8rem; color: var(--accent-teal); }
-        .nav-menu { display: flex; list-style: none; gap: 25px; }
+        .nav-brand i { 
+            font-size: 1.6rem;
+            color: var(--primary-blue); /* ✅ FIX: Warna icon sama dengan navbar */
+        }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
         .nav-menu a {
-            text-decoration: none; color: var(--gray-700);
-            font-weight: 600; font-size: 0.95rem;
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 600;
+            font-size: 0.9rem;
             transition: color 0.3s ease;
+            white-space: nowrap;
         }
         .nav-menu a:hover { color: var(--primary-blue); }
         .nav-login-btn {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 10px 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
             background: var(--primary-blue);
-            color: var(--white); border-radius: 25px;
-            text-decoration: none; font-weight: 600;
+            color: var(--white);
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
             transition: all 0.3s ease;
+            flex-shrink: 0;
         }
         .nav-login-btn:hover { 
             background: var(--secondary-blue);
@@ -70,13 +97,24 @@
 
         /* === PAGE HEADER === */
         .page-header {
-            padding: 60px 0 40px; text-align: center; color: var(--white);
+            padding: 60px 0 40px;
+            text-align: center;
+            color: var(--white);
         }
         .page-header h1 {
-            font-size: 2.5rem; font-weight: 800; margin-bottom: 10px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .page-header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto 15px;
         }
         .breadcrumb {
-            font-size: 0.95rem; opacity: 0.9;
+            font-size: 0.95rem;
+            opacity: 0.9;
         }
         .breadcrumb a { color: var(--accent-teal); text-decoration: none; }
 
@@ -107,7 +145,6 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
         
-        /* Top Section: Logo, Title, Badge */
         .card-top {
             padding: 25px 20px 15px;
             text-align: center;
@@ -158,7 +195,6 @@
             margin-top: 5px;
         }
 
-        /* Bottom Section: Desc, Stats, Button */
         .card-body {
             padding: 20px;
             flex: 1;
@@ -373,13 +409,46 @@
         }
 
         /* === RESPONSIVE === */
+        @media (max-width: 992px) {
+            .nav-menu {
+                gap: 15px;
+            }
+            .nav-menu a {
+                font-size: 0.85rem;
+            }
+        }
         @media (max-width: 768px) {
-            .nav-menu { display: none; }
+            .nav-toggle { display: block; }
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                flex-direction: column;
+                background: var(--white);
+                width: 260px;
+                height: calc(100vh - 70px);
+                padding: 35px 25px;
+                box-shadow: -5px 0 20px rgba(0,0,0,0.15);
+                transition: right 0.4s ease;
+                border-radius: 0 0 35px 35px;
+            }
+            .nav-menu.active { right: 0; }
+            .nav-menu li { margin-bottom: 20px; }
+            .nav-menu a { font-size: 1.1rem; display: block; }
             .page-header h1 { font-size: 1.8rem; }
             .program-grid { grid-template-columns: 1fr; }
             .program-card { max-width: 100%; }
             .modal-header { padding: 20px; }
             .modal-body { padding: 20px; }
+            .nav-login-btn span { display: none; }
+            .nav-login-btn { padding: 8px 14px; }
+        }
+        @media (max-width: 480px) {
+            .page-header h1 { font-size: 1.7rem; }
+            .stat-card { padding: 18px; border-radius: 25px; }
+            .vision-mission { gap: 18px; }
+            .vision-card, .mission-card { padding: 22px; border-radius: 25px; }
+            .school-info-card, .address-card { padding: 22px; border-radius: 25px; }
         }
     </style>
 </head>
@@ -394,13 +463,14 @@
             <ul class="nav-menu">
                 <li><a href="{{ route('home') }}">Beranda</a></li>
                 <li><a href="{{ route('home') }}#profile">Profil Sekolah</a></li>
-                <li><a href="{{ route('program.keahlian') }}">Program</a></li>
+                <li><a href="{{ route('program.keahlian') }}">Program Keahlian</a></li>
                 <li><a href="{{ route('home') }}#gallery">Galeri</a></li>
                 <li><a href="{{ route('prestasi') }}">Prestasi</a></li>
                 <li><a href="{{ route('home') }}#contact">Kontak</a></li>
             </ul>
             <a href="{{ route('admin.login') }}" class="nav-login-btn">
-                <i class="fas fa-user-shield"></i>Login Admin
+                <i class="fas fa-user-shield"></i>
+                <span>Login Admin</span>
             </a>
         </div>
     </nav>
@@ -409,6 +479,7 @@
     <section class="page-header">
         <div class="container">
             <h1><i class="fas fa-layer-group"></i> Program Keahlian</h1>
+            <p>Pilih jurusan yang sesuai dengan minat dan bakatmu untuk masa depan yang cerah</p>
         </div>
     </section>
 
@@ -419,7 +490,6 @@
             <div class="program-grid">
                 @foreach($programs as $program)
                 <div class="program-card">
-                    <!-- Top: Logo Centered -->
                     <div class="card-top">
                         <div class="logo-box">
                             @if($program->logo && file_exists(public_path('storage/' . $program->logo)))
@@ -428,15 +498,10 @@
                                 <i class="fas fa-laptop-code logo-placeholder"></i>
                             @endif
                         </div>
-                        
-                        <!-- JUDUL LENGKAP (MENGGUNAKAN KOLOM 'nama') -->
                         <h3 class="card-title">{{ $program->nama }}</h3>
-                        
-                        <!-- BADGE SINGKATAN -->
                         <span class="card-badge">{{ $program->singkatan }}</span>
                     </div>
                     
-                    <!-- Bottom: Info & Button -->
                     <div class="card-body">
                         <p class="card-desc">
                             {{ Str::limit(strip_tags($program->deskripsi), 90) }}
@@ -478,7 +543,7 @@
         </div>
     </footer>
 
-    <!-- MODAL POPUP -->
+    <!-- Modal Popup -->
     <div class="modal-overlay" id="programModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -499,35 +564,28 @@
                     <div class="modal-section-label">
                         <i class="fas fa-info-circle"></i> Tentang Kami
                     </div>
-                    <div class="modal-section-value" id="modalDeskripsi">
-                        <!-- Deskripsi muncul di sini -->
-                    </div>
+                    <div class="modal-section-value" id="modalDeskripsi"></div>
                 </div>
                 
                 <div class="modal-section" id="sectionVisi" style="display: none;">
                     <div class="modal-section-label">
                         <i class="fas fa-eye"></i> Visi
                     </div>
-                    <div class="modal-section-value" id="modalVisi">
-                        <!-- Visi muncul di sini -->
-                    </div>
+                    <div class="modal-section-value" id="modalVisi"></div>
                 </div>
                 
                 <div class="modal-section" id="sectionMisi" style="display: none;">
                     <div class="modal-section-label">
                         <i class="fas fa-bullseye"></i> Misi
                     </div>
-                    <div class="modal-section-value" id="modalMisi">
-                        <!-- Misi muncul di sini -->
-                    </div>
+                    <div class="modal-section-value" id="modalMisi"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT -->
+    <!-- JavaScript -->
     <script>
-        // Modal Functions
         const modal = document.getElementById('programModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalSingkatan = document.getElementById('modalSingkatan');
@@ -538,13 +596,11 @@
         const sectionVisi = document.getElementById('sectionVisi');
         const sectionMisi = document.getElementById('sectionMisi');
 
-        // Open Modal
         function openModal(data) {
             modalTitle.textContent = data.nama;
             modalSingkatan.textContent = data.singkatan;
             modalDeskripsi.textContent = data.deskripsi || 'Deskripsi tidak tersedia.';
             
-            // Logo Logic
             if (data.logo && data.logo !== '') {
                 modalLogo.src = data.logo;
                 modalLogo.style.display = 'block';
@@ -552,7 +608,6 @@
                 modalLogo.style.display = 'none';
             }
             
-            // Visi Logic
             if (data.visi && data.visi.trim() !== '') {
                 modalVisi.textContent = data.visi;
                 sectionVisi.style.display = 'block';
@@ -560,7 +615,6 @@
                 sectionVisi.style.display = 'none';
             }
             
-            // Misi Logic
             if (data.misi && data.misi.trim() !== '') {
                 modalMisi.textContent = data.misi;
                 sectionMisi.style.display = 'block';
@@ -572,36 +626,26 @@
             document.body.style.overflow = 'hidden';
         }
 
-        // Close Modal
         function closeModal() {
             modal.classList.remove('active');
             document.body.style.overflow = '';
         }
 
-        // Event Listeners
         document.querySelectorAll('.btn-modal').forEach(button => {
             button.addEventListener('click', function() {
-                const data = {
+                openModal({
                     nama: this.getAttribute('data-nama'),
                     singkatan: this.getAttribute('data-singkatan'),
                     deskripsi: this.getAttribute('data-deskripsi'),
                     visi: this.getAttribute('data-visi'),
                     misi: this.getAttribute('data-misi'),
                     logo: this.getAttribute('data-logo')
-                };
-                openModal(data);
+                });
             });
         });
 
-        // Close on outside click
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) closeModal();
-        });
-
-        // Close on Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
-        });
+        modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('active')) closeModal(); });
     </script>
 </body>
 </html>

@@ -2,48 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\Panorama;
 use App\Models\Achievement;
-use App\Models\ProgramKeahlian;      // ← ✅ Tambahkan import ini
-use App\Models\KonsentrasiKeahlian; // ← ✅ Tambahkan import ini
+use App\Models\ProgramKeahlian; // ✅ Hanya ini yang dipakai
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        // ===== PANORAMA STATS =====
+        // Panorama Stats
         $totalPanoramas = Panorama::count();
         $activePanoramas = Panorama::where('is_active', true)->count();
-        $recentPanoramas = Panorama::orderBy('created_at', 'desc')->take(5)->get();
-        
-        // ===== ACHIEVEMENT STATS =====
+        $recentPanoramas = Panorama::latest()->take(5)->get();
+
+        // Achievement Stats
         $totalAchievements = Achievement::count();
         $activeAchievements = Achievement::where('is_active', true)->count();
-        $recentAchievements = Achievement::orderBy('created_at', 'desc')->take(5)->get();
-        
-        // ===== PROGRAM STATS (BARU) =====
+        $recentAchievements = Achievement::latest()->take(5)->get();
+
+        // Program Stats (✅ Hanya Program, tanpa Konsentrasi)
         $totalPrograms = ProgramKeahlian::count();
-        $recentPrograms = ProgramKeahlian::orderBy('created_at', 'desc')->take(5)->get();
-        
-        // ===== KONSENTRASI STATS (BARU) =====
-        $totalKonsentrasi = KonsentrasiKeahlian::count();
-        
-        // ===== KIRIM SEMUA DATA KE VIEW =====
+        $recentPrograms = ProgramKeahlian::latest()->take(5)->get();
+
         return view('admin.dashboard', compact(
-            // Panorama
-            'totalPanoramas',
-            'activePanoramas', 
-            'recentPanoramas',
-            // Achievement
-            'totalAchievements',
-            'activeAchievements',
-            'recentAchievements',
-            // Program (BARU)
-            'totalPrograms',
-            'recentPrograms',
-            // Konsentrasi (BARU)
-            'totalKonsentrasi'
+            'totalPanoramas', 'activePanoramas', 'recentPanoramas',
+            'totalAchievements', 'activeAchievements', 'recentAchievements',
+            'totalPrograms', 'recentPrograms'
         ));
     }
 }

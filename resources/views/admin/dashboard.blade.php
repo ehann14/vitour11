@@ -23,7 +23,6 @@
         .bg-teal-light { background: rgba(0,201,177,0.15); color: var(--accent-teal); }
         .bg-blue-light { background: rgba(30,60,114,0.15); color: var(--primary-blue); }
         .bg-gold-light { background: rgba(245,158,11,0.15); color: #f59e0b; }
-        .bg-purple-light { background: rgba(139,92,246,0.15); color: #8b5cf6; }
         .navbar-admin { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.08); padding: 1rem 2rem; }
         .preview-thumb { width: 60px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid #dee2e6; background: #f8f9fa; transition: transform 0.2s; }
         .preview-thumb:hover { transform: scale(1.1); }
@@ -32,11 +31,6 @@
         .section-card { border: none; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
         .section-header { background: white; border-radius: 16px 16px 0 0; padding: 1rem 1.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .section-header h5 { margin: 0; color: var(--primary-blue); font-weight: 700; }
-        .badge-level { font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
-        .badge-kota { background: #10b981; color: white; }
-        .badge-provinsi { background: #3b82f6; color: white; }
-        .badge-nasional { background: #8b5cf6; color: white; }
-        .badge-internasional { background: #ef4444; color: white; }
         .badge-status-aktif { background: #28a745; color: white; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
         .badge-status-nonaktif { background: #6c757d; color: white; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
         .empty-state { text-align: center; padding: 3rem 1rem; color: #6c757d; }
@@ -61,12 +55,8 @@
                     <a href="{{ route('admin.achievements.index') }}" class="{{ request()->routeIs('admin.achievements.*') ? 'active' : '' }}">
                         <i class="fas fa-trophy me-2"></i>Kelola Prestasi
                     </a>
-                    <!-- ✅ BARU: Menu Program & Konsentrasi -->
                     <a href="{{ route('admin.program.index') }}" class="{{ request()->routeIs('admin.program.*') ? 'active' : '' }}">
                         <i class="fas fa-layer-group me-2"></i>Kelola Program
-                    </a>
-                    <a href="{{ route('admin.konsentrasi.index') }}" class="{{ request()->routeIs('admin.konsentrasi.*') ? 'active' : '' }}">
-                        <i class="fas fa-sitemap me-2"></i>Kelola Konsentrasi
                     </a>
                     <a href="{{ route('home') }}" target="_blank">
                         <i class="fas fa-external-link-alt me-2"></i>Lihat Website
@@ -110,10 +100,9 @@
                     </div>
                     @endif
 
-                    <!-- Stats Cards (6 Cards - 2 Rows) -->
+                    <!-- Stats Cards (5 Cards - Panorama, Prestasi, Program) -->
                     <div class="row g-3 mb-4">
-                        <!-- Row 1: Panorama & Achievements -->
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-teal-light"><i class="fas fa-images"></i></div>
@@ -121,7 +110,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="fas fa-check-circle"></i></div>
@@ -129,7 +118,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-gold-light"><i class="fas fa-trophy"></i></div>
@@ -137,28 +126,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
-                                    <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="fas fa-medal"></i></div>
-                                    <div><p class="text-muted mb-0 small">Prestasi Aktif</p><h4 class="fw-bold mb-0">{{ $activeAchievements ?? 0 }}</h4></div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Row 2: Program & Konsentrasi (BARU) -->
-                        <div class="col-md-2">
-                            <div class="card stat-card p-3">
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="stat-icon bg-purple-light"><i class="fas fa-layer-group"></i></div>
+                                    <div class="stat-icon bg-purple-light bg-opacity-10 text-primary"><i class="fas fa-layer-group"></i></div>
                                     <div><p class="text-muted mb-0 small">Total Program</p><h4 class="fw-bold mb-0">{{ $totalPrograms ?? 0 }}</h4></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="card stat-card p-3">
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="stat-icon bg-purple-light"><i class="fas fa-sitemap"></i></div>
-                                    <div><p class="text-muted mb-0 small">Total Konsentrasi</p><h4 class="fw-bold mb-0">{{ $totalKonsentrasi ?? 0 }}</h4></div>
                                 </div>
                             </div>
                         </div>
@@ -266,7 +238,7 @@
                             </div>
                         </div>
 
-                        <!-- Column 3: Recent Programs (BARU) -->
+                        <!-- Column 3: Recent Programs -->
                         <div class="col-lg-4">
                             <div class="section-card">
                                 <div class="section-header">
