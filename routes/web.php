@@ -8,6 +8,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\AchievementController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\Admin\ProgramKeahlianController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +34,10 @@ Route::get('/prestasi', [HomeController::class, 'prestasi'])->name('prestasi');
 // Program Akademik Routes - Public
 Route::get('/program-keahlian', [ProgramController::class, 'index'])->name('program.keahlian');
 Route::get('/program/{slug}', [ProgramController::class, 'detailProgram'])->name('program.detail');
+
+// Gallery Routes - Public
+Route::get('/galeri', [GalleryController::class, 'index'])->name('gallery.index');
+Route::get('/galeri/kategori/{category}', [GalleryController::class, 'filter'])->name('gallery.filter');
 
 // Panorama Viewer Routes
 Route::get('/view/{scene_id}', [HomeController::class, 'view'])->name('view');
@@ -73,7 +79,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         Route::post('/{achievement}/toggle-status', [AchievementController::class, 'toggleStatus'])->name('toggle-status');
     });
 
-    // Program Keahlian Management (Admin)
+    // Program Keahlian Management (Admin) ✅ ROUTE TOGGLE DITAMBAHKAN
     Route::prefix('program')->name('program.')->group(function () {
         Route::get('/', [ProgramKeahlianController::class, 'index'])->name('index');
         Route::get('/create', [ProgramKeahlianController::class, 'create'])->name('create');
@@ -81,6 +87,20 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         Route::get('/{program}/edit', [ProgramKeahlianController::class, 'edit'])->name('edit');
         Route::put('/{program}', [ProgramKeahlianController::class, 'update'])->name('update');
         Route::delete('/{program}', [ProgramKeahlianController::class, 'destroy'])->name('destroy');
+        
+        // ✅ TAMBAHAN: Route Toggle Status untuk Program
+        Route::post('/{program}/toggle-status', [ProgramKeahlianController::class, 'toggleStatus'])->name('toggle-status');
+    });
+
+    // Gallery Management (Admin)
+    Route::prefix('gallery')->name('gallery.')->group(function () {
+        Route::get('/', [AdminGalleryController::class, 'index'])->name('index');
+        Route::get('/create', [AdminGalleryController::class, 'create'])->name('create');
+        Route::post('/store', [AdminGalleryController::class, 'store'])->name('store');
+        Route::get('/{gallery}/edit', [AdminGalleryController::class, 'edit'])->name('edit');
+        Route::put('/{gallery}', [AdminGalleryController::class, 'update'])->name('update');
+        Route::delete('/{gallery}', [AdminGalleryController::class, 'destroy'])->name('destroy');
+        Route::post('/{gallery}/toggle-status', [AdminGalleryController::class, 'toggleStatus'])->name('toggle-status');
     });
 
 });

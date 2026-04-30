@@ -7,7 +7,6 @@ use App\Models\ProgramKeahlian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
 
 class ProgramKeahlianController extends Controller
 {
@@ -16,10 +15,7 @@ class ProgramKeahlianController extends Controller
      */
     public function index()
     {
-        $programs = ProgramKeahlian::orderBy('urutan')
-            ->latest()
-            ->paginate(10);
-
+        $programs = ProgramKeahlian::orderBy('urutan', 'asc')->paginate(10);
         return view('admin.program.index', compact('programs'));
     }
 
@@ -36,111 +32,100 @@ class ProgramKeahlianController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nama'        => 'required|string|max:255',
-            'slug'        => 'required|string|max:255|unique:program_keahlian,slug',
-            'singkatan'   => 'required|string|max:10',
-            'deskripsi'   => 'nullable|string',
-            'visi'        => 'nullable|string',
-            'misi'        => 'nullable|string',
-            'logo'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'urutan'      => 'nullable|integer|min:0',
-            'is_active'   => 'nullable|boolean',
-        ], [
-            'nama.required' => 'Nama program keahlian wajib diisi',
-            'slug.required' => 'Slug wajib diisi',
-            'slug.unique'   => 'Slug sudah digunakan',
-            'singkatan.required' => 'Singkatan wajib diisi',
-            'logo.image'    => 'File harus berupa gambar',
-            'logo.mimes'    => 'Format gambar: jpeg, png, jpg, webp',
-            'logo.max'      => 'Ukuran gambar maksimal 2MB',
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'singkatan' => 'required|string|max:50',
+            'deskripsi' => 'nullable|string',
+            'visi' => 'nullable|string',
+            'misi' => 'nullable|string',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'urutan' => 'nullable|integer|min:0',
+            'is_active' => 'nullable|boolean',
         ]);
 
-        // Handle logo upload
+        $data = $request->only([
+            'nama', 'singkatan', 'deskripsi', 'visi', 'misi', 'urutan', 'is_active'
+        ]);
+
+        // Generate slug unik
+        $data['slug'] = $this->generateUniqueSlug($request->nama);
+
+        // Handle upload logo
         if ($request->hasFile('logo')) {
-            $validated['logo'] = $request->file('logo')->store('program', 'public');
+            $data['logo'] = $request->file('logo')->store('programs', 'public');
         }
 
-        // Handle checkbox is_active
-        $validated['is_active'] = $request->has('is_active');
+        $data['is_active'] = $request->has('is_active');
 
-        // Auto-generate slug if not provided or empty
-        if (empty($validated['slug'])) {
-            $validated['slug'] = Str::slug($validated['nama']);
-        }
-
-        ProgramKeahlian::create($validated);
+        ProgramKeahlian::create($data);
 
         return redirect()->route('admin.program.index')
-            ->with('success', '✅ Program keahlian berhasil ditambahkan!');
+            ->with('success', 'Program keahlian berhasil ditambahkan');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(ProgramKeahlian $program)
+    {
+        return redirect()->route('admin.program.index');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(ProgramKeahlian $program)
     {
-        $program = ProgramKeahlian::findOrFail($id);
         return view('admin.program.edit', compact('program'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ProgramKeahlian $program)
     {
-        $program = ProgramKeahlian::findOrFail($id);
-
-        $validated = $request->validate([
-            'nama'        => 'required|string|max:255',
-            'slug'        => 'required|string|max:255|unique:program_keahlian,slug,' . $id,
-            'singkatan'   => 'required|string|max:10',
-            'deskripsi'   => 'nullable|string',
-            'visi'        => 'nullable|string',
-            'misi'        => 'nullable|string',
-            'logo'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'urutan'      => 'nullable|integer|min:0',
-            'is_active'   => 'nullable|boolean',
-        ], [
-            'nama.required' => 'Nama program keahlian wajib diisi',
-            'slug.required' => 'Slug wajib diisi',
-            'slug.unique'   => 'Slug sudah digunakan',
-            'singkatan.required' => 'Singkatan wajib diisi',
-            'logo.image'    => 'File harus berupa gambar',
-            'logo.mimes'    => 'Format gambar: jpeg, png, jpg, webp',
-            'logo.max'      => 'Ukuran gambar maksimal 2MB',
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'singkatan' => 'required|string|max:50',
+            'deskripsi' => 'nullable|string',
+            'visi' => 'nullable|string',
+            'misi' => 'nullable|string',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'urutan' => 'nullable|integer|min:0',
+            'is_active' => 'nullable|boolean',
         ]);
 
-        // Handle logo upload
+        $data = $request->only([
+            'nama', 'singkatan', 'deskripsi', 'visi', 'misi', 'urutan', 'is_active'
+        ]);
+
+        // Update slug hanya jika nama berubah
+        if ($request->nama !== $program->nama) {
+            $data['slug'] = $this->generateUniqueSlug($request->nama, $program->id);
+        }
+
+        // Handle upload logo baru
         if ($request->hasFile('logo')) {
             // Hapus logo lama jika ada
             if ($program->logo && Storage::disk('public')->exists($program->logo)) {
                 Storage::disk('public')->delete($program->logo);
             }
-            $validated['logo'] = $request->file('logo')->store('program', 'public');
+            $data['logo'] = $request->file('logo')->store('programs', 'public');
         }
 
-        // Handle checkbox is_active
-        $validated['is_active'] = $request->has('is_active');
+        $data['is_active'] = $request->has('is_active');
 
-        // Auto-generate slug if changed
-        if ($request->filled('nama') && $program->nama !== $validated['nama'] && empty($validated['slug'])) {
-            $validated['slug'] = Str::slug($validated['nama']);
-        }
-
-        $program->update($validated);
+        $program->update($data);
 
         return redirect()->route('admin.program.index')
-            ->with('success', '✅ Program keahlian berhasil diperbarui!');
+            ->with('success', 'Program keahlian berhasil diperbarui');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(ProgramKeahlian $program)
     {
-        $program = ProgramKeahlian::findOrFail($id);
-
         // Hapus file logo jika ada
         if ($program->logo && Storage::disk('public')->exists($program->logo)) {
             Storage::disk('public')->delete($program->logo);
@@ -149,24 +134,48 @@ class ProgramKeahlianController extends Controller
         $program->delete();
 
         return redirect()->route('admin.program.index')
-            ->with('success', '🗑️ Program keahlian berhasil dihapus!');
+            ->with('success', 'Program keahlian berhasil dihapus');
     }
 
     /**
-     * Update urutan program keahlian (untuk drag & drop atau sorting)
+     * Toggle status aktif/nonaktif program.
      */
-    public function updateOrder(Request $request)
+    public function toggleStatus(ProgramKeahlian $program)
     {
-        $request->validate([
-            'orders' => 'required|array',
-            'orders.*.id' => 'required|integer|exists:program_keahlian,id',
-            'orders.*.urutan' => 'required|integer|min:0',
+        $program->update([
+            'is_active' => !$program->is_active
         ]);
 
-        foreach ($request->orders as $item) {
-            ProgramKeahlian::where('id', $item['id'])->update(['urutan' => $item['urutan']]);
+        $status = $program->is_active ? 'diaktifkan' : 'dinonaktifkan';
+        
+        return redirect()->back()->with('success', "Program '{$program->nama}' berhasil {$status}");
+    }
+
+    /**
+     * Generate unique slug dengan auto-increment jika sudah ada.
+     */
+    private function generateUniqueSlug($title, $excludeId = null)
+    {
+        $slug = Str::slug($title);
+        $originalSlug = $slug;
+        $count = 1;
+
+        $query = ProgramKeahlian::where('slug', $slug);
+        
+        if ($excludeId) {
+            $query->where('id', '!=', $excludeId);
         }
 
-        return response()->json(['success' => true, 'message' => 'Urutan berhasil diperbarui']);
+        while ($query->exists()) {
+            $slug = $originalSlug . '-' . $count;
+            $count++;
+            
+            $query = ProgramKeahlian::where('slug', $slug);
+            if ($excludeId) {
+                $query->where('id', '!=', $excludeId);
+            }
+        }
+
+        return $slug;
     }
 }

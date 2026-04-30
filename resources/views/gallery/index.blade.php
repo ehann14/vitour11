@@ -1,15 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Prestasi - SMK Negeri 11 Bandung</title>
+    <title>Galeri - SMK Negeri 11 Bandung</title>
     <link rel="icon" type="image/png" href="{{ asset('image/b/SMK11.jpeg') }}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* === RESET & VARIABLES === */
+        /* === RESET & VARIABLES - SAMA PERSIS DENGAN PRESTASI === */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --primary-blue: #1e3c72;
@@ -66,7 +66,7 @@
         }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
         
-        /* ✅ NAVBAR - Sama persis dengan home.blade.php */
+        /* ✅ NAVBAR - Sama persis dengan home & prestasi */
         .navbar {
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -123,7 +123,7 @@
         }
         .nav-login-btn i { font-size: 0.95rem; }
         
-        /* Page Header */
+        /* Page Header - Sama dengan prestasi */
         .page-header {
             padding: 80px 0 50px;
             text-align: center;
@@ -148,7 +148,7 @@
             font-weight: 300;
         }
         
-        /* Filter Buttons */
+        /* Filter Buttons - Sama dengan prestasi */
         .filter-container {
             display: flex;
             justify-content: center;
@@ -175,14 +175,16 @@
             transform: translateY(-2px);
         }
         
-        /* Prestasi Grid */
-        .prestasi-section { padding: 40px 0 80px; }
-        .prestasi-grid {
+        /* Gallery Section */
+        .gallery-section { padding: 40px 0 80px; }
+        .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 25px;
         }
-        .prestasi-card {
+        
+        /* Gallery Card - Sama style dengan prestasi card */
+        .gallery-card {
             background: var(--white);
             border-radius: 25px;
             padding: 0;
@@ -193,7 +195,7 @@
             display: flex;
             flex-direction: column;
         }
-        .prestasi-card::before {
+        .gallery-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -202,116 +204,61 @@
             height: 5px;
             background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal));
         }
-        .prestasi-card:hover {
+        .gallery-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 15px 40px rgba(0,0,0,0.25);
         }
         
-        .prestasi-image {
+        .gallery-image {
             width: 100%;
             height: 220px;
             overflow: hidden;
         }
-        .prestasi-image img {
+        .gallery-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.3s ease;
         }
-        .prestasi-card:hover .prestasi-image img { transform: scale(1.1); }
+        .gallery-card:hover .gallery-image img { transform: scale(1.1); }
         
-        .prestasi-badges {
-            display: flex;
-            gap: 8px;
-            padding: 15px 20px 0;
-            flex-wrap: wrap;
-        }
-        .badge-level, .badge-type {
-            padding: 5px 12px;
+        .category-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--accent-teal);
+            color: var(--primary-blue);
+            padding: 5px 14px;
             border-radius: 20px;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 700;
         }
-        .badge-kota { background: #10b981; color: white; }
-        .badge-provinsi { background: #3b82f6; color: white; }
-        .badge-nasional { background: #8b5cf6; color: white; }
-        .badge-internasional { background: #ef4444; color: white; }
-        .badge-akademik { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
-        .badge-non-akademik { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
         
-        .prestasi-content { padding: 15px 20px 20px; flex: 1; display: flex; flex-direction: column; }
-        .prestasi-title {
+        .gallery-content { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+        .gallery-title {
             font-size: 1.2rem;
             font-weight: 700;
             color: var(--primary-blue);
             margin-bottom: 10px;
             line-height: 1.4;
         }
-        .prestasi-ranking {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #f59e0b;
-            font-weight: 700;
-            margin-bottom: 8px;
-            font-size: 1rem;
-        }
-        .prestasi-meta {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.85rem;
-            color: var(--gray-600);
-            font-weight: 500;
-        }
-        .meta-item i { color: var(--accent-teal); }
-        .prestasi-desc {
+        .gallery-desc {
             color: var(--gray-700);
             line-height: 1.6;
             font-size: 0.9rem;
             margin-bottom: 15px;
             flex: 1;
         }
-        .prestasi-footer {
+        
+        .gallery-meta {
             padding-top: 12px;
             border-top: 1px solid var(--gray-200);
             font-size: 0.85rem;
+            color: var(--gray-600);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .student-info { margin-bottom: 5px; }
-        .student-info strong { color: var(--primary-blue); }
-        .student-class { color: var(--gray-600); margin-left: 5px; }
-        .advisor-info { color: var(--gray-600); }
-        .advisor-title { display: block; font-size: 0.8rem; }
-        
-        /* Stats Section */
-        .stats-section {
-            background: var(--white);
-            border-radius: 35px;
-            padding: 40px 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-        }
-        .stat-item {
-            text-align: center;
-            padding: 20px;
-            background: linear-gradient(135deg, var(--gray-100), var(--white));
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-        .stat-item:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-        .stat-number { font-size: 2rem; font-weight: 800; color: var(--primary-blue); margin-bottom: 5px; }
-        .stat-label { font-size: 0.9rem; color: var(--gray-600); font-weight: 500; }
         
         /* No Data */
         .no-data {
@@ -320,9 +267,9 @@
             grid-column: 1 / -1;
         }
         .no-data i { font-size: 4rem; color: var(--gray-300); margin-bottom: 15px; }
-        .no-data p { color: var(--gray-600); font-size: 1.1rem; }
+        .no-data p { color: var(--white); font-size: 1.1rem; opacity: 0.9; }
         
-        /* Pagination */
+        /* Pagination - Sama dengan prestasi */
         .pagination-container { margin-top: 40px; display: flex; justify-content: center; }
         .pagination { display: flex; gap: 5px; list-style: none; }
         .pagination li a, .pagination li span {
@@ -337,7 +284,7 @@
         .pagination li.active span { background: var(--primary-blue); color: var(--white); }
         .pagination li a:hover { background: var(--accent-teal); color: var(--primary-blue); }
         
-        /* Footer */
+        /* Footer - Sama persis */
         footer {
             background: var(--white); padding: 40px 0 25px;
             margin-top: 40px;
@@ -358,8 +305,8 @@
             color: var(--gray-600); font-size: 1rem;
         }
         
-        /* Responsive */
-        @media (max-width: 968px) { .prestasi-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); } }
+        /* Responsive - Sama dengan prestasi */
+        @media (max-width: 968px) { .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); } }
         @media (max-width: 768px) {
             .nav-toggle { display: block; }
             .nav-menu {
@@ -375,17 +322,15 @@
             .nav-menu li { margin-bottom: 20px; }
             .nav-menu a { font-size: 1.1rem; display: block; }
             .page-header h1 { font-size: 2rem; }
-            .prestasi-grid { grid-template-columns: 1fr; }
-            .stats-section { padding: 30px 20px; }
+            .gallery-grid { grid-template-columns: 1fr; }
             .nav-login-btn span { display: none; }
             .nav-login-btn { padding: 10px 16px; }
             .nav-login-btn i { font-size: 1.1rem; }
         }
         @media (max-width: 480px) {
             .page-header h1 { font-size: 1.7rem; }
-            .prestasi-card { padding: 0; }
-            .prestasi-title { font-size: 1.1rem; }
-            .stat-number { font-size: 1.8rem; }
+            .gallery-card { border-radius: 20px; }
+            .gallery-title { font-size: 1.1rem; }
         }
     </style>
 </head>
@@ -398,7 +343,7 @@
         <div class="circle circle-4"></div>
     </div>
 
-    <!-- ✅ NAVBAR LENGKAP - Sama dengan home.blade.php -->
+    <!-- Navbar - Sama persis -->
     <nav class="navbar">
         <div class="container">
             <a href="{{ route('home') }}" class="nav-brand">
@@ -410,7 +355,7 @@
                 <li><a href="{{ route('home') }}#profile">Profil Sekolah</a></li>
                 <li><a href="{{ route('program.keahlian') }}">Program Keahlian</a></li>
                 <li><a href="{{ route('gallery.index') }}" class="{{ request()->routeIs('gallery.*') ? 'active' : '' }}">Galeri</a></li>
-                <li><a href="{{ route('prestasi') }}" class="{{ request()->routeIs('prestasi') ? 'active' : '' }}">Prestasi</a></li>
+                <li><a href="{{ route('prestasi') }}">Prestasi</a></li>
                 <li><a href="{{ route('home') }}#contact">Kontak</a></li>
                 <li><a href="{{ route('denah') }}">Denah 360°</a></li>
             </ul>
@@ -422,128 +367,79 @@
         </div>
     </nav>
 
-    <!-- Page Header -->
+    <!-- Page Header - Sama dengan prestasi -->
     <section class="page-header">
         <div class="container">
-            <h1><i class="fas fa-trophy"></i> Prestasi Siswa</h1>
-            <p>Berbagai pencapaian membanggakan siswa-siswi SMK Negeri 11 Bandung di berbagai bidang</p>
+            <h1><i class="fas fa-images"></i> Galeri Sekolah</h1>
+            <p>Dokumentasi kegiatan, fasilitas, dan momen berharga di SMK Negeri 11 Bandung</p>
         </div>
     </section>
 
-    <!-- Prestasi Section -->
-    <section class="prestasi-section">
+    <!-- Gallery Section -->
+    <section class="gallery-section">
         <div class="container">
-            <!-- Filter Buttons -->
+            <!-- Filter Kategori -->
+            @if(isset($categories) && $categories->isNotEmpty())
             <div class="filter-container">
                 <button class="filter-btn active" data-filter="all">Semua</button>
-                <button class="filter-btn" data-filter="Akademik">Akademik</button>
-                <button class="filter-btn" data-filter="Non-Akademik">Non-Akademik</button>
-                <button class="filter-btn" data-filter="Kota">Kota</button>
-                <button class="filter-btn" data-filter="Provinsi">Provinsi</button>
-                <button class="filter-btn" data-filter="Nasional">Nasional</button>
-                <button class="filter-btn" data-filter="Internasional">Internasional</button>
+                @foreach($categories as $cat)
+                <button class="filter-btn" data-filter="{{ $cat }}">{{ ucfirst($cat) }}</button>
+                @endforeach
             </div>
+            @endif
 
-            <!-- Stats -->
-            <div class="stats-section">
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-number">{{ $achievements->total() }}+</div>
-                        <div class="stat-label">Total Prestasi</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">{{ $achievements->where('level', 'Nasional')->count() }}</div>
-                        <div class="stat-label">Juara Nasional</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">{{ $achievements->where('level', 'Provinsi')->count() }}</div>
-                        <div class="stat-label">Juara Provinsi</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">{{ $achievements->where('type', 'Akademik')->count() }}</div>
-                        <div class="stat-label">Akademik</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Prestasi Grid -->
-            <div class="prestasi-grid">
-                @forelse($achievements as $achievement)
-                <div class="prestasi-card" data-type="{{ $achievement->type }}" data-level="{{ $achievement->level }}">
-                    @if($achievement->image_path)
-                    <div class="prestasi-image">
-                        <img src="{{ asset('storage/' . $achievement->image_path) }}" alt="{{ $achievement->title }}">
-                    </div>
+            <!-- Gallery Grid -->
+            <div class="gallery-grid">
+                @forelse($galleries as $item)
+                <div class="gallery-card" data-category="{{ $item->category ?? 'uncategorized' }}">
+                    <!-- Category Badge -->
+                    @if($item->category)
+                    <span class="category-badge">{{ ucfirst($item->category) }}</span>
                     @endif
                     
-                    <div class="prestasi-badges">
-                        <span class="badge-level badge-{{ strtolower($achievement->level) }}">{{ $achievement->level }}</span>
-                        <span class="badge-type badge-{{ strtolower(str_replace('-', '', $achievement->type)) }}">{{ $achievement->type }}</span>
+                    <!-- Image -->
+                    <div class="gallery-image">
+                        <img src="{{ asset('storage/' . $item->image) }}" 
+                             alt="{{ $item->title ?? 'Galeri' }}"
+                             onerror="this.src='https://via.placeholder.com/400x300/1e3c72/ffffff?text=No+Image'">
                     </div>
                     
-                    <div class="prestasi-content">
-                        <h3 class="prestasi-title">{{ $achievement->title }}</h3>
-                        
-                        @if($achievement->ranking)
-                        <div class="prestasi-ranking">
-                            <i class="fas fa-star"></i>
-                            <span>Juara {{ $achievement->ranking }}</span>
-                        </div>
+                    <!-- Content -->
+                    <div class="gallery-content">
+                        @if($item->title)
+                        <h3 class="gallery-title">{{ $item->title }}</h3>
                         @endif
                         
-                        <div class="prestasi-meta">
-                            @if($achievement->location)
-                            <div class="meta-item">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>{{ $achievement->location }}</span>
-                            </div>
-                            @endif
-                            <div class="meta-item">
-                                <i class="fas fa-calendar"></i>
-                                <span>{{ $achievement->date->format('d M Y') }}</span>
-                            </div>
-                        </div>
-                        
-                        @if($achievement->description)
-                        <p class="prestasi-desc">{{ Str::limit($achievement->description, 100) }}</p>
+                        @if($item->description)
+                        <p class="gallery-desc">{{ Str::limit($item->description, 100) }}</p>
                         @endif
                         
-                        <div class="prestasi-footer">
-                            <div class="student-info">
-                                <strong>Siswa:</strong> {{ $achievement->student_name }}
-                                @if($achievement->student_class)
-                                <span class="student-class">({{ $achievement->student_class }})</span>
-                                @endif
-                            </div>
-                            @if($achievement->advisor_name)
-                            <div class="advisor-info">
-                                <strong>Pembimbing:</strong> {{ $achievement->advisor_name }}
-                                @if($achievement->advisor_title)
-                                <span class="advisor-title">{{ $achievement->advisor_title }}</span>
-                                @endif
-                            </div>
+                        <div class="gallery-meta">
+                            <span><i class="fas fa-calendar me-1"></i>{{ $item->created_at->format('d M Y') }}</span>
+                            @if($item->category)
+                            <span class="badge bg-secondary">{{ ucfirst($item->category) }}</span>
                             @endif
                         </div>
                     </div>
                 </div>
                 @empty
                 <div class="no-data">
-                    <i class="fas fa-trophy"></i>
-                    <p>Belum ada prestasi yang ditampilkan</p>
+                    <i class="fas fa-images"></i>
+                    <p>Belum ada galeri yang tersedia</p>
                 </div>
                 @endforelse
             </div>
 
             <!-- Pagination -->
-            @if($achievements->hasPages())
+            @if(isset($galleries) && $galleries->hasPages())
             <div class="pagination-container">
-                {{ $achievements->links() }}
+                {{ $galleries->links() }}
             </div>
             @endif
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Footer - Sama persis -->
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -559,7 +455,7 @@
     </footer>
 
     <script>
-        // ✅ Mobile Navigation Toggle - Sama dengan home
+        // ✅ Mobile Navigation Toggle - Sama dengan home & prestasi
         document.querySelector('.nav-toggle')?.addEventListener('click', function() {
             document.querySelector('.nav-menu')?.classList.toggle('active');
         });
@@ -570,19 +466,20 @@
             });
         });
 
-        // Filter Prestasi
+        // Filter Galeri by Kategori
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
+                // Update active state
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 
                 const filter = this.getAttribute('data-filter');
-                const cards = document.querySelectorAll('.prestasi-card');
+                const cards = document.querySelectorAll('.gallery-card');
                 
                 cards.forEach(card => {
-                    if (filter === 'all' || 
-                        card.getAttribute('data-type') === filter || 
-                        card.getAttribute('data-level') === filter) {
+                    const category = card.getAttribute('data-category');
+                    
+                    if (filter === 'all' || category === filter) {
                         card.style.display = 'flex';
                         setTimeout(() => {
                             card.style.opacity = '1';

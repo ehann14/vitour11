@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>Kelola Prestasi - Admin</title>
+    <title>Kelola Galeri - Admin</title>
 
     <link rel="icon" type="image/png" href="{{ asset('image/b/SMK11.jpeg') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -102,7 +101,7 @@
             padding: 1rem;
         }
 
-        /* Button Action - SAMA PERSIS DENGAN GALERI & PANORAMA */
+        /* Button Action */
         .btn-action {
             padding: 6px 12px;
             border-radius: 6px;
@@ -136,7 +135,7 @@
             background: #28a745;
         }
 
-        /* Badge Status */
+        /* Badge Status - SAMA PERSIS DENGAN HALAMAN LAIN */
         .badge-status-aktif {
             background: #28a745;
             color: white;
@@ -174,17 +173,22 @@
             color: white;
         }
 
-        /* Preview */
-        .preview-achievement {
-            width: 60px;
+        /* Preview Image */
+        .preview-img {
+            width: 80px;
             height: 60px;
             object-fit: cover;
             border-radius: 8px;
             border: 1px solid #dee2e6;
             background: #f8f9fa;
+            transition: transform 0.2s;
         }
 
-        /* Empty */
+        .preview-img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 3rem 1rem;
@@ -259,7 +263,7 @@
                     <i class="fas fa-images me-2"></i>Kelola Panorama
                 </a>
 
-                <a href="{{ route('admin.achievements.index') }}" class="active">
+                <a href="{{ route('admin.achievements.index') }}">
                     <i class="fas fa-trophy me-2"></i>Kelola Prestasi
                 </a>
 
@@ -267,7 +271,7 @@
                     <i class="fas fa-layer-group me-2"></i>Kelola Program
                 </a>
 
-                <a href="{{ route('admin.gallery.index') }}">
+                <a href="{{ route('admin.gallery.index') }}" class="active">
                     <i class="fas fa-images me-2"></i>Kelola Galeri
                 </a>
 
@@ -287,16 +291,16 @@
 
         </div>
 
-        <!-- Main -->
+        <!-- Main Content -->
         <div class="col-md-10">
 
             <!-- Navbar -->
             <nav class="navbar-admin">
                 <div class="d-flex justify-content-between align-items-center">
                     <h4 class="mb-0 fw-bold" style="color: var(--primary-blue);">
-                        <i class="fas fa-trophy me-2"></i>Kelola Prestasi
+                        <i class="fas fa-images me-2"></i>Kelola Galeri
                     </h4>
-                    <a href="{{ route('admin.achievements.create') }}" class="btn-primary-custom">
+                    <a href="{{ route('admin.gallery.create') }}" class="btn-primary-custom">
                         <i class="fas fa-plus"></i>
                         Tambah Baru
                     </a>
@@ -306,6 +310,7 @@
             <!-- Content -->
             <div class="p-4">
 
+                <!-- Alert Messages -->
                 @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show">
                     <i class="fas fa-check-circle me-2"></i>
@@ -322,38 +327,55 @@
                 </div>
                 @endif
 
-                <!-- Table -->
+                <!-- Table Card - Menggunakan section-card agar konsisten -->
                 <div class="section-card">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0">
                             <thead>
                                 <tr>
-                                    <th width="70">Foto</th>
-                                    <th>Judul Prestasi</th>
-                                    <th width="100">Level</th>
+                                    <th width="90">Preview</th>
+                                    <th>Judul Galeri</th>
+                                    <th width="120">Kategori</th>
+                                    <th width="80">Urutan</th>
                                     <th width="100">Status</th>
                                     <th width="140">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($achievements as $item)
+                                @forelse($galleries as $item)
                                 <tr>
+                                    <!-- Preview -->
                                     <td>
-                                        @if($item->image_path)
-                                        <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->title }}" class="preview-achievement">
+                                        @if($item->image)
+                                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->title }}" class="preview-img">
                                         @else
-                                        <div class="preview-achievement d-flex align-items-center justify-content-center bg-light">
-                                            <i class="fas fa-trophy text-muted"></i>
+                                        <div class="preview-img d-flex align-items-center justify-content-center bg-light">
+                                            <i class="fas fa-image text-muted"></i>
                                         </div>
                                         @endif
                                     </td>
+
+                                    <!-- Judul -->
                                     <td>
-                                        <div class="fw-bold">{{ $item->title }}</div>
-                                        <small class="text-muted">{{ $item->student_name }} - {{ $item->date?->format('d M Y') }}</small>
+                                        <div class="fw-bold">{{ $item->title ?? 'Tanpa Judul' }}</div>
+                                        @if($item->description)
+                                        <small class="text-muted">{{ Str::limit($item->description, 40) }}</small>
+                                        @endif
                                     </td>
+
+                                    <!-- Kategori -->
                                     <td>
-                                        <span class="badge bg-primary bg-opacity-10 text-primary">{{ $item->level }}</span>
+                                        @if($item->category)
+                                        <span class="badge bg-secondary">{{ ucfirst($item->category) }}</span>
+                                        @else
+                                        <span class="text-muted">-</span>
+                                        @endif
                                     </td>
+
+                                    <!-- Urutan -->
+                                    <td class="text-center fw-bold">{{ $item->urutan ?? 0 }}</td>
+
+                                    <!-- Status - SAMA PERSIS DENGAN HALAMAN LAIN -->
                                     <td>
                                         @if($item->is_active)
                                             <span class="badge-status-aktif">Aktif</span>
@@ -361,18 +383,19 @@
                                             <span class="badge-status-nonaktif">Nonaktif</span>
                                         @endif
                                     </td>
+
+                                    <!-- Aksi - SAMA PERSIS DENGAN HALAMAN LAIN -->
                                     <td>
-                                        <!-- ✅ AKSI SAMA PERSIS DENGAN GALERI & PANORAMA -->
                                         <div class="d-flex gap-1">
-                                            <!-- Edit -->
-                                            <a href="{{ route('admin.achievements.edit', $item) }}" 
+                                            <!-- Edit Button -->
+                                            <a href="{{ route('admin.gallery.edit', $item) }}" 
                                                class="btn-action btn-edit" 
                                                title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
 
-                                            <!-- Toggle Status -->
-                                            <form action="{{ route('admin.achievements.toggle-status', $item) }}" 
+                                            <!-- Toggle Status Button -->
+                                            <form action="{{ route('admin.gallery.toggle-status', $item) }}" 
                                                   method="POST" 
                                                   class="d-inline">
                                                 @csrf
@@ -383,11 +406,11 @@
                                                 </button>
                                             </form>
 
-                                            <!-- Delete -->
-                                            <form action="{{ route('admin.achievements.destroy', $item) }}" 
+                                            <!-- Delete Button -->
+                                            <form action="{{ route('admin.gallery.destroy', $item) }}" 
                                                   method="POST" 
                                                   class="d-inline"
-                                                  onsubmit="return confirm('Hapus prestasi ini?')">
+                                                  onsubmit="return confirm('Yakin hapus galeri ini?')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" 
@@ -401,11 +424,11 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="5" class="text-center py-5">
+                                    <td colspan="6" class="text-center py-5">
                                         <div class="empty-state">
-                                            <i class="fas fa-trophy"></i>
-                                            <p class="mb-0">Belum ada data prestasi</p>
-                                            <a href="{{ route('admin.achievements.create') }}" class="btn btn-primary btn-sm mt-3">
+                                            <i class="fas fa-images"></i>
+                                            <p class="mb-0">Belum ada data galeri</p>
+                                            <a href="{{ route('admin.gallery.create') }}" class="btn btn-primary btn-sm mt-3">
                                                 Tambah Pertama
                                             </a>
                                         </div>
@@ -418,9 +441,9 @@
                 </div>
 
                 <!-- Pagination -->
-                @if($achievements->hasPages())
+                @if($galleries->hasPages())
                 <div class="d-flex justify-content-center mt-4">
-                    {{ $achievements->onEachSide(1)->links('pagination::bootstrap-5') }}
+                    {{ $galleries->onEachSide(1)->links('pagination::bootstrap-5') }}
                 </div>
                 @endif
 
@@ -434,6 +457,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    // Auto-hide alerts
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.alert').forEach(alert => {
             setTimeout(() => {

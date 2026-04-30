@@ -23,6 +23,7 @@
         .bg-teal-light { background: rgba(0,201,177,0.15); color: var(--accent-teal); }
         .bg-blue-light { background: rgba(30,60,114,0.15); color: var(--primary-blue); }
         .bg-gold-light { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .bg-purple-light { background: rgba(139,92,246,0.15); color: #8b5cf6; }
         .navbar-admin { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.08); padding: 1rem 2rem; }
         .preview-thumb { width: 60px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid #dee2e6; background: #f8f9fa; transition: transform 0.2s; }
         .preview-thumb:hover { transform: scale(1.1); }
@@ -58,6 +59,12 @@
                     <a href="{{ route('admin.program.index') }}" class="{{ request()->routeIs('admin.program.*') ? 'active' : '' }}">
                         <i class="fas fa-layer-group me-2"></i>Kelola Program
                     </a>
+                    
+                    <!-- ✅ MENU KELOLA GALERI -->
+                    <a href="{{ route('admin.gallery.index') }}" class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
+                        <i class="fas fa-images me-2"></i>Kelola Galeri
+                    </a>
+                    
                     <a href="{{ route('home') }}" target="_blank">
                         <i class="fas fa-external-link-alt me-2"></i>Lihat Website
                     </a>
@@ -100,7 +107,7 @@
                     </div>
                     @endif
 
-                    <!-- Stats Cards (5 Cards - Panorama, Prestasi, Program) -->
+                    <!-- Stats Cards -->
                     <div class="row g-3 mb-4">
                         <div class="col-md-3">
                             <div class="card stat-card p-3">
@@ -129,14 +136,14 @@
                         <div class="col-md-3">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
-                                    <div class="stat-icon bg-purple-light bg-opacity-10 text-primary"><i class="fas fa-layer-group"></i></div>
+                                    <div class="stat-icon bg-purple-light"><i class="fas fa-layer-group"></i></div>
                                     <div><p class="text-muted mb-0 small">Total Program</p><h4 class="fw-bold mb-0">{{ $totalPrograms ?? 0 }}</h4></div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Three Columns: Panorama, Achievements, Programs -->
+                    <!-- Three Columns: Panorama, Achievements, Programs (GALLERY DIHAPUS) -->
                     <div class="row g-4">
                         
                         <!-- Column 1: Recent Panoramas -->

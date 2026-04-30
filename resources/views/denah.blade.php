@@ -303,7 +303,7 @@
                 <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
                 <li><a href="{{ route('home') }}#profile">Profil Sekolah</a></li>
                 <li><a href="{{ route('program.keahlian') }}">Program Keahlian</a></li>
-                <li><a href="{{ route('home') }}#gallery">Galeri</a></li>
+                <li><a href="{{ route('gallery.index') }}" class="{{ request()->routeIs('gallery.*') ? 'active' : '' }}">Galeri</a></li>
                 <li><a href="{{ route('prestasi') }}" class="{{ request()->routeIs('prestasi') ? 'active' : '' }}">Prestasi</a></li>
                 <li><a href="{{ route('home') }}#contact">Kontak</a></li>
                 <li><a href="{{ route('denah') }}" class="{{ request()->routeIs('denah') ? 'active' : '' }}">Denah 360°</a></li>

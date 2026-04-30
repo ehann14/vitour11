@@ -486,7 +486,7 @@
         <div class="circle circle-4"></div>
     </div>
 
-    <!-- ✅ NAVBAR LENGKAP - Sama dengan semua halaman lain -->
+    <!-- ✅ NAVBAR LENGKAP - Dengan Link Galeri Dinamis -->
     <nav class="navbar">
         <div class="container">
             <a href="{{ route('home') }}" class="nav-brand">
@@ -497,10 +497,12 @@
                 <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
                 <li><a href="{{ route('home') }}#profile">Profil Sekolah</a></li>
                 <li><a href="{{ route('program.keahlian') }}">Program Keahlian</a></li>
-                <li><a href="{{ route('home') }}#gallery">Galeri</a></li>
+                
+                <!-- ✅ MENU GALERI DINAMIS (mengarah ke halaman galeri database) -->
+                <li><a href="{{ route('gallery.index') }}" class="{{ request()->routeIs('gallery.*') ? 'active' : '' }}">Galeri</a></li>
+                
                 <li><a href="{{ route('prestasi') }}" class="{{ request()->routeIs('prestasi') ? 'active' : '' }}">Prestasi</a></li>
                 <li><a href="{{ route('home') }}#contact">Kontak</a></li>
-                <!-- ✅ TAMBAHKAN MENU DENAH 360° -->
                 <li><a href="{{ route('denah') }}" class="{{ request()->routeIs('denah') ? 'active' : '' }}">Denah 360°</a></li>
             </ul>
             
@@ -631,11 +633,12 @@
                 <div class="card-header"><i class="fas fa-location-arrow"></i><h3>Lokasi Sekolah</h3></div>
                 <div class="map-container">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.00062464909!2d107.55575517403304!3d-6.890527093108526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6bd6aaaaaab%3A0xf843088e2b5bf838!2sSMKN%2011%20Bandung!5e0!3m2!1sid!2sid!4v1777510794762!5m2!1sid!2sid" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Gallery Section -->
+    <!-- Gallery Section (Static Preview) -->
     <section class="gallery" id="gallery">
         <div class="container">
             <div class="section-header">
@@ -648,7 +651,7 @@
                     <div class="gallery-overlay"><h4>Kegiatan Upacara</h4><p>Siswa aktif mengikuti kegiatan pembinaan disiplin dan karakter di sekolah</p></div>
                 </div>
                 <div class="gallery-item">
-                    <img src="{{ asset('image/b/ehan.jpeg') }}" alt="My Owner">
+                    <img src="{{ asset('image/b/ehan.jpeg') }}" alt="Owner">
                     <div class="gallery-overlay"><h4>My Owner</h4><p>Akulah Sang Pembuat Vitour11</p></div>
                 </div>
                 <div class="gallery-item">
@@ -667,6 +670,12 @@
                     <img src="{{ asset('image/b/Lab.png') }}" alt="Laboratorium Komputer">
                     <div class="gallery-overlay"><h4>Laboratorium Komputer</h4><p>Fasilitas komputer yang dapat di gunakan untuk kebutuhan pembelajaran</p></div>
                 </div>
+            </div>
+            <!-- Tombol Lihat Semua Galeri -->
+            <div class="text-center mt-4">
+                <a href="{{ route('gallery.index') }}" class="btn btn-primary" style="background: var(--primary-blue); border: none; border-radius: 25px; padding: 12px 30px;">
+                    <i class="fas fa-images me-2"></i>Lihat Semua Galeri
+                </a>
             </div>
         </div>
     </section>
@@ -710,8 +719,8 @@
             // Skip smooth scroll jika:
             // 1. Link kosong (#)
             // 2. Link ke route lain (mengandung /)
-            // 3. Link ke halaman prestasi
-            if (href === '#' || href.includes('/') || href === prestasiUrl) {
+            // 3. Link ke halaman prestasi atau galeri
+            if (href === '#' || href.includes('/') || href === prestasiUrl || href.includes('gallery')) {
                 return;
             }
             

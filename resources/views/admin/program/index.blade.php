@@ -1,5 +1,3 @@
-<!-- FILE: resources/views/admin/program/index.blade.php -->
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -104,7 +102,7 @@
             padding: 1rem;
         }
 
-        /* Button */
+        /* Button Action - SAMA PERSIS DENGAN GALERI & PANORAMA */
         .btn-action {
             padding: 6px 12px;
             border-radius: 6px;
@@ -129,7 +127,16 @@
             color: white;
         }
 
-        /* Badge */
+        .btn-toggle {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-toggle.active {
+            background: #28a745;
+        }
+
+        /* Badge Status */
         .badge-status-aktif {
             background: #28a745;
             color: white;
@@ -260,6 +267,10 @@
                     <i class="fas fa-layer-group me-2"></i>Kelola Program
                 </a>
 
+                <a href="{{ route('admin.gallery.index') }}">
+                    <i class="fas fa-images me-2"></i>Kelola Galeri
+                </a>
+
                 <a href="{{ route('home') }}" target="_blank">
                     <i class="fas fa-external-link-alt me-2"></i>Lihat Website
                 </a>
@@ -268,7 +279,6 @@
             <div class="p-3 border-top mt-auto" style="border-color: rgba(255,255,255,0.2)!important;">
                 <form method="POST" action="{{ route('admin.logout') }}">
                     @csrf
-
                     <button type="submit" class="logout-btn">
                         <i class="fas fa-sign-out-alt me-2"></i>Logout
                     </button>
@@ -282,20 +292,15 @@
 
             <!-- Navbar -->
             <nav class="navbar-admin">
-
                 <div class="d-flex justify-content-between align-items-center">
-
                     <h4 class="mb-0 fw-bold" style="color: var(--primary-blue);">
                         <i class="fas fa-layer-group me-2"></i>Kelola Program Keahlian
                     </h4>
-
                     <a href="{{ route('admin.program.create') }}" class="btn-primary-custom">
                         <i class="fas fa-plus"></i>
                         Tambah Baru
                     </a>
-
                 </div>
-
             </nav>
 
             <!-- Content -->
@@ -305,7 +310,6 @@
                 <div class="alert alert-success alert-dismissible fade show">
                     <i class="fas fa-check-circle me-2"></i>
                     {{ session('success') }}
-
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
                 @endif
@@ -314,130 +318,103 @@
                 <div class="alert alert-danger alert-dismissible fade show">
                     <i class="fas fa-exclamation-circle me-2"></i>
                     {{ session('error') }}
-
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
                 @endif
 
                 <!-- Table -->
                 <div class="section-card">
-
                     <div class="table-responsive">
-
                         <table class="table table-hover align-middle mb-0">
-
                             <thead>
-                            <tr>
-                                <th width="70">Logo</th>
-                                <th>Nama Program</th>
-                                <th width="100">Singkatan</th>
-                                <th width="100">Status</th>
-                                <th width="120">Aksi</th>
-                            </tr>
+                                <tr>
+                                    <th width="70">Logo</th>
+                                    <th>Nama Program</th>
+                                    <th width="100">Singkatan</th>
+                                    <th width="100">Status</th>
+                                    <th width="140">Aksi</th>
+                                </tr>
                             </thead>
-
                             <tbody>
+                                @forelse($programs as $item)
+                                <tr>
+                                    <td>
+                                        @if($item->logo)
+                                        <img src="{{ asset('storage/' . $item->logo) }}" alt="{{ $item->nama }}" class="preview-program">
+                                        @else
+                                        <div class="preview-program d-flex align-items-center justify-content-center bg-light">
+                                            <i class="fas fa-layer-group text-muted"></i>
+                                        </div>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold">{{ $item->nama }}</div>
+                                        <small class="text-muted">Slug: {{ $item->slug }}</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary bg-opacity-10 text-primary">{{ $item->singkatan }}</span>
+                                    </td>
+                                    <td>
+                                        @if($item->is_active)
+                                            <span class="badge-status-aktif">Aktif</span>
+                                        @else
+                                            <span class="badge-status-nonaktif">Nonaktif</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <!-- ✅ AKSI SAMA PERSIS DENGAN GALERI & PANORAMA -->
+                                        <div class="d-flex gap-1">
+                                            <!-- Edit -->
+                                            <a href="{{ route('admin.program.edit', $item) }}" 
+                                               class="btn-action btn-edit" 
+                                               title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
 
-                            @forelse($programs as $item)
+                                            <!-- Toggle Status -->
+                                            <form action="{{ route('admin.program.toggle-status', $item) }}" 
+                                                  method="POST" 
+                                                  class="d-inline">
+                                                @csrf
+                                                <button type="submit" 
+                                                        class="btn-action btn-toggle {{ $item->is_active ? 'active' : '' }}" 
+                                                        title="{{ $item->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
+                                                    <i class="fas fa-toggle-{{ $item->is_active ? 'on' : 'off' }}"></i>
+                                                </button>
+                                            </form>
 
-                            <tr>
-
-                                <td>
-                                    @if($item->logo)
-
-                                    <img
-                                        src="{{ asset('storage/' . $item->logo) }}"
-                                        alt="{{ $item->nama }}"
-                                        class="preview-program">
-
-                                    @else
-
-                                    <div class="preview-program d-flex align-items-center justify-content-center bg-light">
-                                        <i class="fas fa-layer-group text-muted"></i>
-                                    </div>
-
-                                    @endif
-                                </td>
-
-                                <td>
-                                    <div class="fw-bold">{{ $item->nama }}</div>
-                                    <small class="text-muted">Slug: {{ $item->slug }}</small>
-                                </td>
-
-                                <td>
-                                    <span class="badge bg-primary bg-opacity-10 text-primary">
-                                        {{ $item->singkatan }}
-                                    </span>
-                                </td>
-
-                                <td>
-                                    @if($item->is_active)
-                                        <span class="badge-status-aktif">Aktif</span>
-                                    @else
-                                        <span class="badge-status-nonaktif">Nonaktif</span>
-                                    @endif
-                                </td>
-
-                                <td>
-
-                                    <div class="d-flex gap-1">
-
-                                        <a href="{{ route('admin.program.edit', $item) }}"
-                                           class="btn-action btn-edit">
-
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-
-                                        <form action="{{ route('admin.program.destroy', $item) }}"
-                                              method="POST"
-                                              class="d-inline"
-                                              onsubmit="return confirm('Hapus program ini?')">
-
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <button type="submit" class="btn-action btn-delete">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-
-                                        </form>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-
-                            @empty
-
-                            <tr>
-                                <td colspan="5" class="text-center py-5">
-
-                                    <div class="empty-state">
-
-                                        <i class="fas fa-layer-group"></i>
-
-                                        <p class="mb-0">Belum ada data program</p>
-
-                                        <a href="{{ route('admin.program.create') }}"
-                                           class="btn btn-primary btn-sm mt-3">
-
-                                            Tambah Pertama
-                                        </a>
-
-                                    </div>
-
-                                </td>
-                            </tr>
-
-                            @endforelse
-
+                                            <!-- Delete -->
+                                            <form action="{{ route('admin.program.destroy', $item) }}" 
+                                                  method="POST" 
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('Hapus program ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" 
+                                                        class="btn-action btn-delete" 
+                                                        title="Hapus">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="5" class="text-center py-5">
+                                        <div class="empty-state">
+                                            <i class="fas fa-layer-group"></i>
+                                            <p class="mb-0">Belum ada data program</p>
+                                            <a href="{{ route('admin.program.create') }}" class="btn btn-primary btn-sm mt-3">
+                                                Tambah Pertama
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforelse
                             </tbody>
-
                         </table>
-
                     </div>
-
                 </div>
 
                 <!-- Pagination -->
@@ -458,18 +435,12 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-
         document.querySelectorAll('.alert').forEach(alert => {
-
             setTimeout(() => {
-
                 const bsAlert = new bootstrap.Alert(alert);
                 bsAlert.close();
-
             }, 5000);
-
         });
-
     });
 </script>
 

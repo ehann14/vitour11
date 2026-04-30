@@ -450,7 +450,7 @@
                 <li><a href="{{ route('home') }}">Beranda</a></li>
                 <li><a href="{{ route('home') }}#profile">Profil Sekolah</a></li>
                 <li><a href="{{ route('program.keahlian') }}" class="{{ request()->routeIs('program.keahlian') ? 'active' : '' }}">Program Keahlian</a></li>
-                <li><a href="{{ route('home') }}#gallery">Galeri</a></li>
+                <li><a href="{{ route('gallery.index') }}" class="{{ request()->routeIs('gallery.*') ? 'active' : '' }}">Galeri</a></li>
                 <li><a href="{{ route('prestasi') }}">Prestasi</a></li>
                 <li><a href="{{ route('home') }}#contact">Kontak</a></li>
                 <li><a href="{{ route('denah') }}">Denah 360°</a></li>
