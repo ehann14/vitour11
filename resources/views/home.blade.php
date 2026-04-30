@@ -85,6 +85,7 @@
         .nav-menu a {
             text-decoration: none; color: var(--gray-700);
             font-weight: 600; font-size: 0.95rem; padding: 4px 0; position: relative;
+            transition: color 0.3s;
         }
         .nav-menu a:hover, .nav-menu a.active { color: var(--primary-blue); }
         .nav-menu a::after {
@@ -485,7 +486,7 @@
         <div class="circle circle-4"></div>
     </div>
 
-    <!-- Navigation -->
+    <!-- ✅ NAVBAR LENGKAP - Sama dengan semua halaman lain -->
     <nav class="navbar">
         <div class="container">
             <a href="{{ route('home') }}" class="nav-brand">
@@ -495,13 +496,12 @@
             <ul class="nav-menu">
                 <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
                 <li><a href="{{ route('home') }}#profile">Profil Sekolah</a></li>
-                
-                <!-- ✅ LANGSUNG KE PROGRAM KEAHLIAN (TANPA DROPDOWN) -->
                 <li><a href="{{ route('program.keahlian') }}">Program Keahlian</a></li>
-                
                 <li><a href="{{ route('home') }}#gallery">Galeri</a></li>
                 <li><a href="{{ route('prestasi') }}" class="{{ request()->routeIs('prestasi') ? 'active' : '' }}">Prestasi</a></li>
                 <li><a href="{{ route('home') }}#contact">Kontak</a></li>
+                <!-- ✅ TAMBAHKAN MENU DENAH 360° -->
+                <li><a href="{{ route('denah') }}" class="{{ request()->routeIs('denah') ? 'active' : '' }}">Denah 360°</a></li>
             </ul>
             
             <!-- Tombol Login Admin -->

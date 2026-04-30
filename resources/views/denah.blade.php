@@ -23,7 +23,7 @@
         }
         .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
         
-        /* ✅ NAVBAR - Sama dengan home.blade.php */
+        /* ✅ NAVBAR - Sama persis dengan home (tanpa text-decoration: none di brand) */
         .navbar {
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -33,10 +33,10 @@
         .navbar .container {
             display: flex; justify-content: space-between; align-items: center;
         }
+        /* ✅ PERBAIKAN: Menghapus text-decoration: none agar sama dengan home */
         .nav-brand {
             display: flex; align-items: center; gap: 8px;
-            font-weight: 700; font-size: 1.2rem;
-            color: var(--primary-blue); text-decoration: none;
+            font-weight: 700; font-size: 1.2rem; color: var(--primary-blue);
         }
         .nav-brand i { font-size: 1.4rem; }
         .nav-menu { display: flex; list-style: none; gap: 20px; }
@@ -82,7 +82,7 @@
         }
         .nav-toggle:hover { background: rgba(30, 60, 114, 0.1); }
         
-        /* Header - Lebih Compact */
+        /* Header */
         .header { text-align: center; padding: 20px 0; margin-bottom: 20px; }
         .header h1 {
             font-size: 2rem; font-weight: 800; color: var(--white);
@@ -95,7 +95,7 @@
             max-width: 600px; margin: 0 auto;
         }
         
-        /* ✅ Viewer Container - Full Screen Style */
+        /* Viewer Container */
         .viewer-container {
             background: var(--white); border-radius: 30px;
             padding: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.2);
@@ -130,7 +130,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* ✅ Floating Location Button - Untuk Buka Pilihan Lokasi */
+        /* Floating Location Button */
         .location-toggle-btn {
             position: absolute;
             top: 30px;
@@ -154,7 +154,7 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
         
-        /* ✅ Scene Selector Modal/Overlay - Hidden by Default */
+        /* Scene Selector Modal */
         .scene-selector-overlay {
             position: fixed;
             top: 0;
@@ -292,7 +292,7 @@
     </style>
 </head>
 <body>
-    <!-- ✅ NAVBAR LENGKAP -->
+    <!-- ✅ NAVBAR LENGKAP - Sama persis dengan halaman home -->
     <nav class="navbar">
         <div class="container">
             <a href="{{ route('home') }}" class="nav-brand">
@@ -300,14 +300,16 @@
                 <span>SMK NEGERI 11 BANDUNG</span>
             </a>
             <ul class="nav-menu">
-                <li><a href="{{ route('home') }}">Beranda</a></li>
+                <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
                 <li><a href="{{ route('home') }}#profile">Profil Sekolah</a></li>
-                <li><a href="{{ route('program.keahlian') }}">Program</a></li>
+                <li><a href="{{ route('program.keahlian') }}">Program Keahlian</a></li>
                 <li><a href="{{ route('home') }}#gallery">Galeri</a></li>
-                <li><a href="{{ route('prestasi') }}">Prestasi</a></li>
+                <li><a href="{{ route('prestasi') }}" class="{{ request()->routeIs('prestasi') ? 'active' : '' }}">Prestasi</a></li>
                 <li><a href="{{ route('home') }}#contact">Kontak</a></li>
-                <li><a href="{{ route('denah') }}" class="active">Denah 360°</a></li>
+                <li><a href="{{ route('denah') }}" class="{{ request()->routeIs('denah') ? 'active' : '' }}">Denah 360°</a></li>
             </ul>
+            
+            <!-- Tombol Login Admin -->
             <a href="{{ route('admin.login') }}" class="nav-login-btn">
                 <i class="fas fa-user-shield"></i>
                 <span>Login Admin</span>
@@ -318,7 +320,7 @@
         </div>
     </nav>
 
-    <!-- Header - Lebih Compact -->
+    <!-- Header -->
     <section class="header">
         <div class="container">
             <h1><i class="fas fa-compass"></i> Denah Sekolah 360°</h1>
@@ -327,7 +329,7 @@
     </section>
 
     <div class="container">
-        <!-- ✅ Viewer Container dengan Floating Button -->
+        <!-- Viewer Container dengan Floating Button -->
         <div class="viewer-container">
             <!-- Floating Button untuk Buka Pilihan Lokasi -->
             <button class="location-toggle-btn" onclick="toggleSceneSelector()">
@@ -363,7 +365,7 @@
         </div>
     </div>
 
-    <!-- ✅ Scene Selector Modal/Overlay (Hidden by Default) -->
+    <!-- Scene Selector Modal/Overlay -->
     <div class="scene-selector-overlay" id="sceneSelectorOverlay" onclick="closeSceneSelectorOnOverlay(event)">
         <div class="scene-selector-modal" onclick="event.stopPropagation()">
             <div class="scene-selector-header">
@@ -376,7 +378,7 @@
                 @forelse($panoramas as $panorama)
                     <button class="scene-btn {{ $loop->first ? 'active' : '' }}" 
                         data-scene="{{ $panorama->scene_id }}"
-                        onclick="selectScene('{{ $panorama->scene_id }}', '{{ $panorama->name }}')">
+                        onclick="selectScene('{{ $panorama->scene_id }}', '{{ addslashes($panorama->name) }}')">
                         <i class="fas {{ $panorama->icon ?? 'fa-image' }}"></i>
                         <span>{{ $panorama->name }}</span>
                         @if(is_array($panorama->hotspots) && count($panorama->hotspots) > 0)
@@ -443,7 +445,7 @@
 
     let viewer = null;
     
-    // ✅ Parse panoramas data
+    // ✅ Parse panoramas data dari Blade ke JS
     @php
         $panoramasWithUrl = $panoramas->map(function($p) {
             $imgPath = $p->image_path ?? '';
@@ -472,7 +474,7 @@
     @endphp
     const panoramas = @json($panoramasWithUrl);
 
-    // ✅ Build scenes config
+    // ✅ Build scenes config untuk Pannellum
     const scenesConfig = {};
     
     panoramas.forEach(p => {

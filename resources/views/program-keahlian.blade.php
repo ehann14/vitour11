@@ -31,69 +31,62 @@
         }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        /* === NAVBAR === */
+        /* ✅ NAVBAR - Sama persis dengan home.blade.php */
         .navbar {
-            background: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             position: sticky; top: 0; z-index: 1000;
             padding: 12px 0;
-            border-radius: 0 0 20px 20px;
+            border-radius: 0 0 25px 25px;
         }
         .navbar .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: nowrap;
+            display: flex; justify-content: space-between; align-items: center;
         }
         .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--primary-blue);
-            text-decoration: none;
-            flex-shrink: 0;
-            white-space: nowrap;
+            display: flex; align-items: center; gap: 8px;
+            font-weight: 700; font-size: 1.2rem; color: var(--primary-blue);
         }
-        .nav-brand i { 
-            font-size: 1.6rem;
-            color: var(--primary-blue); /* ✅ FIX: Warna icon sama dengan navbar */
-        }
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 20px;
-            margin: 0;
-            padding: 0;
-        }
+        .nav-brand i { font-size: 1.4rem; }
+        .nav-menu { display: flex; list-style: none; gap: 20px; }
         .nav-menu a {
+            text-decoration: none; color: var(--gray-700);
+            font-weight: 600; font-size: 0.95rem; padding: 4px 0; position: relative;
+            transition: color 0.3s;
+        }
+        .nav-menu a:hover, .nav-menu a.active { color: var(--primary-blue); }
+        .nav-menu a::after {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 0; height: 2px; background: var(--accent-teal);
+            transition: width 0.3s ease; border-radius: 3px;
+        }
+        .nav-menu a:hover::after, .nav-menu a.active::after { width: 100%; }
+        
+        .nav-toggle {
+            display: none; background: none; border: none;
+            font-size: 1.4rem; color: var(--primary-blue);
+            cursor: pointer; border-radius: 50%; padding: 6px;
+            transition: all 0.3s ease;
+        }
+        .nav-toggle:hover { background: rgba(30, 60, 114, 0.1); }
+        
+        .nav-login-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--white);
+            border-radius: 25px;
             text-decoration: none;
-            color: var(--gray-700);
             font-weight: 600;
             font-size: 0.9rem;
-            transition: color 0.3s ease;
-            white-space: nowrap;
-        }
-        .nav-menu a:hover { color: var(--primary-blue); }
-        .nav-login-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 18px;
-            background: var(--primary-blue);
-            color: var(--white);
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
             transition: all 0.3s ease;
-            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(30, 60, 114, 0.25);
         }
-        .nav-login-btn:hover { 
-            background: var(--secondary-blue);
+        .nav-login-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+            color: var(--white);
         }
+        .nav-login-btn i { font-size: 0.95rem; }
 
         /* === PAGE HEADER === */
         .page-header {
@@ -410,23 +403,15 @@
 
         /* === RESPONSIVE === */
         @media (max-width: 992px) {
-            .nav-menu {
-                gap: 15px;
-            }
-            .nav-menu a {
-                font-size: 0.85rem;
-            }
+            .nav-menu { gap: 15px; }
+            .nav-menu a { font-size: 0.85rem; }
         }
         @media (max-width: 768px) {
             .nav-toggle { display: block; }
             .nav-menu {
-                position: fixed;
-                top: 70px;
-                right: -100%;
-                flex-direction: column;
-                background: var(--white);
-                width: 260px;
-                height: calc(100vh - 70px);
+                position: fixed; top: 70px; right: -100%;
+                flex-direction: column; background: var(--white);
+                width: 260px; height: calc(100vh - 70px);
                 padding: 35px 25px;
                 box-shadow: -5px 0 20px rgba(0,0,0,0.15);
                 transition: right 0.4s ease;
@@ -441,7 +426,8 @@
             .modal-header { padding: 20px; }
             .modal-body { padding: 20px; }
             .nav-login-btn span { display: none; }
-            .nav-login-btn { padding: 8px 14px; }
+            .nav-login-btn { padding: 10px 16px; }
+            .nav-login-btn i { font-size: 1.1rem; }
         }
         @media (max-width: 480px) {
             .page-header h1 { font-size: 1.7rem; }
@@ -453,7 +439,7 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- ✅ NAVBAR LENGKAP - Sama dengan home.blade.php -->
     <nav class="navbar">
         <div class="container">
             <a href="{{ route('home') }}" class="nav-brand">
@@ -463,15 +449,19 @@
             <ul class="nav-menu">
                 <li><a href="{{ route('home') }}">Beranda</a></li>
                 <li><a href="{{ route('home') }}#profile">Profil Sekolah</a></li>
-                <li><a href="{{ route('program.keahlian') }}">Program Keahlian</a></li>
+                <li><a href="{{ route('program.keahlian') }}" class="{{ request()->routeIs('program.keahlian') ? 'active' : '' }}">Program Keahlian</a></li>
                 <li><a href="{{ route('home') }}#gallery">Galeri</a></li>
                 <li><a href="{{ route('prestasi') }}">Prestasi</a></li>
                 <li><a href="{{ route('home') }}#contact">Kontak</a></li>
+                <li><a href="{{ route('denah') }}">Denah 360°</a></li>
             </ul>
             <a href="{{ route('admin.login') }}" class="nav-login-btn">
                 <i class="fas fa-user-shield"></i>
                 <span>Login Admin</span>
             </a>
+            <button class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </nav>
 
@@ -586,6 +576,18 @@
 
     <!-- JavaScript -->
     <script>
+        // ✅ Mobile Navigation Toggle - Sama dengan home
+        document.querySelector('.nav-toggle')?.addEventListener('click', function() {
+            document.querySelector('.nav-menu')?.classList.toggle('active');
+        });
+        
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelector('.nav-menu')?.classList.remove('active');
+            });
+        });
+
+        // Modal Functions
         const modal = document.getElementById('programModal');
         const modalTitle = document.getElementById('modalTitle');
         const modalSingkatan = document.getElementById('modalSingkatan');

@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* === RESET & VARIABLES === */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --primary-blue: #1e3c72;
@@ -65,7 +66,7 @@
         }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
         
-        /* Navigation */
+        /* ✅ NAVBAR - Sama persis dengan home.blade.php */
         .navbar {
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -85,6 +86,7 @@
         .nav-menu a {
             text-decoration: none; color: var(--gray-700);
             font-weight: 600; font-size: 0.95rem; padding: 4px 0; position: relative;
+            transition: color 0.3s;
         }
         .nav-menu a:hover, .nav-menu a.active { color: var(--primary-blue); }
         .nav-menu a::after {
@@ -93,6 +95,7 @@
             transition: width 0.3s ease; border-radius: 3px;
         }
         .nav-menu a:hover::after, .nav-menu a.active::after { width: 100%; }
+        
         .nav-toggle {
             display: none; background: none; border: none;
             font-size: 1.4rem; color: var(--primary-blue);
@@ -395,7 +398,7 @@
         <div class="circle circle-4"></div>
     </div>
 
-    <!-- Navigation -->
+    <!-- ✅ NAVBAR LENGKAP - Sama dengan home.blade.php -->
     <nav class="navbar">
         <div class="container">
             <a href="{{ route('home') }}" class="nav-brand">
@@ -405,11 +408,11 @@
             <ul class="nav-menu">
                 <li><a href="{{ route('home') }}">Beranda</a></li>
                 <li><a href="{{ route('home') }}#profile">Profil Sekolah</a></li>
-                <!-- ✅ Program langsung ke halaman Program Keahlian -->
                 <li><a href="{{ route('program.keahlian') }}">Program Keahlian</a></li>
                 <li><a href="{{ route('home') }}#gallery">Galeri</a></li>
-                <li><a href="{{ route('prestasi') }}" class="active">Prestasi</a></li>
+                <li><a href="{{ route('prestasi') }}" class="{{ request()->routeIs('prestasi') ? 'active' : '' }}">Prestasi</a></li>
                 <li><a href="{{ route('home') }}#contact">Kontak</a></li>
+                <li><a href="{{ route('denah') }}">Denah 360°</a></li>
             </ul>
             <a href="{{ route('admin.login') }}" class="nav-login-btn">
                 <i class="fas fa-user-shield"></i>
@@ -556,7 +559,7 @@
     </footer>
 
     <script>
-        // Mobile Navigation Toggle
+        // ✅ Mobile Navigation Toggle - Sama dengan home
         document.querySelector('.nav-toggle')?.addEventListener('click', function() {
             document.querySelector('.nav-menu')?.classList.toggle('active');
         });
