@@ -25,7 +25,6 @@
         .alert-custom { border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
         .alert-error-custom { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
         .image-preview { max-width: 200px; border-radius: 8px; border: 2px dashed #dee2e6; }
-        /* Tambahan: preview image */
         #logoPreview { display: none; margin-top: 1rem; }
         #logoPreview img { max-width: 100%; border-radius: 8px; }
     </style>
@@ -43,11 +42,6 @@
                     <a href="{{ route('admin.panorama.index') }}"><i class="fas fa-images"></i><span>Kelola Panorama</span></a>
                     <a href="{{ route('admin.achievements.index') }}"><i class="fas fa-trophy"></i><span>Kelola Prestasi</span></a>
                     <a href="{{ route('admin.program.index') }}" class="active"><i class="fas fa-layer-group"></i><span>Kelola Program</span></a>
-                    
-                    {{-- 🔧 FIX: Hapus route admin.konsentrasi.index yang tidak didefinisikan --}}
-                    {{-- Jika fitur Konsentrasi dibutuhkan, definisikan route-nya dulu di web.php --}}
-                    {{-- <a href="{{ route('admin.konsentrasi.index') }}"><i class="fas fa-sitemap"></i><span>Kelola Konsentrasi</span></a> --}}
-                    
                     <a href="{{ route('home') }}" target="_blank"><i class="fas fa-external-link-alt"></i><span>Lihat Website</span></a>
                 </nav>
                 <div class="mt-auto p-3 border-top" style="border-color:rgba(255,255,255,0.2)!important">
@@ -67,7 +61,6 @@
                 </nav>
                 
                 <div class="p-4">
-                    {{-- Error Validation Display --}}
                     @if($errors->any())
                     <div class="alert-custom alert-error-custom">
                         <strong><i class="fas fa-exclamation-circle me-1"></i>Terjadi Kesalahan:</strong>
@@ -93,6 +86,20 @@
                                 @error('nama')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                            </div>
+                            
+                            {{-- Slug - Auto Generate --}}
+                            <div class="mb-3">
+                                <label class="form-label">Slug <span class="text-danger">*</span></label>
+                                <input type="text" name="slug" class="form-control @error('slug') is-invalid @enderror" 
+                                       value="{{ old('slug') }}" required 
+                                       placeholder="rekayasa-perangkat-lunak"
+                                       id="inputSlug"
+                                       readonly>
+                                @error('slug')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <small class="text-muted"><i class="fas fa-info-circle me-1"></i>Diisi otomatis dari Nama Program</small>
                             </div>
                             
                             {{-- Singkatan --}}
@@ -191,7 +198,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    {{-- Script: Preview Image & Auto-Slug (Opsional) --}}
+    {{-- Script: Preview Image & Auto-Slug --}}
     <script>
         // Preview logo sebelum upload
         document.getElementById('inputLogo').addEventListener('change', function(e) {
@@ -211,10 +218,18 @@
             }
         });
         
-        // Optional: Auto-generate slug dari nama (jika backend mendukung)
-        // document.getElementById('inputNama').addEventListener('input', function() {
-        //     // Logic slug generation bisa ditambahkan di sini
-        // });
+        // Auto-generate slug dari nama program
+        document.getElementById('inputNama').addEventListener('input', function() {
+            const name = this.value;
+            // Generate slug: lowercase, trim, replace spasi dengan -, remove special chars
+            const slug = name.toLowerCase()
+                .trim()
+                .replace(/[^\w\s-]/g, '')      // Remove special characters
+                .replace(/[\s_-]+/g, '-')       // Replace spaces/underscores with -
+                .replace(/^-+|-+$/g, '');       // Remove leading/trailing dashes
+            
+            document.getElementById('inputSlug').value = slug;
+        });
     </script>
 </body>
 </html>

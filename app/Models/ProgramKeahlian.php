@@ -2,59 +2,48 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class ProgramKeahlian extends Model
 {
-    use HasFactory;
-
     protected $table = 'program_keahlian';
-
+    
     protected $fillable = [
         'nama',
-        'singkatan',
         'slug',
+        'singkatan',
         'deskripsi',
-        'logo',
         'visi',
         'misi',
+        'logo',
         'urutan',
         'is_active',
     ];
-
+    
     protected $casts = [
         'is_active' => 'boolean',
         'urutan' => 'integer',
     ];
-
+    
     /**
-     * Auto-generate unique slug dari nama
+     * Accessor untuk URL logo
      */
-    public function setNamaAttribute($value)
+    protected function logoUrl(): Attribute
     {
-        $this->attributes['nama'] = $value;
-        
-        $slug = Str::slug($value);
-        $originalSlug = $slug;
-        $count = 1;
-        
-        while (ProgramKeahlian::where('slug', $slug)
-            ->where('id', '!=', $this->id ?? 0)
-            ->exists()) {
-            $slug = $originalSlug . '-' . $count;
-            $count++;
-        }
-        
-        $this->attributes['slug'] = $slug;
+        return Attribute::make(
+            get: fn ($value) => $this->logo 
+                ? asset('storage/' . $this->logo) 
+                : asset('images/default-program.png'),
+        );
     }
-
+    
     /**
-     * Helper: Get URL logo
+     * Scope untuk program aktif
      */
-    public function getLogoUrlAttribute()
+    public function scopeActive($query)
     {
-        return $this->logo ? asset('storage/' . $this->logo) : asset('images/default-program.png');
+        return $query->where('is_active', true);
     }
 }

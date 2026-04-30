@@ -13,6 +13,11 @@ use App\Http\Controllers\Admin\ProgramKeahlianController;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
 */
 
 // Splash & Public Pages
@@ -24,8 +29,8 @@ Route::get('/beranda', [HomeController::class, 'index'])->name('home');
 Route::get('/denah', [HomeController::class, 'denah'])->name('denah');
 Route::get('/prestasi', [HomeController::class, 'prestasi'])->name('prestasi');
 
-// Program Akademik Routes
-Route::get('/program-keahlian', [ProgramController::class, 'programKeahlian'])->name('program.keahlian');
+// Program Akademik Routes - Public
+Route::get('/program-keahlian', [ProgramController::class, 'index'])->name('program.keahlian');
 Route::get('/program/{slug}', [ProgramController::class, 'detailProgram'])->name('program.detail');
 
 // Panorama Viewer Routes
@@ -68,7 +73,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         Route::post('/{achievement}/toggle-status', [AchievementController::class, 'toggleStatus'])->name('toggle-status');
     });
 
-    // Program Keahlian Management
+    // Program Keahlian Management (Admin)
     Route::prefix('program')->name('program.')->group(function () {
         Route::get('/', [ProgramKeahlianController::class, 'index'])->name('index');
         Route::get('/create', [ProgramKeahlianController::class, 'create'])->name('create');
@@ -77,4 +82,5 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         Route::put('/{program}', [ProgramKeahlianController::class, 'update'])->name('update');
         Route::delete('/{program}', [ProgramKeahlianController::class, 'destroy'])->name('destroy');
     });
+
 });
