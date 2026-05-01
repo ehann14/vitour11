@@ -690,7 +690,7 @@
                 </div>
                 <div class="gallery-item">
                     <img src="{{ asset('image/b/ehan.jpeg') }}" alt="Owner">
-                    <div class="gallery-overlay"><h4>My Owner</h4><p>Akulah Sang Pembuat Vitour11</p></div>
+                    <div class="gallery-overlay"><h4>Owner</h4><p>Akulah Sang Pembuat Vitour11</p></div>
                 </div>
                 <div class="gallery-item">
                     <img src="{{ asset('image/b/eskul.jpg') }}" alt="Ekstrakurikuler">

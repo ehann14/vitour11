@@ -9,7 +9,10 @@ use Illuminate\Support\Str;
 
 class PanoramaController extends Controller
 {
-
+    /**
+     * Display a listing of the resource.
+     * ✅ FIX: Urutkan berdasarkan field 'order' ASC, lalu fallback ke 'id' ASC
+     */
     public function index(Request $request)
     {
         $query = Panorama::query();
@@ -63,7 +66,7 @@ class PanoramaController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'scene_id' => 'required|string|max:255|unique:panoramas,scene_id',
-                'image_path' => 'required|image|mimes:jpeg,jpg,png,webp|max:20480',
+                'image_path' => 'required|image|mimes:jpeg,jpg,png,webp|max:10240',
                 'type' => 'required|in:360,normal',
                 'order' => 'nullable|integer|min:0',
                 'is_active' => 'nullable|boolean',
@@ -122,7 +125,7 @@ class PanoramaController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 // scene_id tidak bisa diubah setelah dibuat
-                'image_path' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:20480',
+                'image_path' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:10240',
                 'type' => 'required|in:360,normal',
                 'order' => 'nullable|integer|min:0',
                 'is_active' => 'nullable|boolean',
