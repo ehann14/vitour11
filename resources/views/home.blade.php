@@ -22,6 +22,10 @@
             --gray-700: #495057;
             --success: #28a745;
         }
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
@@ -403,6 +407,28 @@
         .gallery-item h4 { font-size: 1.3rem; margin-bottom: 6px; font-weight: 700; }
         .gallery-item p { font-size: 0.9rem; opacity: 0.9; line-height: 1.5; }
         
+        /* Gallery Button Container */
+        .gallery-button-container {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px 0 20px;
+        }
+        
+        .gallery-button-container .btn-primary {
+            background: var(--primary-blue);
+            border: none;
+            border-radius: 25px;
+            padding: 14px 35px;
+            font-size: 1.05rem;
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-button-container .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(30, 60, 114, 0.4);
+        }
+        
         /* Footer */
         footer {
             background: var(--white); padding: 40px 0 25px;
@@ -432,6 +458,7 @@
             .hero-buttons { justify-content: center; }
         }
         @media (max-width: 768px) {
+            html { scroll-padding-top: 70px; }
             .nav-toggle { display: block; }
             .nav-menu {
                 position: fixed; top: 70px; right: -100%;
@@ -445,6 +472,7 @@
             .nav-menu.active { right: 0; }
             .nav-menu li { margin-bottom: 20px; }
             .nav-menu a { font-size: 1.1rem; display: block; }
+            .nav-menu a::after { height: 3px; }
             
             .hero h1 { font-size: 2rem; }
             .hero h1 span { font-size: 2.2rem; }
@@ -462,6 +490,11 @@
             .nav-login-btn span { display: none; }
             .nav-login-btn { padding: 10px 16px; }
             .nav-login-btn i { font-size: 1.1rem; }
+            
+            .gallery-button-container {
+                margin-top: 40px;
+                padding: 25px 0 15px;
+            }
         }
         @media (max-width: 480px) {
             .hero h1 { font-size: 1.7rem; }
@@ -474,6 +507,11 @@
             .vision-mission { gap: 18px; }
             .vision-card, .mission-card { padding: 22px; border-radius: 25px; }
             .school-info-card, .address-card { padding: 22px; border-radius: 25px; }
+            
+            .gallery-button-container .btn-primary {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -486,7 +524,7 @@
         <div class="circle circle-4"></div>
     </div>
 
-    <!-- ✅ NAVBAR LENGKAP - Dengan Link Galeri Dinamis -->
+    <!-- ✅ NAVBAR LENGKAP -->
     <nav class="navbar">
         <div class="container">
             <a href="{{ route('home') }}" class="nav-brand">
@@ -494,15 +532,15 @@
                 <span>SMK NEGERI 11 BANDUNG</span>
             </a>
             <ul class="nav-menu">
-                <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
-                <li><a href="{{ route('home') }}#profile">Profil Sekolah</a></li>
+                <li><a href="{{ route('home') }}" class="nav-link-beranda {{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
+                <li><a href="#profile" class="nav-link-profile">Profil Sekolah</a></li>
                 <li><a href="{{ route('program.keahlian') }}">Program Keahlian</a></li>
                 
-                <!-- ✅ MENU GALERI DINAMIS (mengarah ke halaman galeri database) -->
-                <li><a href="{{ route('gallery.index') }}" class="{{ request()->routeIs('gallery.*') ? 'active' : '' }}">Galeri</a></li>
+                <!-- ✅ MENU GALERI -->
+                <li><a href="{{ route('gallery.index') }}" class="nav-link-galeri {{ request()->routeIs('gallery.*') ? 'active' : '' }}">Galeri</a></li>
                 
                 <li><a href="{{ route('prestasi') }}" class="{{ request()->routeIs('prestasi') ? 'active' : '' }}">Prestasi</a></li>
-                <li><a href="{{ route('home') }}#contact">Kontak</a></li>
+                <li><a href="#contact" class="nav-link-contact">Kontak</a></li>
                 <li><a href="{{ route('denah') }}" class="{{ request()->routeIs('denah') ? 'active' : '' }}">Denah 360°</a></li>
             </ul>
             
@@ -672,8 +710,8 @@
                 </div>
             </div>
             <!-- Tombol Lihat Semua Galeri -->
-            <div class="text-center mt-4">
-                <a href="{{ route('gallery.index') }}" class="btn btn-primary" style="background: var(--primary-blue); border: none; border-radius: 25px; padding: 12px 30px;">
+            <div class="gallery-button-container">
+                <a href="{{ route('gallery.index') }}" class="btn btn-primary">
                     <i class="fas fa-images me-2"></i>Lihat Semua Galeri
                 </a>
             </div>
@@ -696,9 +734,6 @@
     </footer>
 
     <script>
-    // Ambil URL prestasi dari Blade (dikonversi ke JS string yang aman)
-    const prestasiUrl = @json(route('prestasi'));
-    
     // Mobile Navigation Toggle
     document.querySelector('.nav-toggle')?.addEventListener('click', function() {
         document.querySelector('.nav-menu')?.classList.toggle('active');
@@ -711,19 +746,13 @@
         });
     });
     
-    // Smooth scroll untuk anchor links (hanya untuk link di halaman yang sama)
+    // Smooth scroll untuk anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
-            
-            // Skip smooth scroll jika:
-            // 1. Link kosong (#)
-            // 2. Link ke route lain (mengandung /)
-            // 3. Link ke halaman prestasi atau galeri
-            if (href === '#' || href.includes('/') || href === prestasiUrl || href.includes('gallery')) {
+            if (href === '#' || href.includes('/')) {
                 return;
             }
-            
             e.preventDefault();
             const target = document.querySelector(href);
             if (target) {
@@ -734,6 +763,57 @@
             }
         });
     });
-</script>
+
+    // ✅ LOGIKA GARIS HIJAU - FIXED VERSION
+    function updateActiveNav() {
+        const scrollY = window.scrollY || window.pageYOffset;
+        const navbarHeight = 100;
+        
+        // Map section ke nav link
+        const sections = [
+            { id: 'home', selector: '.nav-link-beranda' },
+            { id: 'profile', selector: '.nav-link-profile' },
+            { id: 'gallery', selector: '.nav-link-galeri' },
+            { id: 'contact', selector: '.nav-link-contact' }
+        ];
+        
+        let currentSection = 'home';
+        
+        // Cek dari bawah ke atas untuk akurasi lebih baik
+        for (let i = sections.length - 1; i >= 0; i--) {
+            const section = sections[i];
+            const element = document.getElementById(section.id);
+            
+            if (element) {
+                const sectionTop = element.offsetTop - navbarHeight;
+                const sectionBottom = sectionTop + element.offsetHeight;
+                
+                if (scrollY >= sectionTop && scrollY < sectionBottom) {
+                    currentSection = section.id;
+                    break;
+                }
+            }
+        }
+        
+        // Reset semua link yang dikelola JS
+        sections.forEach(s => {
+            const link = document.querySelector(s.selector);
+            if (link) link.classList.remove('active');
+        });
+        
+        // Set link yang aktif
+        const activeLink = document.querySelector(
+            sections.find(s => s.id === currentSection)?.selector
+        );
+        if (activeLink) {
+            activeLink.classList.add('active');
+        }
+    }
+
+    // Jalankan saat load dan scroll
+    window.addEventListener('DOMContentLoaded', updateActiveNav);
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
+    window.addEventListener('resize', updateActiveNav);
+    </script>
 </body>
 </html>
