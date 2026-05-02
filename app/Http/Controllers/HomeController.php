@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Panorama;
 use App\Models\Achievement;
+// ✅ TAMBAHAN: Import model Comment
+use App\Models\Comment;
 
 class HomeController extends Controller
 {
@@ -17,7 +19,13 @@ class HomeController extends Controller
             ->orderBy('order', 'asc')
             ->get();
         
-        return view('home', compact('panoramas'));
+        // ✅ TAMBAHAN: Ambil komentar yang sudah disetujui
+        $comments = Comment::where('is_approved', true)
+                           ->latest()
+                           ->take(10) // Batasi 10 komentar terbaru
+                           ->get();
+        
+        return view('home', compact('panoramas', 'comments'));
     }
 
     /**

@@ -24,6 +24,7 @@
         .bg-blue-light { background: rgba(30,60,114,0.15); color: var(--primary-blue); }
         .bg-gold-light { background: rgba(245,158,11,0.15); color: #f59e0b; }
         .bg-purple-light { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+        .bg-pink-light { background: rgba(236,72,153,0.15); color: #ec4899; }
         .navbar-admin { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.08); padding: 1rem 2rem; }
         .preview-thumb { width: 60px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid #dee2e6; background: #f8f9fa; transition: transform 0.2s; }
         .preview-thumb:hover { transform: scale(1.1); }
@@ -34,8 +35,11 @@
         .section-header h5 { margin: 0; color: var(--primary-blue); font-weight: 700; }
         .badge-status-aktif { background: #28a745; color: white; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
         .badge-status-nonaktif { background: #6c757d; color: white; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
+        .badge-status-pending { background: #ffc107; color: #000; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
         .empty-state { text-align: center; padding: 3rem 1rem; color: #6c757d; }
         .empty-state i { font-size: 3rem; opacity: 0.3; margin-bottom: 1rem; display: block; }
+        .comment-preview { max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .comment-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; background: rgba(236,72,153,0.15); color: #ec4899; }
     </style>
 </head>
 <body>
@@ -59,12 +63,16 @@
                     <a href="{{ route('admin.program.index') }}" class="{{ request()->routeIs('admin.program.*') ? 'active' : '' }}">
                         <i class="fas fa-layer-group me-2"></i>Kelola Program
                     </a>
-                    
-                    <!-- ✅ MENU KELOLA GALERI -->
                     <a href="{{ route('admin.gallery.index') }}" class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
                         <i class="fas fa-images me-2"></i>Kelola Galeri
                     </a>
-                    
+                    <!-- ✅ MENU KELOLA KOMENTAR - BARU -->
+                    <a href="{{ route('admin.comments.index') }}" class="{{ request()->routeIs('admin.comments.*') ? 'active' : '' }}">
+                        <i class="fas fa-comments me-2"></i>Kelola Komentar
+                        @if(isset($pendingCommentsCount) && $pendingCommentsCount > 0)
+                        <span class="badge bg-danger rounded-pill ms-2">{{ $pendingCommentsCount }}</span>
+                        @endif
+                    </a>
                     <a href="{{ route('home') }}" target="_blank">
                         <i class="fas fa-external-link-alt me-2"></i>Lihat Website
                     </a>
@@ -141,13 +149,42 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- ✅ Stat Card Komentar - BARU -->
+                        <div class="col-md-3">
+                            <a href="{{ route('admin.comments.index') }}" class="text-decoration-none">
+                                <div class="card stat-card p-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="stat-icon bg-pink-light"><i class="fas fa-comments"></i></div>
+                                        <div>
+                                            <p class="text-muted mb-0 small">Total Komentar</p>
+                                            <h4 class="fw-bold mb-0">{{ $totalComments ?? 0 }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{{ route('admin.comments.index') }}" class="text-decoration-none">
+                                <div class="card stat-card p-3 border-warning">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="stat-icon" style="background: rgba(255,193,7,0.15); color: #ffc107;">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-muted mb-0 small">Menunggu Persetujuan</p>
+                                            <h4 class="fw-bold mb-0 text-warning">{{ $pendingCommentsCount ?? 0 }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     </div>
 
-                    <!-- Three Columns: Panorama, Achievements, Programs (GALLERY DIHAPUS) -->
+                    <!-- Four Columns: Panorama, Achievements, Programs, Comments -->
                     <div class="row g-4">
                         
                         <!-- Column 1: Recent Panoramas -->
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="section-card">
                                 <div class="section-header">
                                     <h5><i class="fas fa-images me-2"></i>Panorama</h5>
@@ -174,7 +211,7 @@
                                                         <img src="{{ $previewUrl }}" alt="{{ $panorama->name }}" class="preview-thumb" onerror="this.src='https://via.placeholder.com/60x40/1e3c72/ffffff?text=No+Image'">
                                                     </td>
                                                     <td>
-                                                        <div class="fw-bold text-truncate" style="max-width: 120px;" title="{{ $panorama->name }}">{{ $panorama->name }}</div>
+                                                        <div class="fw-bold text-truncate" style="max-width: 100px;" title="{{ $panorama->name }}">{{ $panorama->name }}</div>
                                                     </td>
                                                     <td>
                                                         @if($panorama->is_active)<span class="badge-status-aktif">Aktif</span>@else<span class="badge-status-nonaktif">Nonaktif</span>@endif
@@ -195,7 +232,7 @@
                         </div>
 
                         <!-- Column 2: Recent Achievements -->
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="section-card">
                                 <div class="section-header">
                                     <h5><i class="fas fa-trophy me-2"></i>Prestasi</h5>
@@ -225,7 +262,7 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <div class="fw-bold text-truncate" style="max-width: 120px;" title="{{ $achievement->title }}">{{ $achievement->title }}</div>
+                                                        <div class="fw-bold text-truncate" style="max-width: 100px;" title="{{ $achievement->title }}">{{ $achievement->title }}</div>
                                                     </td>
                                                     <td>
                                                         @if($achievement->is_active)<span class="badge-status-aktif">Aktif</span>@else<span class="badge-status-nonaktif">Nonaktif</span>@endif
@@ -246,7 +283,7 @@
                         </div>
 
                         <!-- Column 3: Recent Programs -->
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="section-card">
                                 <div class="section-header">
                                     <h5><i class="fas fa-layer-group me-2"></i>Program</h5>
@@ -276,7 +313,7 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <div class="fw-bold text-truncate" style="max-width: 120px;" title="{{ $program->nama }}">{{ $program->nama }}</div>
+                                                        <div class="fw-bold text-truncate" style="max-width: 100px;" title="{{ $program->nama }}">{{ $program->nama }}</div>
                                                         <small class="text-muted">{{ $program->singkatan }}</small>
                                                     </td>
                                                     <td>
@@ -291,6 +328,64 @@
                                     <div class="empty-state">
                                         <i class="fas fa-layer-group"></i>
                                         <p class="mb-0">Belum ada program</p>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ✅ Column 4: Recent Comments (Pending) - BARU -->
+                        <div class="col-lg-3">
+                            <div class="section-card">
+                                <div class="section-header">
+                                    <h5><i class="fas fa-comments me-2"></i>Komentar</h5>
+                                    <a href="{{ route('admin.comments.index') }}" class="btn btn-sm" style="background: #ec4899; color: white; border-radius: 20px;">
+                                        <i class="fas fa-list me-1"></i>Lihat Semua
+                                    </a>
+                                </div>
+                                <div class="card-body p-0">
+                                    @if(isset($pendingComments) && $pendingComments->count() > 0)
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th width="40"></th>
+                                                    <th>Nama</th>
+                                                    <th width="60">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($pendingComments->take(4) as $comment)
+                                                <tr>
+                                                    <td>
+                                                        <div class="comment-avatar">
+                                                            {{ strtoupper(substr($comment->name, 0, 1)) }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="fw-bold small">{{ $comment->name }}</div>
+                                                        <div class="comment-preview small text-muted" title="{{ $comment->message }}">
+                                                            {{ Str::limit($comment->message, 30) }}
+                                                        </div>
+                                                        <small class="text-muted" style="font-size: 0.7rem;">{{ $comment->created_at->diffForHumans() }}</small>
+                                                    </td>
+                                                    <td>
+                                                        <form action="{{ route('admin.comments.toggle', $comment->id) }}" method="POST" class="d-inline">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-sm btn-success py-0 px-2" style="font-size: 0.7rem;" title="Setujui">
+                                                                <i class="fas fa-check"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @else
+                                    <div class="empty-state">
+                                        <i class="fas fa-comments"></i>
+                                        <p class="mb-0">Tidak ada komentar pending</p>
                                     </div>
                                     @endif
                                 </div>

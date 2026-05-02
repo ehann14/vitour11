@@ -428,6 +428,234 @@
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(30, 60, 114, 0.4);
         }
+
+        /* Comments Section - Improved UI */
+        .comments-section {
+            background: var(--white);
+            border-radius: 35px;
+            padding: 60px 0;
+            margin-top: 40px;
+        }
+        
+        .comment-form-card {
+            background: var(--white);
+            border-radius: 25px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 2px solid var(--gray-200);
+            overflow: hidden;
+        }
+        
+        .card-body-custom {
+            padding: 35px;
+        }
+        
+        .form-title {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-col {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label-custom {
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.95rem;
+        }
+        
+        .required {
+            color: #dc3545;
+        }
+        
+        .form-input-custom,
+        .form-textarea-custom {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--gray-300);
+            border-radius: 15px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+        
+        .form-input-custom:focus,
+        .form-textarea-custom:focus {
+            outline: none;
+            border-color: var(--accent-teal);
+            box-shadow: 0 0 0 4px rgba(0, 201, 177, 0.1);
+        }
+        
+        .form-textarea-custom {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .form-actions {
+            text-align: right;
+            margin-top: 10px;
+        }
+        
+        .btn-submit-custom {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--white);
+            border: none;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.3);
+        }
+        
+        .btn-submit-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
+        }
+        
+        .invalid-feedback-custom {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+        }
+        
+        .alert-success-custom {
+            background: rgba(40, 167, 69, 0.15);
+            border: 2px solid var(--success);
+            color: var(--success);
+            padding: 15px 20px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 500;
+        }
+        
+        .btn-close-custom {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--success);
+            line-height: 1;
+            padding: 0 5px;
+        }
+        
+        .comments-title {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .comment-item {
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .comment-item:hover {
+            border-color: var(--accent-teal);
+            box-shadow: 0 6px 20px rgba(0, 201, 177, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .comment-avatar-custom {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-teal), var(--secondary-blue));
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        
+        .comment-meta {
+            flex: 1;
+        }
+        
+        .comment-author {
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 3px;
+        }
+        
+        .comment-time {
+            color: var(--gray-600);
+            font-size: 0.85rem;
+        }
+        
+        .comment-text {
+            color: var(--gray-700);
+            line-height: 1.7;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+        
+        .empty-comments {
+            text-align: center;
+            padding: 50px 20px;
+            background: var(--gray-100);
+            border-radius: 20px;
+            border: 2px dashed var(--gray-300);
+        }
+        
+        .empty-comments i {
+            font-size: 3.5rem;
+            color: var(--gray-300);
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .text-muted {
+            color: var(--gray-600) !important;
+        }
         
         /* Footer */
         footer {
@@ -448,6 +676,83 @@
         .footer-bottom {
             text-align: center; padding-top: 20px;
             color: var(--gray-600); font-size: 1rem;
+        }
+        
+        /* ===== Customer Service Button (Static) ===== */
+        .cs-button {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--accent-teal), #00b39d);
+            color: var(--white);
+            border-radius: 50%;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(0, 201, 177, 0.35);
+            transition: all 0.3s ease;
+        }
+
+        .cs-button:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 201, 177, 0.55);
+            color: var(--white);
+        }
+
+        .cs-button i {
+            font-size: 1.8rem;
+        }
+
+        .cs-tooltip {
+            position: absolute;
+            bottom: 100%;
+            right: 50%;
+            transform: translateX(50%) translateY(10px);
+            margin-bottom: 12px;
+            padding: 8px 16px;
+            background: var(--primary-blue);
+            color: var(--white);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cs-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--primary-blue);
+        }
+
+        .cs-button:hover .cs-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(50%) translateY(0);
+        }
+
+        /* Responsive untuk mobile */
+        @media (max-width: 768px) {
+            .cs-button {
+                bottom: 15px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+            }
+            .cs-button i {
+                font-size: 1.5rem;
+            }
         }
         
         /* Responsive Design */
@@ -494,6 +799,35 @@
             .gallery-button-container {
                 margin-top: 40px;
                 padding: 25px 0 15px;
+            }
+            .comments-section { padding: 40px 0; }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .card-body-custom {
+                padding: 25px;
+            }
+            
+            .comment-item {
+                padding: 20px;
+            }
+            
+            .comment-avatar-custom {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+            
+            .btn-submit-custom {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .form-actions {
+                text-align: center;
             }
         }
         @media (max-width: 480px) {
@@ -718,6 +1052,98 @@
         </div>
     </section>
 
+    <!-- ✅ COMMENTS SECTION - IMPROVED UI -->
+    <section class="comments-section" id="comments">
+        <div class="container" style="max-width: 900px;">
+            <div class="section-header mb-5">
+                <h2><i class="fas fa-comments"></i> Komentar & Pesan</h2>
+                <p>Bagikan kesan dan pesan Anda untuk SMK Negeri 11 Bandung</p>
+            </div>
+
+            @if(session('success'))
+            <div class="alert-success-custom mb-4">
+                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close-custom" onclick="this.parentElement.remove()">×</button>
+            </div>
+            @endif
+
+            <!-- Form Komentar -->
+            <div class="comment-form-card mb-5">
+                <div class="card-body-custom">
+                    <h5 class="form-title">
+                        <i class="fas fa-pen me-2"></i>Tulis Komentar
+                    </h5>
+                    <form action="{{ route('comment.store') }}" method="POST">
+                        @csrf
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label for="name" class="form-label-custom">Nama Lengkap <span class="required">*</span></label>
+                                <input type="text" name="name" id="name" class="form-input-custom @error('name') is-invalid @enderror" 
+                                       value="{{ old('name') }}" placeholder="Masukkan nama Anda" required>
+                                @error('name')
+                                <div class="invalid-feedback-custom">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-col">
+                                <label for="email" class="form-label-custom">Email <small class="text-muted">(Tidak ditampilkan)</small> <span class="required">*</span></label>
+                                <input type="email" name="email" id="email" class="form-input-custom @error('email') is-invalid @enderror" 
+                                       value="{{ old('email') }}" placeholder="email@contoh.com" required>
+                                @error('email')
+                                <div class="invalid-feedback-custom">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="form-label-custom">Pesan/Komentar <span class="required">*</span></label>
+                            <textarea name="message" id="message" class="form-textarea-custom @error('message') is-invalid @enderror" 
+                                      rows="4" placeholder="Tulis pesan atau kesan Anda..." required>{{ old('message') }}</textarea>
+                            @error('message')
+                            <div class="invalid-feedback-custom">{{ $message }}</div>
+                            @enderror
+                            <small class="text-muted">Maksimal 500 karakter</small>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit-custom">
+                                <i class="fas fa-paper-plane me-2"></i>Kirim Komentar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Daftar Komentar -->
+            <div class="mb-4">
+                <h5 class="comments-title">
+                    <i class="fas fa-list me-2"></i>Komentar Terbaru ({{ $comments->count() }})
+                </h5>
+                
+                @if($comments->count() > 0)
+                    <div class="comment-list">
+                        @foreach($comments as $comment)
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <div class="comment-avatar-custom">
+                                    {{ strtoupper(substr($comment->name, 0, 1)) }}
+                                </div>
+                                <div class="comment-meta">
+                                    <h6 class="comment-author">{{ $comment->name }}</h6>
+                                    <span class="comment-time">{{ $comment->created_at->diffForHumans() }}</span>
+                                </div>
+                            </div>
+                            <p class="comment-text">{{ $comment->message }}</p>
+                        </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="empty-comments">
+                        <i class="fas fa-comments"></i>
+                        <p class="text-muted mb-0">Belum ada komentar. Jadilah yang pertama!</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -732,6 +1158,16 @@
             </div>
         </div>
     </footer>
+
+    <!-- ✅ Customer Service Button (WhatsApp Icon Only - Static) -->
+    <a href="https://wa.me/6281234567890?text=Halo%20Admin%20SMK%20Negeri%2011%20Bandung,%20saya%20ingin%20bertanya..." 
+       class="cs-button" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       aria-label="Hubungi Customer Service via WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <div class="cs-tooltip">Chat via WhatsApp</div>
+    </a>
 
     <script>
     // Mobile Navigation Toggle

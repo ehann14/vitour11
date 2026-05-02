@@ -10,16 +10,14 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\Admin\ProgramKeahlianController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
+// ✅ TAMBAHAN: Import controller komentar
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Admin\CommentController as AdminCommentController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
 
 // Splash & Public Pages
@@ -42,6 +40,9 @@ Route::get('/galeri/kategori/{category}', [GalleryController::class, 'filter'])-
 // Panorama Viewer Routes
 Route::get('/view/{scene_id}', [HomeController::class, 'view'])->name('view');
 Route::get('/api/panorama/{scene_id}', [HomeController::class, 'apiShow'])->name('api.panorama.show');
+
+// ✅ Comment Routes - Public
+Route::post('/kirim-komentar', [CommentController::class, 'store'])->name('comment.store');
 
 // Auth Routes
 Route::get('/admin/login', [LoginController::class, 'showLoginForm'])->name('admin.login');
@@ -79,7 +80,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         Route::post('/{achievement}/toggle-status', [AchievementController::class, 'toggleStatus'])->name('toggle-status');
     });
 
-    // Program Keahlian Management (Admin) ✅ ROUTE TOGGLE DITAMBAHKAN
+    // Program Keahlian Management (Admin)
     Route::prefix('program')->name('program.')->group(function () {
         Route::get('/', [ProgramKeahlianController::class, 'index'])->name('index');
         Route::get('/create', [ProgramKeahlianController::class, 'create'])->name('create');
@@ -88,7 +89,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         Route::put('/{program}', [ProgramKeahlianController::class, 'update'])->name('update');
         Route::delete('/{program}', [ProgramKeahlianController::class, 'destroy'])->name('destroy');
         
-        // ✅ TAMBAHAN: Route Toggle Status untuk Program
         Route::post('/{program}/toggle-status', [ProgramKeahlianController::class, 'toggleStatus'])->name('toggle-status');
     });
 
@@ -101,6 +101,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
         Route::put('/{gallery}', [AdminGalleryController::class, 'update'])->name('update');
         Route::delete('/{gallery}', [AdminGalleryController::class, 'destroy'])->name('destroy');
         Route::post('/{gallery}/toggle-status', [AdminGalleryController::class, 'toggleStatus'])->name('toggle-status');
+    });
+
+    // ✅ Comment Management (Admin) - BARU
+    Route::prefix('comments')->name('comments.')->group(function () {
+        Route::get('/', [AdminCommentController::class, 'index'])->name('index');
+        Route::post('/{id}/toggle', [AdminCommentController::class, 'toggleStatus'])->name('toggle');
+        Route::delete('/{id}', [AdminCommentController::class, 'destroy'])->name('destroy');
     });
 
 });
