@@ -45,23 +45,36 @@
 <body>
 <div class="container-fluid">
     <div class="row">
-        <!-- Sidebar -->
+        <!-- ✅ SIDEBAR KONSISTEN (SEMUA HALAMA SAMA) -->
         <div class="col-md-2 sidebar p-0">
             <div class="p-3 border-bottom" style="border-color: rgba(255,255,255,0.2) !important;">
                 <h5 class="mb-0 fw-bold"><i class="fas fa-graduation-cap me-2"></i>Admin SMK 11</h5>
             </div>
             <nav class="mt-3 p-2 flex-grow-1">
-                <a href="{{ route('admin.dashboard') }}"><i class="fas fa-home me-2"></i>Dashboard</a>
-                <a href="{{ route('admin.panorama.index') }}" class="active"><i class="fas fa-images me-2"></i>Kelola Panorama</a>
-                <a href="{{ route('admin.achievements.index') }}"><i class="fas fa-trophy me-2"></i>Kelola Prestasi</a>
-                <a href="{{ route('admin.program.index') }}"><i class="fas fa-layer-group me-2"></i>Kelola Program</a>
-                
-                <!-- ✅ MENU KELOLA GALERI -->
+                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <i class="fas fa-home me-2"></i>Dashboard
+                </a>
+                <a href="{{ route('admin.panorama.index') }}" class="{{ request()->routeIs('admin.panorama.*') ? 'active' : '' }}">
+                    <i class="fas fa-images me-2"></i>Kelola Panorama
+                </a>
+                <a href="{{ route('admin.achievements.index') }}" class="{{ request()->routeIs('admin.achievements.*') ? 'active' : '' }}">
+                    <i class="fas fa-trophy me-2"></i>Kelola Prestasi
+                </a>
+                <a href="{{ route('admin.program.index') }}" class="{{ request()->routeIs('admin.program.*') ? 'active' : '' }}">
+                    <i class="fas fa-layer-group me-2"></i>Kelola Program
+                </a>
                 <a href="{{ route('admin.gallery.index') }}" class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
                     <i class="fas fa-images me-2"></i>Kelola Galeri
                 </a>
-                
-                <a href="{{ route('home') }}" target="_blank"><i class="fas fa-external-link-alt me-2"></i>Lihat Website</a>
+                <a href="{{ route('admin.comments.index') }}" class="{{ request()->routeIs('admin.comments.*') ? 'active' : '' }}">
+                    <i class="fas fa-comments me-2"></i>Kelola Komentar
+                    @if(isset($pendingCommentsCount) && $pendingCommentsCount > 0)
+                    <span class="badge bg-danger rounded-pill ms-2">{{ $pendingCommentsCount }}</span>
+                    @endif
+                </a>
+                <a href="{{ route('home') }}" target="_blank">
+                    <i class="fas fa-external-link-alt me-2"></i>Lihat Website
+                </a>
             </nav>
             <div class="p-3 border-top mt-auto" style="border-color: rgba(255,255,255,0.2) !important;">
                 <form method="POST" action="{{ route('admin.logout') }}">@csrf
@@ -116,16 +129,16 @@
                                         <div class="fw-bold">{{ $item->name }}</div>
                                         <small class="text-muted">ID: #{{ $item->id }}</small>
                                     </td>
-                                    <td>
-                                        @if($item->is_active)<span class="badge-status-aktif">Aktif</span>@else<span class="badge-status-nonaktif">Nonaktif</span>@endif
-                                    </td>
+                                    <td>@if($item->is_active)<span class="badge-status-aktif">Aktif</span>@else<span class="badge-status-nonaktif">Nonaktif</span>@endif</td>
                                     <td>
                                         <div class="d-flex gap-1">
                                             <a href="{{ route('admin.panorama.edit', $item) }}" class="btn-action btn-edit" title="Edit"><i class="fas fa-edit"></i></a>
-                                            <button type="button" class="btn-action btn-toggle {{ $item->is_active ? 'active' : '' }}" onclick="toggleStatus({{ $item->id }})"><i class="fas fa-toggle-{{ $item->is_active ? 'on' : 'off' }}"></i></button>
+                                            <button type="button" class="btn-action btn-toggle {{ $item->is_active ? 'active' : '' }}" onclick="toggleStatus({{ $item->id }})" title="{{ $item->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
+                                                <i class="fas fa-toggle-{{ $item->is_active ? 'on' : 'off' }}"></i>
+                                            </button>
                                             <form action="{{ route('admin.panorama.destroy', $item) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus panorama ini?')">
                                                 @csrf @method('DELETE')
-                                                <button type="submit" class="btn-action btn-delete"><i class="fas fa-trash"></i></button>
+                                                <button type="submit" class="btn-action btn-delete" title="Hapus"><i class="fas fa-trash"></i></button>
                                             </form>
                                         </div>
                                     </td>
@@ -152,18 +165,17 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.alert').forEach(alert => {
-            setTimeout(() => { const bsAlert = new bootstrap.Alert(alert); bsAlert.close(); }, 5000);
-        });
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.alert').forEach(alert => {
+        setTimeout(() => { const bsAlert = new bootstrap.Alert(alert); bsAlert.close(); }, 5000);
     });
-    function toggleStatus(id) {
-        fetch(`{{ route("admin.panorama.toggle-status", ":id") }}`.replace(':id', id), {
-            method: 'POST',
-            headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
-        })
-        .then(res => { if (res.ok) location.reload(); else alert('Gagal toggle status'); });
-    }
+});
+function toggleStatus(id) {
+    fetch(`{{ route("admin.panorama.toggle-status", ":id") }}`.replace(':id', id), {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }
+    }).then(res => { if (res.ok) location.reload(); else alert('Gagal toggle status'); });
+}
 </script>
 </body>
 </html>

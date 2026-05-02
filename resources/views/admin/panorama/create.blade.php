@@ -36,74 +36,28 @@
         .file-size-error.show { display: block; }
 
         /* ── IMAGE HOTSPOT CANVAS ── */
-        .image-canvas-wrapper {
-            position: relative; display: inline-block; width: 100%;
-            border-radius: 12px; overflow: hidden; cursor: crosshair;
-            background: #e9ecef; min-height: 200px;
-        }
-        .image-canvas-wrapper img {
-            width: 100%; display: block; border-radius: 12px;
-            user-select: none; pointer-events: none;
-        }
-        .canvas-placeholder {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: 220px; color: #6c757d; gap: 0.75rem;
-        }
+        .image-canvas-wrapper { position: relative; display: inline-block; width: 100%; border-radius: 12px; overflow: hidden; cursor: crosshair; background: #e9ecef; min-height: 200px; }
+        .image-canvas-wrapper img { width: 100%; display: block; border-radius: 12px; user-select: none; pointer-events: none; }
+        .canvas-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 220px; color: #6c757d; gap: 0.75rem; }
         .canvas-placeholder i { font-size: 3rem; opacity: 0.35; }
 
         /* hotspot pin */
-        .hotspot-pin {
-            position: absolute; transform: translate(-50%, -100%);
-            cursor: pointer; z-index: 10;
-            display: flex; flex-direction: column; align-items: center;
-            transition: transform 0.15s;
-        }
+        .hotspot-pin { position: absolute; transform: translate(-50%, -100%); cursor: pointer; z-index: 10; display: flex; flex-direction: column; align-items: center; transition: transform 0.15s; }
         .hotspot-pin:hover { transform: translate(-50%, -100%) scale(1.15); }
-        .hotspot-pin .pin-head {
-            width: 28px; height: 28px; background: var(--accent-teal);
-            border: 3px solid white; border-radius: 50% 50% 50% 0;
-            transform: rotate(-45deg); box-shadow: 0 2px 8px rgba(0,0,0,0.35);
-            display: flex; align-items: center; justify-content: center;
-        }
+        .hotspot-pin .pin-head { width: 28px; height: 28px; background: var(--accent-teal); border: 3px solid white; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 2px 8px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; }
         .hotspot-pin .pin-head i { transform: rotate(45deg); font-size: 11px; color: white; }
         .hotspot-pin .pin-line { width: 2px; height: 6px; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-        .hotspot-pin .pin-label {
-            background: rgba(0,0,0,0.75); color: white; font-size: 11px;
-            padding: 2px 7px; border-radius: 4px; white-space: nowrap;
-            max-width: 120px; overflow: hidden; text-overflow: ellipsis;
-            margin-top: 3px; pointer-events: none;
-        }
-        .hotspot-pin .pin-remove {
-            position: absolute; top: -6px; right: -6px;
-            width: 16px; height: 16px; background: #dc3545; border-radius: 50%;
-            border: none; color: white; font-size: 9px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 20; opacity: 0; transition: opacity 0.2s;
-        }
+        .hotspot-pin .pin-label { background: rgba(0,0,0,0.75); color: white; font-size: 11px; padding: 2px 7px; border-radius: 4px; white-space: nowrap; max-width: 120px; overflow: hidden; text-overflow: ellipsis; margin-top: 3px; pointer-events: none; }
+        .hotspot-pin .pin-remove { position: absolute; top: -6px; right: -6px; width: 16px; height: 16px; background: #dc3545; border-radius: 50%; border: none; color: white; font-size: 9px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 20; opacity: 0; transition: opacity 0.2s; }
         .hotspot-pin:hover .pin-remove { opacity: 1; }
 
-        .click-ripple {
-            position: absolute; width: 30px; height: 30px;
-            border: 2px solid var(--accent-teal); border-radius: 50%;
-            transform: translate(-50%,-50%) scale(0);
-            animation: ripple 0.4s ease-out forwards;
-            pointer-events: none; z-index: 5;
-        }
+        .click-ripple { position: absolute; width: 30px; height: 30px; border: 2px solid var(--accent-teal); border-radius: 50%; transform: translate(-50%,-50%) scale(0); animation: ripple 0.4s ease-out forwards; pointer-events: none; z-index: 5; }
         @keyframes ripple { to { transform: translate(-50%,-50%) scale(2.5); opacity: 0; } }
 
         /* hotspot modal - CENTERED */
-        .hotspot-modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-            z-index: 9999; display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.2s;
-        }
+        .hotspot-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
         .hotspot-modal-overlay.show { opacity: 1; pointer-events: all; }
-        .hotspot-modal {
-            background: white; border-radius: 16px; padding: 1.75rem;
-            width: 440px; max-width: 95vw;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            transform: translateY(20px); transition: transform 0.2s;
-        }
+        .hotspot-modal { background: white; border-radius: 16px; padding: 1.75rem; width: 440px; max-width: 95vw; box-shadow: 0 20px 60px rgba(0,0,0,0.2); transform: translateY(20px); transition: transform 0.2s; }
         .hotspot-modal-overlay.show .hotspot-modal { transform: translateY(0); }
         .hotspot-modal h6 { font-weight: 700; color: var(--primary-blue); margin-bottom: 1.25rem; }
         .modal-btn-row { display: flex; gap: 0.75rem; margin-top: 1.25rem; }
@@ -120,18 +74,36 @@
 <body>
 <div class="container-fluid">
     <div class="row">
-        <!-- ✅ SIDEBAR (SAMA PERSIS DENGAN CONTOH) -->
+        <!-- ✅ SIDEBAR KONSISTEN (SEMUA HALAMAN SAMA) -->
         <div class="col-md-2 sidebar p-0">
             <div class="p-3 border-bottom" style="border-color: rgba(255,255,255,0.2) !important;">
                 <h5 class="mb-0 fw-bold"><i class="fas fa-graduation-cap me-2"></i>Admin SMK 11</h5>
             </div>
             <nav class="mt-3 p-2 flex-grow-1">
-                <a href="{{ route('admin.dashboard') }}"><i class="fas fa-home me-2"></i>Dashboard</a>
-                <a href="{{ route('admin.panorama.index') }}" class="{{ request()->routeIs('admin.panorama.*') ? 'active' : '' }}"><i class="fas fa-images me-2"></i>Kelola Panorama</a>
-                <a href="{{ route('admin.achievements.index') }}" class="{{ request()->routeIs('admin.achievements.*') ? 'active' : '' }}"><i class="fas fa-trophy me-2"></i>Kelola Prestasi</a>
-                <a href="{{ route('admin.program.index') }}" class="{{ request()->routeIs('admin.program.*') ? 'active' : '' }}"><i class="fas fa-layer-group me-2"></i>Kelola Program</a>
-                <a href="{{ route('admin.gallery.index') }}" class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}"><i class="fas fa-images me-2"></i>Kelola Galeri</a>
-                <a href="{{ route('home') }}" target="_blank"><i class="fas fa-external-link-alt me-2"></i>Lihat Website</a>
+                <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <i class="fas fa-home me-2"></i>Dashboard
+                </a>
+                <a href="{{ route('admin.panorama.index') }}" class="{{ request()->routeIs('admin.panorama.*') ? 'active' : '' }}">
+                    <i class="fas fa-images me-2"></i>Kelola Panorama
+                </a>
+                <a href="{{ route('admin.achievements.index') }}" class="{{ request()->routeIs('admin.achievements.*') ? 'active' : '' }}">
+                    <i class="fas fa-trophy me-2"></i>Kelola Prestasi
+                </a>
+                <a href="{{ route('admin.program.index') }}" class="{{ request()->routeIs('admin.program.*') ? 'active' : '' }}">
+                    <i class="fas fa-layer-group me-2"></i>Kelola Program
+                </a>
+                <a href="{{ route('admin.gallery.index') }}" class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
+                    <i class="fas fa-images me-2"></i>Kelola Galeri
+                </a>
+                <a href="{{ route('admin.comments.index') }}" class="{{ request()->routeIs('admin.comments.*') ? 'active' : '' }}">
+                    <i class="fas fa-comments me-2"></i>Kelola Komentar
+                    @if(isset($pendingCommentsCount) && $pendingCommentsCount > 0)
+                    <span class="badge bg-danger rounded-pill ms-2">{{ $pendingCommentsCount }}</span>
+                    @endif
+                </a>
+                <a href="{{ route('home') }}" target="_blank">
+                    <i class="fas fa-external-link-alt me-2"></i>Lihat Website
+                </a>
             </nav>
             <div class="p-3 border-top mt-auto" style="border-color: rgba(255,255,255,0.2) !important;">
                 <form method="POST" action="{{ route('admin.logout') }}">@csrf
