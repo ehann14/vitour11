@@ -7,6 +7,7 @@ use App\Models\Panorama;
 use App\Models\Achievement;
 use App\Models\ProgramKeahlian;
 use App\Models\Comment;
+use App\Models\Gallery; // ✅ TAMBAHKAN: Import model Gallery
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -47,6 +48,10 @@ class AdminController extends Controller
         $totalPrograms = ProgramKeahlian::count();
         $recentPrograms = ProgramKeahlian::latest()->take(5)->get();
 
+        // ✅ Gallery Stats - TAMBAHKAN BAGIAN INI
+        $totalGalleries = Gallery::count();
+        $recentGalleries = Gallery::latest()->take(5)->get();
+
         // === Comment Stats ===
         $totalComments = Comment::count();
         $pendingCommentsCount = Comment::where('is_approved', false)->count();
@@ -64,6 +69,10 @@ class AdminController extends Controller
             'recentAchievements',
             'totalPrograms', 
             'recentPrograms',
+            // ✅ TAMBAHKAN: Data gallery
+            'totalGalleries',
+            'recentGalleries',
+            // === Comment Data ===
             'totalComments',
             'pendingCommentsCount',
             'pendingComments'

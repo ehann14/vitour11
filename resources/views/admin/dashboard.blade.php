@@ -25,11 +25,14 @@
         .bg-gold-light { background: rgba(245,158,11,0.15); color: #f59e0b; }
         .bg-purple-light { background: rgba(139,92,246,0.15); color: #8b5cf6; }
         .bg-pink-light { background: rgba(236,72,153,0.15); color: #ec4899; }
+        .bg-orange-light { background: rgba(255,159,67,0.15); color: #ff9f43; }
         .navbar-admin { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.08); padding: 1rem 2rem; }
         .preview-thumb { width: 60px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid #dee2e6; background: #f8f9fa; transition: transform 0.2s; }
         .preview-thumb:hover { transform: scale(1.1); }
         .preview-achievement { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 1px solid #dee2e6; background: #f8f9fa; }
         .preview-program { width: 60px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid #dee2e6; background: #f8f9fa; }
+        .preview-gallery { width: 80px; height: 60px; object-fit: cover; border-radius: 8px; border: 1px solid #dee2e6; background: #f8f9fa; transition: transform 0.2s; }
+        .preview-gallery:hover { transform: scale(1.1); }
         
         /* ✅ EQUAL HEIGHT CARDS */
         .section-card { 
@@ -82,6 +85,46 @@
         .row-equal-height > [class*='col-'] {
             display: flex;
             flex-direction: column;
+        }
+
+        /* Gallery Grid for Full Width Section */
+        .gallery-grid-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        .gallery-item-dashboard {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        .gallery-item-dashboard:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .gallery-item-dashboard img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+        .gallery-item-dashboard .gallery-info {
+            padding: 12px;
+        }
+        .gallery-item-dashboard .gallery-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .gallery-item-dashboard .gallery-category {
+            font-size: 0.75rem;
+            color: var(--gray-600);
         }
     </style>
 </head>
@@ -157,62 +200,55 @@
                     </div>
                     @endif
 
-                    <!-- Stats Cards -->
+                    <!-- Stats Cards (6 Cards) -->
                     <div class="row g-3 mb-4">
-                        <div class="col-md-3">
+                        <div class="col-md-2 col-sm-4">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-teal-light"><i class="fas fa-images"></i></div>
-                                    <div><p class="text-muted mb-0 small">Total Panorama</p><h4 class="fw-bold mb-0">{{ $totalPanoramas ?? 0 }}</h4></div>
+                                    <div><p class="text-muted mb-0 small">Panorama</p><h4 class="fw-bold mb-0">{{ $totalPanoramas ?? 0 }}</h4></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2 col-sm-4">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="fas fa-check-circle"></i></div>
-                                    <div><p class="text-muted mb-0 small">Panorama Aktif</p><h4 class="fw-bold mb-0">{{ $activePanoramas ?? 0 }}</h4></div>
+                                    <div><p class="text-muted mb-0 small">Aktif</p><h4 class="fw-bold mb-0">{{ $activePanoramas ?? 0 }}</h4></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2 col-sm-4">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-gold-light"><i class="fas fa-trophy"></i></div>
-                                    <div><p class="text-muted mb-0 small">Total Prestasi</p><h4 class="fw-bold mb-0">{{ $totalAchievements ?? 0 }}</h4></div>
+                                    <div><p class="text-muted mb-0 small">Prestasi</p><h4 class="fw-bold mb-0">{{ $totalAchievements ?? 0 }}</h4></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2 col-sm-4">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-purple-light"><i class="fas fa-layer-group"></i></div>
-                                    <div><p class="text-muted mb-0 small">Total Program</p><h4 class="fw-bold mb-0">{{ $totalPrograms ?? 0 }}</h4></div>
+                                    <div><p class="text-muted mb-0 small">Program</p><h4 class="fw-bold mb-0">{{ $totalPrograms ?? 0 }}</h4></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <a href="{{ route('admin.comments.index') }}" class="text-decoration-none">
-                                <div class="card stat-card p-3">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <div class="stat-icon bg-pink-light"><i class="fas fa-comments"></i></div>
-                                        <div>
-                                            <p class="text-muted mb-0 small">Total Komentar</p>
-                                            <h4 class="fw-bold mb-0">{{ $totalComments ?? 0 }}</h4>
-                                        </div>
-                                    </div>
+                        <div class="col-md-2 col-sm-4">
+                            <div class="card stat-card p-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon bg-orange-light"><i class="fas fa-images"></i></div>
+                                    <div><p class="text-muted mb-0 small">Galeri</p><h4 class="fw-bold mb-0">{{ $totalGalleries ?? 0 }}</h4></div>
                                 </div>
-                            </a>
+                            </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2 col-sm-4">
                             <a href="{{ route('admin.comments.index') }}" class="text-decoration-none">
                                 <div class="card stat-card p-3 border-warning">
                                     <div class="d-flex align-items-center gap-3">
-                                        <div class="stat-icon" style="background: rgba(255,193,7,0.15); color: #ffc107;">
-                                            <i class="fas fa-clock"></i>
-                                        </div>
+                                        <div class="stat-icon bg-pink-light"><i class="fas fa-comments"></i></div>
                                         <div>
-                                            <p class="text-muted mb-0 small">Menunggu Persetujuan</p>
+                                            <p class="text-muted mb-0 small">Pending</p>
                                             <h4 class="fw-bold mb-0 text-warning">{{ $pendingCommentsCount ?? 0 }}</h4>
                                         </div>
                                     </div>
@@ -225,7 +261,7 @@
                     <div class="row g-4 row-equal-height">
                         
                         <!-- Column 1: Recent Panoramas -->
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 col-md-6">
                             <div class="section-card">
                                 <div class="section-header">
                                     <h5><i class="fas fa-images me-2"></i>Panorama</h5>
@@ -252,7 +288,7 @@
                                                         <img src="{{ $previewUrl }}" alt="{{ $panorama->name }}" class="preview-thumb" onerror="this.src='https://via.placeholder.com/60x40/1e3c72/ffffff?text=No+Image'">
                                                     </td>
                                                     <td>
-                                                        <div class="fw-bold text-truncate" style="max-width: 100px;" title="{{ $panorama->name }}">{{ $panorama->name }}</div>
+                                                        <div class="fw-bold text-truncate" style="max-width: 90px;" title="{{ $panorama->name }}">{{ $panorama->name }}</div>
                                                     </td>
                                                     <td>
                                                         @if($panorama->is_active)<span class="badge-status-aktif">Aktif</span>@else<span class="badge-status-nonaktif">Nonaktif</span>@endif
@@ -263,9 +299,9 @@
                                         </table>
                                     </div>
                                     @else
-                                    <div class="empty-state">
+                                    <div class="empty-state py-3">
                                         <i class="fas fa-images"></i>
-                                        <p class="mb-0">Belum ada panorama</p>
+                                        <p class="mb-0 small">Belum ada panorama</p>
                                     </div>
                                     @endif
                                 </div>
@@ -273,7 +309,7 @@
                         </div>
 
                         <!-- Column 2: Recent Achievements -->
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 col-md-6">
                             <div class="section-card">
                                 <div class="section-header">
                                     <h5><i class="fas fa-trophy me-2"></i>Prestasi</h5>
@@ -303,7 +339,7 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <div class="fw-bold text-truncate" style="max-width: 100px;" title="{{ $achievement->title }}">{{ $achievement->title }}</div>
+                                                        <div class="fw-bold text-truncate" style="max-width: 90px;" title="{{ $achievement->title }}">{{ $achievement->title }}</div>
                                                     </td>
                                                     <td>
                                                         @if($achievement->is_active)<span class="badge-status-aktif">Aktif</span>@else<span class="badge-status-nonaktif">Nonaktif</span>@endif
@@ -314,9 +350,9 @@
                                         </table>
                                     </div>
                                     @else
-                                    <div class="empty-state">
+                                    <div class="empty-state py-3">
                                         <i class="fas fa-trophy"></i>
-                                        <p class="mb-0">Belum ada prestasi</p>
+                                        <p class="mb-0 small">Belum ada prestasi</p>
                                     </div>
                                     @endif
                                 </div>
@@ -324,7 +360,7 @@
                         </div>
 
                         <!-- Column 3: Recent Programs -->
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 col-md-6">
                             <div class="section-card">
                                 <div class="section-header">
                                     <h5><i class="fas fa-layer-group me-2"></i>Program</h5>
@@ -354,8 +390,8 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <div class="fw-bold text-truncate" style="max-width: 100px;" title="{{ $program->nama }}">{{ $program->nama }}</div>
-                                                        <small class="text-muted">{{ $program->singkatan }}</small>
+                                                        <div class="fw-bold text-truncate" style="max-width: 90px;" title="{{ $program->nama }}">{{ $program->nama }}</div>
+                                                        <small class="text-muted" style="font-size:0.75rem">{{ $program->singkatan }}</small>
                                                     </td>
                                                     <td>
                                                         @if($program->is_active)<span class="badge-status-aktif">Aktif</span>@else<span class="badge-status-nonaktif">Nonaktif</span>@endif
@@ -366,9 +402,9 @@
                                         </table>
                                     </div>
                                     @else
-                                    <div class="empty-state">
+                                    <div class="empty-state py-3">
                                         <i class="fas fa-layer-group"></i>
-                                        <p class="mb-0">Belum ada program</p>
+                                        <p class="mb-0 small">Belum ada program</p>
                                     </div>
                                     @endif
                                 </div>
@@ -377,7 +413,7 @@
 
                     </div>
 
-                    <!-- ✅ Comments Section - NOW BELOW (Full Width) -->
+                    <!-- ✅ Comments Section - Full Width -->
                     <div class="row g-4 mt-2">
                         <div class="col-12">
                             <div class="section-card">
@@ -447,6 +483,55 @@
                                     <div class="empty-state py-4">
                                         <i class="fas fa-comments"></i>
                                         <p class="mb-0">Tidak ada komentar yang menunggu persetujuan</p>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ✅ Gallery Section - Full Width Below Comments (5 Terbaru) - FIXED -->
+                    <div class="row g-4 mt-2">
+                        <div class="col-12">
+                            <div class="section-card">
+                                <div class="section-header">
+                                    <h5><i class="fas fa-images me-2"></i>Galeri Terbaru (5 Foto)</h5>
+                                    <a href="{{ route('admin.gallery.create') }}" class="btn btn-sm" style="background: #ff9f43; color: white; border-radius: 20px;">
+                                        <i class="fas fa-plus me-1"></i>Tambah Galeri
+                                    </a>
+                                </div>
+                                <div class="card-body p-0">
+                                    @if(isset($recentGalleries) && $recentGalleries->count() > 0)
+                                    <div class="gallery-grid-dashboard">
+                                        @foreach($recentGalleries->take(5) as $gallery)
+                                        <div class="gallery-item-dashboard">
+                                            {{-- ✅ FIXED: Gunakan $gallery->image (bukan image_path) --}}
+                                            @if($gallery->image)
+                                                <img src="{{ asset('storage/' . $gallery->image) }}" 
+                                                     alt="{{ $gallery->title }}"
+                                                     onerror="this.src='https://via.placeholder.com/200x120/1e3c72/ffffff?text=No+Image'">
+                                            @else
+                                                <img src="https://via.placeholder.com/200x120/1e3c72/ffffff?text=No+Image" alt="No Image">
+                                            @endif
+                                            
+                                            <div class="gallery-info">
+                                                <div class="gallery-title">{{ $gallery->title }}</div>
+                                                <div class="gallery-category">
+                                                    <i class="fas fa-tag me-1"></i>{{ $gallery->category ?? 'Umum' }}
+                                                    @if($gallery->is_active)
+                                                    <span class="badge-status-aktif ms-2">Aktif</span>
+                                                    @else
+                                                    <span class="badge-status-nonaktif ms-2">Nonaktif</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    @else
+                                    <div class="empty-state py-4">
+                                        <i class="fas fa-images"></i>
+                                        <p class="mb-0">Belum ada galeri</p>
                                     </div>
                                     @endif
                                 </div>
