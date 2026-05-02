@@ -30,8 +30,41 @@
         .preview-thumb:hover { transform: scale(1.1); }
         .preview-achievement { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 1px solid #dee2e6; background: #f8f9fa; }
         .preview-program { width: 60px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid #dee2e6; background: #f8f9fa; }
-        .section-card { border: none; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
-        .section-header { background: white; border-radius: 16px 16px 0 0; padding: 1rem 1.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* ✅ EQUAL HEIGHT CARDS */
+        .section-card { 
+            border: none; 
+            border-radius: 16px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08); 
+            margin-bottom: 1.5rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .section-card .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+        .section-card .table-responsive {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .section-card table {
+            margin-bottom: 0;
+        }
+        
+        .section-header { 
+            background: white; 
+            border-radius: 16px 16px 0 0; 
+            padding: 1rem 1.5rem; 
+            border-bottom: 1px solid #eee; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
         .section-header h5 { margin: 0; color: var(--primary-blue); font-weight: 700; }
         .badge-status-aktif { background: #28a745; color: white; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
         .badge-status-nonaktif { background: #6c757d; color: white; font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
@@ -40,6 +73,16 @@
         .empty-state i { font-size: 3rem; opacity: 0.3; margin-bottom: 1rem; display: block; }
         .comment-preview { max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .comment-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; background: rgba(236,72,153,0.15); color: #ec4899; }
+        
+        /* ✅ ROW EQUAL HEIGHT */
+        .row-equal-height {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .row-equal-height > [class*='col-'] {
+            display: flex;
+            flex-direction: column;
+        }
     </style>
 </head>
 <body>
@@ -66,7 +109,6 @@
                     <a href="{{ route('admin.gallery.index') }}" class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
                         <i class="fas fa-images me-2"></i>Kelola Galeri
                     </a>
-                    <!-- ✅ MENU KELOLA KOMENTAR - BARU -->
                     <a href="{{ route('admin.comments.index') }}" class="{{ request()->routeIs('admin.comments.*') ? 'active' : '' }}">
                         <i class="fas fa-comments me-2"></i>Kelola Komentar
                         @if(isset($pendingCommentsCount) && $pendingCommentsCount > 0)
@@ -149,7 +191,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- ✅ Stat Card Komentar - BARU -->
                         <div class="col-md-3">
                             <a href="{{ route('admin.comments.index') }}" class="text-decoration-none">
                                 <div class="card stat-card p-3">
@@ -180,11 +221,11 @@
                         </div>
                     </div>
 
-                    <!-- Four Columns: Panorama, Achievements, Programs, Comments -->
-                    <div class="row g-4">
+                    <!-- Three Columns: Panorama, Achievements, Programs (EQUAL HEIGHT) -->
+                    <div class="row g-4 row-equal-height">
                         
                         <!-- Column 1: Recent Panoramas -->
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="section-card">
                                 <div class="section-header">
                                     <h5><i class="fas fa-images me-2"></i>Panorama</h5>
@@ -232,7 +273,7 @@
                         </div>
 
                         <!-- Column 2: Recent Achievements -->
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="section-card">
                                 <div class="section-header">
                                     <h5><i class="fas fa-trophy me-2"></i>Prestasi</h5>
@@ -283,7 +324,7 @@
                         </div>
 
                         <!-- Column 3: Recent Programs -->
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="section-card">
                                 <div class="section-header">
                                     <h5><i class="fas fa-layer-group me-2"></i>Program</h5>
@@ -334,11 +375,14 @@
                             </div>
                         </div>
 
-                        <!-- ✅ Column 4: Recent Comments (Pending) - BARU -->
-                        <div class="col-lg-3">
+                    </div>
+
+                    <!-- ✅ Comments Section - NOW BELOW (Full Width) -->
+                    <div class="row g-4 mt-2">
+                        <div class="col-12">
                             <div class="section-card">
                                 <div class="section-header">
-                                    <h5><i class="fas fa-comments me-2"></i>Komentar</h5>
+                                    <h5><i class="fas fa-comments me-2"></i>Komentar Terbaru (Menunggu Persetujuan)</h5>
                                     <a href="{{ route('admin.comments.index') }}" class="btn btn-sm" style="background: #ec4899; color: white; border-radius: 20px;">
                                         <i class="fas fa-list me-1"></i>Lihat Semua
                                     </a>
@@ -349,13 +393,16 @@
                                         <table class="table table-hover align-middle mb-0">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th width="40"></th>
+                                                    <th width="50">Avatar</th>
                                                     <th>Nama</th>
-                                                    <th width="60">Aksi</th>
+                                                    <th>Email</th>
+                                                    <th>Pesan</th>
+                                                    <th width="150">Tanggal</th>
+                                                    <th width="80">Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($pendingComments->take(4) as $comment)
+                                                @foreach($pendingComments->take(5) as $comment)
                                                 <tr>
                                                     <td>
                                                         <div class="comment-avatar">
@@ -363,17 +410,31 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div class="fw-bold small">{{ $comment->name }}</div>
-                                                        <div class="comment-preview small text-muted" title="{{ $comment->message }}">
-                                                            {{ Str::limit($comment->message, 30) }}
-                                                        </div>
-                                                        <small class="text-muted" style="font-size: 0.7rem;">{{ $comment->created_at->diffForHumans() }}</small>
+                                                        <div class="fw-bold">{{ $comment->name }}</div>
+                                                    </td>
+                                                    <td>
+                                                        <small class="text-muted">{{ $comment->email }}</small>
+                                                    </td>
+                                                    <td>
+                                                        <div class="comment-preview" title="{{ $comment->message }}">{{ $comment->message }}</div>
+                                                    </td>
+                                                    <td>
+                                                        <small class="text-muted">{{ $comment->created_at->format('d M Y, H:i') }}</small>
+                                                        <br>
+                                                        <small class="text-muted" style="font-size: 0.75rem;">{{ $comment->created_at->diffForHumans() }}</small>
                                                     </td>
                                                     <td>
                                                         <form action="{{ route('admin.comments.toggle', $comment->id) }}" method="POST" class="d-inline">
                                                             @csrf
-                                                            <button type="submit" class="btn btn-sm btn-success py-0 px-2" style="font-size: 0.7rem;" title="Setujui">
+                                                            <button type="submit" class="btn btn-sm btn-success py-0 px-2" title="Setujui">
                                                                 <i class="fas fa-check"></i>
+                                                            </button>
+                                                        </form>
+                                                        <form action="{{ route('admin.comments.destroy', $comment->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus komentar ini?')">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-danger py-0 px-2" title="Hapus">
+                                                                <i class="fas fa-trash"></i>
                                                             </button>
                                                         </form>
                                                     </td>
@@ -383,16 +444,16 @@
                                         </table>
                                     </div>
                                     @else
-                                    <div class="empty-state">
+                                    <div class="empty-state py-4">
                                         <i class="fas fa-comments"></i>
-                                        <p class="mb-0">Tidak ada komentar pending</p>
+                                        <p class="mb-0">Tidak ada komentar yang menunggu persetujuan</p>
                                     </div>
                                     @endif
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
             </div>
         </div>
