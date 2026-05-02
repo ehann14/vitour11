@@ -83,6 +83,65 @@
         .section-header h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 12px; color: var(--primary-blue); display: flex; align-items: center; justify-content: center; gap: 12px; }
         .section-header h2 i { color: var(--accent-teal); font-size: 1.6rem; }
         .section-header p { font-size: 1.05rem; color: var(--gray-600); max-width: 550px; margin: 0 auto; }
+        
+        /* ✅ UPDATED: Tentang Sekolah Full Width di ATAS */
+        .about-section-top {
+            margin-bottom: 40px;
+        }
+        .about-school-card {
+            background: var(--white);
+            border: 2px solid var(--primary-blue);
+            border-radius: 30px;
+            padding: 35px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .about-school-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border-color: var(--accent-teal);
+        }
+        .about-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-blue);
+        }
+        .about-header i { font-size: 1.6rem; color: var(--primary-blue); }
+        .about-header h3 { font-size: 1.5rem; color: var(--primary-blue); font-weight: 700; }
+        .about-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--gray-700);
+            font-weight: 400;
+            margin-bottom: 18px;
+        }
+        .about-highlights {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--gray-700);
+            padding: 8px 12px;
+            background: var(--gray-100);
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+        .highlight-item:hover {
+            background: rgba(30, 60, 114, 0.08);
+            transform: translateX(3px);
+        }
+        .highlight-item i { color: var(--accent-teal); font-size: 1rem; flex-shrink: 0; }
+        
+        /* Profile Container - Stats & Visi Misi Tetap */
         .profile-container { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .school-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 30px; }
         .stat-card { background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); color: var(--white); padding: 20px; border-radius: 30px; display: flex; align-items: center; gap: 12px; box-shadow: 0 6px 15px rgba(0,0,0,0.15); transition: all 0.3s ease; }
@@ -90,7 +149,9 @@
         .stat-icon { width: 50px; height: 50px; background: rgba(255, 255, 255, 0.25); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
         .stat-info h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 5px; }
         .stat-info p { font-size: 0.9rem; opacity: 0.95; font-weight: 500; }
-        .vision-mission { display: flex; flex-direction: column; gap: 22px; margin-bottom: 30px; }
+        
+        /* Visi Misi - Tetap di kanan */
+        .vision-mission { display: flex; flex-direction: column; gap: 22px; }
         .vision-card, .mission-card { background: var(--white); border: 2px solid var(--primary-blue); border-radius: 30px; padding: 28px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; }
         .vision-card:hover, .mission-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); border-color: var(--accent-teal); }
         .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 2px solid var(--primary-blue); }
@@ -100,7 +161,8 @@
         .mission-list { list-style: none; display: flex; flex-direction: column; gap: 12px; padding-left: 10px; }
         .mission-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; line-height: 1.6; color: var(--gray-700); padding: 5px 0; }
         .mission-list li i { color: var(--accent-teal); font-size: 1.1rem; margin-top: 4px; flex-shrink: 0; }
-        .info-contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
+        
+        .info-contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; margin-top: 30px; }
         .school-info-card { background: var(--white); border-radius: 25px; padding: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 2px solid var(--gray-300); transition: all 0.3s ease; }
         .school-info-card:hover { border-color: var(--primary-blue); box-shadow: 0 6px 20px rgba(0,0,0,0.15); transform: translateY(-2px); }
         .info-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid var(--primary-blue); }
@@ -164,28 +226,24 @@
         /* ✅ CAROUSEL WRAPPER & CONTROLS */
         .comment-carousel-wrapper {
             position: relative;
-            max-width: 1000px; /* Lebar area carousel */
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 0 50px; /* Ruang untuk tombol panah */
+            padding: 0 50px;
         }
-        
         .comment-carousel-window {
             overflow: hidden;
             border-radius: 20px;
             background: #f8f9fa;
         }
-
         .comment-carousel-track {
             display: flex;
             transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
         }
-        
         .comment-carousel-item {
             min-width: 100%;
             padding: 20px;
             box-sizing: border-box;
         }
-
         .comment-card-carousel {
             background: var(--white);
             border: 2px solid var(--gray-200);
@@ -197,14 +255,12 @@
             flex-direction: column;
             justify-content: center;
         }
-
         .comment-card-header {
             display: flex;
             align-items: center;
             gap: 15px;
             margin-bottom: 15px;
         }
-
         .comment-card-avatar {
             width: 50px;
             height: 50px;
@@ -218,13 +274,10 @@
             font-size: 1.2rem;
             flex-shrink: 0;
         }
-
         .comment-card-info { flex: 1; }
         .comment-card-author { color: var(--primary-blue); font-weight: 700; font-size: 1.1rem; }
         .comment-card-time { color: var(--gray-600); font-size: 0.85rem; }
         .comment-card-text { color: var(--gray-700); line-height: 1.7; font-size: 1rem; }
-
-        /* Tombol Panah */
         .carousel-nav-btn {
             position: absolute;
             top: 50%;
@@ -256,8 +309,6 @@
         }
         .btn-prev { left: 0; }
         .btn-next { right: 0; }
-
-        /* Dots Indicator */
         .carousel-dots {
             display: flex;
             justify-content: center;
@@ -280,7 +331,6 @@
             width: 30px;
             border-radius: 10px;
         }
-
         .empty-comments { text-align: center; padding: 50px 20px; background: var(--gray-100); border-radius: 20px; border: 2px dashed var(--gray-300); }
         .empty-comments i { font-size: 3.5rem; color: var(--gray-300); margin-bottom: 15px; display: block; }
         .text-muted { color: var(--gray-600) !important; }
@@ -334,6 +384,8 @@
             .form-actions { text-align: center; }
             .comment-carousel-wrapper { padding: 0 40px; }
             .carousel-nav-btn { width: 36px; height: 36px; }
+            .about-highlights { grid-template-columns: repeat(2, 1fr); }
+            .about-school-card { padding: 25px; }
         }
         @media (max-width: 480px) { 
             .hero h1 { font-size: 1.7rem; } 
@@ -349,6 +401,7 @@
             .gallery-button-container .btn-primary { padding: 12px 30px; font-size: 1rem; }
             .comment-carousel-wrapper { padding: 0 32px; }
             .comment-card-carousel { padding: 20px; }
+            .about-highlights { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -414,6 +467,27 @@
                 <h2><i class="fas fa-school"></i> Profil Sekolah</h2>
                 <p>Menjelajahi sejarah, visi, dan misi SMK Negeri 11 Bandung</p>
             </div>
+            
+            <!-- ✅ TENTANG SEKOLAH - FULL WIDTH DI ATAS -->
+            <div class="about-section-top">
+                <div class="about-school-card">
+                    <div class="about-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Tentang Sekolah</h3>
+                    </div>
+                    <p class="about-text">
+                        SMK Negeri 11 Bandung merupakan salah satu Lembaga Pendidikan Menengah Kejuruan di Kota Bandung, Jawa Barat. SMKN 11 Bandung dipercaya pada tahun 2021 menjadi salah satu sekolah menengah kejuruan di Indonesia yang menjadi Sekolah Pusat Keunggulan di bidang Hospitality jurusan Manajemen Perkantoran dan Layanan Bisnis.
+                    </p>
+                    <p class="about-text">
+                        Selain itu SMKN 11 Bandung menjadi salah satu dari 35 sekolah di Jawa Barat yang menjadi sekolah Badan Layanan Usaha Daerah Provinsi Jawa Barat.
+                    </p>
+                    <p>
+                        Program-program unggulan seperti Sekolah Pencetak Wirausaha, Teaching Factory, Inkubasi Start Up, Roots Indonesia - Let's Fight Bullying dan masih banyak lagi program untuk memajukan sumber daya manusia termasuk Siswa, Guru dan Tenaga Kependidikan.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Stats & Visi Misi - Tetap Layout Asli -->
             <div class="profile-container">
                 <div class="school-stats">
                     <div class="stat-card"><div class="stat-icon"><i class="fas fa-calendar-alt"></i></div><div class="stat-info"><h3>1980</h3><p>Tahun Berdiri</p></div></div>
@@ -426,6 +500,7 @@
                     <div class="mission-card"><div class="card-header"><i class="fas fa-tasks"></i><h3>Misi Sekolah</h3></div><ul class="mission-list"><li><i class="fas fa-check-circle"></i> Membentuk murid berakhlak mulia dan empatik melalui penguatan nilai-nilai Pancawaluya dalam budaya sekolah.</li><li><i class="fas fa-check-circle"></i> Menyelenggarakan pembelajaran yang rasional, kreatif, dan literat berbasis proyek, pemecahan masalah, dan teknologi.</li><li><i class="fas fa-check-circle"></i> Mengembangkan kompetensi unggul dan berintegritas agar peserta didik memiliki daya saing di dunia kerja dan dunia usaha.</li><li><i class="fas fa-check-circle"></i> Menumbuhkan karakter tangguh dan adaptif dalam menghadapi perubahan dan tantangan global.</li><li><i class="fas fa-check-circle"></i> Mendorong kemandirian dan jiwa kewirausahaan melalui pengalaman belajar nyata dan kolaborasi dengan dunia usaha dan industri.</li></ul></div>
                 </div>
             </div>
+            
             <div class="info-contact-container">
                 <div class="school-info-card">
                     <div class="info-header"><i class="fas fa-id-card"></i><h3>Identitas Sekolah</h3></div>
@@ -498,7 +573,7 @@
             <!-- Form Komentar -->
             <div class="comment-form-card mb-5">
                 <div class="card-body-custom">
-                    <h5 class="form-title"><i class="fas fa-pen me-2"></i>Tulis Komentar</h5>
+                    <h5 class="form-title">Tulis Komentar</h5>
                     <form action="{{ route('comment.store') }}" method="POST">
                         @csrf
                         <div class="form-row">
@@ -529,8 +604,7 @@
             <!-- ✅ AUTO SLIDE CAROUSEL COMMENT -->
             <div class="mb-4">
                 <h5 class="comments-title">
-                    <i class="fas fa-list me-2"></i>Komentar Terbaru 
-                    <span class="badge" style="background: var(--accent-teal); color: white; font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; margin-left: 8px;">Max 10</span>
+                    Komentar Terbaru 
                 </h5>
                 
                 @if($comments->count() > 0)
