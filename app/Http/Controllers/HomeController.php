@@ -5,31 +5,34 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Panorama;
 use App\Models\Achievement;
-// ✅ TAMBAHAN: Import model Comment
 use App\Models\Comment;
 
 class HomeController extends Controller
 {
     /**
      * Halaman utama /beranda
+     * - Menampilkan panorama aktif
+     * - Menampilkan maksimal 10 komentar terbaru yang sudah disetujui (FIFO)
      */
     public function index()
     {
+        // ✅ Ambil panorama aktif yang akan ditampilkan
         $panoramas = Panorama::where('is_active', true)
             ->orderBy('order', 'asc')
             ->get();
         
-        // ✅ TAMBAHAN: Ambil komentar yang sudah disetujui
+        // ✅ Ambil komentar yang sudah disetujui, maksimal 10 terbaru
+        // Urutan: terbaru dulu (latest), ambil 10 pertama
         $comments = Comment::where('is_approved', true)
                            ->latest()
-                           ->take(10) // Batasi 10 komentar terbaru
+                           ->take(10)
                            ->get();
         
         return view('home', compact('panoramas', 'comments'));
     }
 
     /**
-     * Halaman prestasi (BARU)
+     * Halaman prestasi
      */
     public function prestasi()
     {
