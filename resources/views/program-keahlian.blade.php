@@ -401,6 +401,50 @@
             background: #fff;
         }
 
+        /* ✅ WHATSAPP FLOATING BUTTON - SAMA PERSIS DENGAN HOME */
+        .cs-button {
+            position: fixed; bottom: 25px; right: 25px; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            width: 56px; height: 56px;
+            background: linear-gradient(135deg, var(--accent-teal), #00b39d);
+            color: var(--white);
+            border-radius: 50%;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(0, 201, 177, 0.35);
+            transition: all 0.3s ease;
+        }
+        .cs-button:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 201, 177, 0.55);
+            color: var(--white);
+        }
+        .cs-button i { font-size: 1.8rem; }
+        .cs-tooltip {
+            position: absolute; bottom: 100%; right: 50%;
+            transform: translateX(50%) translateY(10px);
+            margin-bottom: 12px;
+            padding: 8px 16px;
+            background: var(--primary-blue);
+            color: var(--white);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .cs-tooltip::after {
+            content: ''; position: absolute; top: 100%; left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--primary-blue);
+        }
+        .cs-button:hover .cs-tooltip {
+            opacity: 1; visibility: visible; transform: translateX(50%) translateY(0);
+        }
+
         /* === RESPONSIVE === */
         @media (max-width: 992px) {
             .nav-menu { gap: 15px; }
@@ -428,6 +472,8 @@
             .nav-login-btn span { display: none; }
             .nav-login-btn { padding: 10px 16px; }
             .nav-login-btn i { font-size: 1.1rem; }
+            .cs-button { bottom: 15px; right: 15px; width: 50px; height: 50px; }
+            .cs-button i { font-size: 1.5rem; }
         }
         @media (max-width: 480px) {
             .page-header h1 { font-size: 1.7rem; }
@@ -532,6 +578,16 @@
             </div>
         </div>
     </footer>
+
+    <!-- ✅ WHATSAPP FLOATING BUTTON -->
+    <a href="https://wa.me/6281234567890?text=Halo%20Admin%20SMK%20Negeri%2011%20Bandung,%20saya%20ingin%20bertanya..." 
+       class="cs-button" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       aria-label="Hubungi Customer Service via WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <div class="cs-tooltip">Chat via WhatsApp</div>
+    </a>
 
     <!-- Modal Popup -->
     <div class="modal-overlay" id="programModal">

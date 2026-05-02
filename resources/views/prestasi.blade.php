@@ -31,39 +31,13 @@
             overflow-x: hidden;
             line-height: 1.6;
         }
-        .circle-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden;
-        }
-        .circle {
-            position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.3;
-        }
-        .circle-1 {
-            width: 500px; height: 500px; top: -200px; left: -100px;
-            background: radial-gradient(circle, var(--accent-teal), transparent 70%);
-            animation: float 20s infinite linear;
-        }
-        .circle-2 {
-            width: 600px; height: 600px; bottom: -250px; right: -150px;
-            background: radial-gradient(circle, var(--accent-teal), transparent 70%);
-            animation: float 25s infinite reverse linear;
-        }
-        .circle-3 {
-            width: 350px; height: 350px; top: 40%; right: -100px;
-            background: radial-gradient(circle, rgba(255,255,255,0.5), transparent 70%);
-            animation: float 15s infinite linear;
-        }
-        .circle-4 {
-            width: 400px; height: 400px; bottom: 10%; left: -50px;
-            background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 70%);
-            animation: float 18s infinite reverse linear;
-        }
-        @keyframes float {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(50px, -30px) rotate(90deg); }
-            50% { transform: translate(100px, 0) rotate(180deg); }
-            75% { transform: translate(50px, 30px) rotate(270deg); }
-            100% { transform: translate(0, 0) rotate(360deg); }
-        }
+        .circle-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .circle { position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.3; }
+        .circle-1 { width: 500px; height: 500px; top: -200px; left: -100px; background: radial-gradient(circle, var(--accent-teal), transparent 70%); animation: float 20s infinite linear; }
+        .circle-2 { width: 600px; height: 600px; bottom: -250px; right: -150px; background: radial-gradient(circle, var(--accent-teal), transparent 70%); animation: float 25s infinite reverse linear; }
+        .circle-3 { width: 350px; height: 350px; top: 40%; right: -100px; background: radial-gradient(circle, rgba(255,255,255,0.5), transparent 70%); animation: float 15s infinite linear; }
+        .circle-4 { width: 400px; height: 400px; bottom: 10%; left: -50px; background: radial-gradient(circle, rgba(255,255,255,0.4), transparent 70%); animation: float 18s infinite reverse linear; }
+        @keyframes float { 0% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(50px, -30px) rotate(90deg); } 50% { transform: translate(100px, 0) rotate(180deg); } 75% { transform: translate(50px, 30px) rotate(270deg); } 100% { transform: translate(0, 0) rotate(360deg); } }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
         
         /* ✅ NAVBAR - Sama persis dengan home.blade.php */
@@ -74,215 +48,56 @@
             padding: 12px 0;
             border-radius: 0 0 25px 25px;
         }
-        .navbar .container {
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .nav-brand {
-            display: flex; align-items: center; gap: 8px;
-            font-weight: 700; font-size: 1.2rem; color: var(--primary-blue);
-        }
+        .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+        .nav-brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1.2rem; color: var(--primary-blue); }
         .nav-brand i { font-size: 1.4rem; }
         .nav-menu { display: flex; list-style: none; gap: 20px; }
-        .nav-menu a {
-            text-decoration: none; color: var(--gray-700);
-            font-weight: 600; font-size: 0.95rem; padding: 4px 0; position: relative;
-            transition: color 0.3s;
-        }
+        .nav-menu a { text-decoration: none; color: var(--gray-700); font-weight: 600; font-size: 0.95rem; padding: 4px 0; position: relative; transition: color 0.3s; }
         .nav-menu a:hover, .nav-menu a.active { color: var(--primary-blue); }
-        .nav-menu a::after {
-            content: ''; position: absolute; bottom: 0; left: 0;
-            width: 0; height: 2px; background: var(--accent-teal);
-            transition: width 0.3s ease; border-radius: 3px;
-        }
+        .nav-menu a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--accent-teal); transition: width 0.3s ease; border-radius: 3px; }
         .nav-menu a:hover::after, .nav-menu a.active::after { width: 100%; }
-        
-        .nav-toggle {
-            display: none; background: none; border: none;
-            font-size: 1.4rem; color: var(--primary-blue);
-            cursor: pointer; border-radius: 50%; padding: 6px;
-            transition: all 0.3s ease;
-        }
+        .nav-toggle { display: none; background: none; border: none; font-size: 1.4rem; color: var(--primary-blue); cursor: pointer; border-radius: 50%; padding: 6px; transition: all 0.3s ease; }
         .nav-toggle:hover { background: rgba(30, 60, 114, 0.1); }
-        
-        .nav-login-btn {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-            color: var(--white);
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(30, 60, 114, 0.25);
-        }
-        .nav-login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
-            color: var(--white);
-        }
+        .nav-login-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); color: var(--white); border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(30, 60, 114, 0.25); }
+        .nav-login-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4); color: var(--white); }
         .nav-login-btn i { font-size: 0.95rem; }
         
         /* Page Header */
-        .page-header {
-            padding: 80px 0 50px;
-            text-align: center;
-            color: var(--white);
-        }
-        .page-header h1 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
+        .page-header { padding: 80px 0 50px; text-align: center; color: var(--white); }
+        .page-header h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; text-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; gap: 15px; }
         .page-header h1 i { color: var(--accent-teal); }
-        .page-header p {
-            font-size: 1.2rem;
-            opacity: 0.95;
-            max-width: 600px;
-            margin: 0 auto;
-            font-weight: 300;
-        }
+        .page-header p { font-size: 1.2rem; opacity: 0.95; max-width: 600px; margin: 0 auto; font-weight: 300; }
         
         /* Filter Buttons */
-        .filter-container {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-        .filter-btn {
-            padding: 10px 24px;
-            border: 2px solid var(--white);
-            background: transparent;
-            color: var(--white);
-            border-radius: 30px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-        }
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--accent-teal);
-            border-color: var(--accent-teal);
-            color: var(--primary-blue);
-            transform: translateY(-2px);
-        }
+        .filter-container { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
+        .filter-btn { padding: 10px 24px; border: 2px solid var(--white); background: transparent; color: var(--white); border-radius: 30px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; font-size: 0.95rem; }
+        .filter-btn:hover, .filter-btn.active { background: var(--accent-teal); border-color: var(--accent-teal); color: var(--primary-blue); transform: translateY(-2px); }
         
         /* Prestasi Grid */
         .prestasi-section { padding: 40px 0 80px; }
-        .prestasi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
-        }
-        .prestasi-card {
-            background: var(--white);
-            border-radius: 25px;
-            padding: 0;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        .prestasi-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal));
-        }
-        .prestasi-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-        }
-        
-        .prestasi-image {
-            width: 100%;
-            height: 220px;
-            overflow: hidden;
-        }
-        .prestasi-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
+        .prestasi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; }
+        .prestasi-card { background: var(--white); border-radius: 25px; padding: 0; box-shadow: 0 8px 25px rgba(0,0,0,0.15); transition: all 0.4s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+        .prestasi-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal)); }
+        .prestasi-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.25); }
+        .prestasi-image { width: 100%; height: 220px; overflow: hidden; }
+        .prestasi-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
         .prestasi-card:hover .prestasi-image img { transform: scale(1.1); }
-        
-        .prestasi-badges {
-            display: flex;
-            gap: 8px;
-            padding: 15px 20px 0;
-            flex-wrap: wrap;
-        }
-        .badge-level, .badge-type {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
+        .prestasi-badges { display: flex; gap: 8px; padding: 15px 20px 0; flex-wrap: wrap; }
+        .badge-level, .badge-type { padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
         .badge-kota { background: #10b981; color: white; }
         .badge-provinsi { background: #3b82f6; color: white; }
         .badge-nasional { background: #8b5cf6; color: white; }
         .badge-internasional { background: #ef4444; color: white; }
         .badge-akademik { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
         .badge-non-akademik { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
-        
         .prestasi-content { padding: 15px 20px 20px; flex: 1; display: flex; flex-direction: column; }
-        .prestasi-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary-blue);
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
-        .prestasi-ranking {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #f59e0b;
-            font-weight: 700;
-            margin-bottom: 8px;
-            font-size: 1rem;
-        }
-        .prestasi-meta {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.85rem;
-            color: var(--gray-600);
-            font-weight: 500;
-        }
+        .prestasi-title { font-size: 1.2rem; font-weight: 700; color: var(--primary-blue); margin-bottom: 10px; line-height: 1.4; }
+        .prestasi-ranking { display: flex; align-items: center; gap: 5px; color: #f59e0b; font-weight: 700; margin-bottom: 8px; font-size: 1rem; }
+        .prestasi-meta { display: flex; gap: 15px; margin-bottom: 12px; flex-wrap: wrap; }
+        .meta-item { display: flex; align-items: center; gap: 5px; font-size: 0.85rem; color: var(--gray-600); font-weight: 500; }
         .meta-item i { color: var(--accent-teal); }
-        .prestasi-desc {
-            color: var(--gray-700);
-            line-height: 1.6;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            flex: 1;
-        }
-        .prestasi-footer {
-            padding-top: 12px;
-            border-top: 1px solid var(--gray-200);
-            font-size: 0.85rem;
-        }
+        .prestasi-desc { color: var(--gray-700); line-height: 1.6; font-size: 0.9rem; margin-bottom: 15px; flex: 1; }
+        .prestasi-footer { padding-top: 12px; border-top: 1px solid var(--gray-200); font-size: 0.85rem; }
         .student-info { margin-bottom: 5px; }
         .student-info strong { color: var(--primary-blue); }
         .student-class { color: var(--gray-600); margin-left: 5px; }
@@ -290,72 +105,74 @@
         .advisor-title { display: block; font-size: 0.8rem; }
         
         /* Stats Section */
-        .stats-section {
-            background: var(--white);
-            border-radius: 35px;
-            padding: 40px 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-        }
-        .stat-item {
-            text-align: center;
-            padding: 20px;
-            background: linear-gradient(135deg, var(--gray-100), var(--white));
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
+        .stats-section { background: var(--white); border-radius: 35px; padding: 40px 30px; margin-bottom: 40px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; }
+        .stat-item { text-align: center; padding: 20px; background: linear-gradient(135deg, var(--gray-100), var(--white)); border-radius: 20px; transition: all 0.3s ease; }
         .stat-item:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         .stat-number { font-size: 2rem; font-weight: 800; color: var(--primary-blue); margin-bottom: 5px; }
         .stat-label { font-size: 0.9rem; color: var(--gray-600); font-weight: 500; }
         
         /* No Data */
-        .no-data {
-            text-align: center;
-            padding: 60px 20px;
-            grid-column: 1 / -1;
-        }
+        .no-data { text-align: center; padding: 60px 20px; grid-column: 1 / -1; }
         .no-data i { font-size: 4rem; color: var(--gray-300); margin-bottom: 15px; }
         .no-data p { color: var(--gray-600); font-size: 1.1rem; }
         
         /* Pagination */
         .pagination-container { margin-top: 40px; display: flex; justify-content: center; }
         .pagination { display: flex; gap: 5px; list-style: none; }
-        .pagination li a, .pagination li span {
-            padding: 8px 14px;
-            border-radius: 8px;
-            background: var(--white);
-            color: var(--primary-blue);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
+        .pagination li a, .pagination li span { padding: 8px 14px; border-radius: 8px; background: var(--white); color: var(--primary-blue); text-decoration: none; font-weight: 500; transition: all 0.2s; }
         .pagination li.active span { background: var(--primary-blue); color: var(--white); }
         .pagination li a:hover { background: var(--accent-teal); color: var(--primary-blue); }
         
         /* Footer */
-        footer {
-            background: var(--white); padding: 40px 0 25px;
-            margin-top: 40px;
-            border-top: 4px solid var(--primary-blue);
-            border-radius: 25px 25px 0 0;
-        }
-        .footer-content {
-            display: flex; justify-content: center; align-items: center;
-            padding-bottom: 25px; border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
-        .footer-brand {
-            display: flex; align-items: center; gap: 10px;
-            font-weight: 800; font-size: 1.4rem; color: var(--primary-blue);
-        }
+        footer { background: var(--white); padding: 40px 0 25px; margin-top: 40px; border-top: 4px solid var(--primary-blue); border-radius: 25px 25px 0 0; }
+        .footer-content { display: flex; justify-content: center; align-items: center; padding-bottom: 25px; border-bottom: 1px solid rgba(0,0,0,0.1); }
+        .footer-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.4rem; color: var(--primary-blue); }
         .footer-brand i { font-size: 1.8rem; }
-        .footer-bottom {
-            text-align: center; padding-top: 20px;
-            color: var(--gray-600); font-size: 1rem;
+        .footer-bottom { text-align: center; padding-top: 20px; color: var(--gray-600); font-size: 1rem; }
+        
+        /* ✅ WHATSAPP FLOATING BUTTON - SAMA PERSIS DENGAN HOME */
+        .cs-button {
+            position: fixed; bottom: 25px; right: 25px; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            width: 56px; height: 56px;
+            background: linear-gradient(135deg, var(--accent-teal), #00b39d);
+            color: var(--white);
+            border-radius: 50%;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(0, 201, 177, 0.35);
+            transition: all 0.3s ease;
+        }
+        .cs-button:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 201, 177, 0.55);
+            color: var(--white);
+        }
+        .cs-button i { font-size: 1.8rem; }
+        .cs-tooltip {
+            position: absolute; bottom: 100%; right: 50%;
+            transform: translateX(50%) translateY(10px);
+            margin-bottom: 12px;
+            padding: 8px 16px;
+            background: var(--primary-blue);
+            color: var(--white);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .cs-tooltip::after {
+            content: ''; position: absolute; top: 100%; left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--primary-blue);
+        }
+        .cs-button:hover .cs-tooltip {
+            opacity: 1; visibility: visible; transform: translateX(50%) translateY(0);
         }
         
         /* Responsive */
@@ -380,6 +197,8 @@
             .nav-login-btn span { display: none; }
             .nav-login-btn { padding: 10px 16px; }
             .nav-login-btn i { font-size: 1.1rem; }
+            .cs-button { bottom: 15px; right: 15px; width: 50px; height: 50px; }
+            .cs-button i { font-size: 1.5rem; }
         }
         @media (max-width: 480px) {
             .page-header h1 { font-size: 1.7rem; }
@@ -558,12 +377,21 @@
         </div>
     </footer>
 
+    <!-- ✅ WHATSAPP FLOATING BUTTON -->
+    <a href="https://wa.me/6281234567890?text=Halo%20Admin%20SMK%20Negeri%2011%20Bandung,%20saya%20ingin%20bertanya..." 
+       class="cs-button" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       aria-label="Hubungi Customer Service via WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <div class="cs-tooltip">Chat via WhatsApp</div>
+    </a>
+
     <script>
-        // ✅ Mobile Navigation Toggle - Sama dengan home
+        // Mobile Navigation Toggle - Sama dengan home
         document.querySelector('.nav-toggle')?.addEventListener('click', function() {
             document.querySelector('.nav-menu')?.classList.toggle('active');
         });
-        
         document.querySelectorAll('.nav-menu a').forEach(link => {
             link.addEventListener('click', function() {
                 document.querySelector('.nav-menu')?.classList.remove('active');

@@ -29,15 +29,9 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
-        /* ✅ PERBAIKAN: Container disamakan dengan home (1200px) agar proporsi sama */
-        .container { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            padding: 0 20px; 
-        }
-        
-        /* ✅ NAVBAR - DIPERBAIKI AGAR MENU SELALU TENGAH */
+        /* Navbar */
         .navbar {
             background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -45,28 +39,14 @@
             padding: 12px 0;
             border-radius: 0 0 25px 25px;
         }
-        .navbar .container {
-            display: flex; 
-            align-items: center; 
-            /* Hapus justify-content: space-between agar kita bisa atur manual */
-        }
+        .navbar .container { display: flex; align-items: center; }
         .nav-brand {
             display: flex; align-items: center; gap: 8px;
             font-weight: 700; font-size: 1.2rem; color: var(--primary-blue);
-            flex-shrink: 0; /* Brand tidak boleh mengecil */
-            text-decoration: none;
+            flex-shrink: 0; text-decoration: none;
         }
         .nav-brand i { font-size: 1.4rem; }
-        
-        /* ✅ PERBAIKAN: Menu mengambil sisa ruang dan isinya di tengah */
-        .nav-menu { 
-            flex-grow: 1; 
-            display: flex; 
-            justify-content: center; /* Kunci agar menu selalu di tengah layar */
-            list-style: none; 
-            gap: 20px; 
-            margin: 0; padding: 0;
-        }
+        .nav-menu { flex-grow: 1; display: flex; justify-content: center; list-style: none; gap: 20px; margin: 0; padding: 0; }
         .nav-menu a {
             text-decoration: none; color: var(--gray-700);
             font-weight: 600; font-size: 0.95rem; padding: 4px 0; position: relative;
@@ -79,8 +59,6 @@
             transition: width 0.3s ease; border-radius: 3px;
         }
         .nav-menu a:hover::after, .nav-menu a.active::after { width: 100%; }
-        
-        /* Tombol Login agar tetap di kanan */
         .nav-login-btn {
             display: inline-flex; align-items: center; gap: 6px;
             padding: 10px 20px;
@@ -92,25 +70,19 @@
             font-size: 0.9rem;
             transition: all 0.3s ease;
             box-shadow: 0 4px 12px rgba(30, 60, 114, 0.25);
-            flex-shrink: 0; /* Login tidak boleh mengecil */
+            flex-shrink: 0;
         }
-        .nav-login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
-            color: var(--white);
-        }
+        .nav-login-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4); color: var(--white); }
         .nav-login-btn i { font-size: 0.95rem; }
-        
         .nav-toggle {
             display: none; background: none; border: none;
             font-size: 1.4rem; color: var(--primary-blue);
             cursor: pointer; border-radius: 50%; padding: 6px;
-            transition: all 0.3s ease;
-            margin-left: 15px;
+            transition: all 0.3s ease; margin-left: 15px;
         }
         .nav-toggle:hover { background: rgba(30, 60, 114, 0.1); }
         
-        /* Header Section */
+        /* Header */
         .header { text-align: center; padding: 40px 0 20px; margin-bottom: 10px; }
         .header h1 {
             font-size: 2rem; font-weight: 800; color: var(--white);
@@ -118,22 +90,16 @@
             justify-content: center; gap: 15px;
         }
         .header h1 i { color: var(--accent-teal); }
-        .header p {
-            font-size: 1rem; color: rgba(255, 255, 255, 0.9);
-            max-width: 600px; margin: 0 auto;
-        }
+        .header p { font-size: 1rem; color: rgba(255, 255, 255, 0.9); max-width: 600px; margin: 0 auto; }
         
-        /* Viewer Container */
+        /* Viewer */
         .viewer-container {
             background: var(--white); border-radius: 30px;
             padding: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.2);
             margin-bottom: 30px; position: relative;
         }
         .viewer-header { text-align: center; margin-bottom: 15px; }
-        .viewer-header h2 {
-            font-size: 1.5rem; color: var(--primary-blue);
-            font-weight: 700; margin-bottom: 5px;
-        }
+        .viewer-header h2 { font-size: 1.5rem; color: var(--primary-blue); font-weight: 700; margin-bottom: 5px; }
         .current-location {
             display: inline-flex; align-items: center; gap: 8px;
             background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
@@ -156,7 +122,6 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* Floating Location Button */
         .location-toggle-btn {
             position: absolute; top: 30px; left: 30px; z-index: 100;
             background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
@@ -165,27 +130,20 @@
             display: flex; align-items: center; gap: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.3s;
         }
-        .location-toggle-btn:hover {
-            transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-        }
+        .location-toggle-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
         
-        /* Scene Selector Modal */
         .scene-selector-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.8); z-index: 2000;
             display: none; align-items: center; justify-content: center; padding: 20px;
         }
         .scene-selector-overlay.active { display: flex; }
-        
         .scene-selector-modal {
             background: var(--white); border-radius: 30px; padding: 30px;
             max-width: 900px; width: 100%; max-height: 80vh; overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideUp 0.3s ease;
         }
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .scene-selector-header {
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid var(--gray-200);
@@ -207,13 +165,11 @@
         .scene-btn.active {
             background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); color: var(--white);
         }
-        
         .hotspot-debug {
             position: absolute; bottom: 30px; right: 30px;
             background: rgba(0,201,177,0.9); color: white; padding: 8px 16px;
             border-radius: 20px; font-size: 0.85rem; z-index: 100; font-weight: 600;
         }
-        
         .btn-back {
             display: inline-flex; align-items: center; gap: 10px; padding: 12px 25px;
             background: rgba(255,255,255,0.2); color: var(--white); text-decoration: none;
@@ -222,7 +178,51 @@
         }
         .btn-back:hover { background: var(--white); color: var(--primary-blue); transform: translateY(-2px); }
         
-        /* ✅ RESPONSIVE - SAMA PERSIS DENGAN HOME */
+        /* ✅ WHATSAPP FLOATING BUTTON - SAMA PERSIS DENGAN HOME */
+        .cs-button {
+            position: fixed; bottom: 25px; right: 25px; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            width: 56px; height: 56px;
+            background: linear-gradient(135deg, var(--accent-teal), #00b39d);
+            color: var(--white);
+            border-radius: 50%;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(0, 201, 177, 0.35);
+            transition: all 0.3s ease;
+        }
+        .cs-button:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 201, 177, 0.55);
+            color: var(--white);
+        }
+        .cs-button i { font-size: 1.8rem; }
+        .cs-tooltip {
+            position: absolute; bottom: 100%; right: 50%;
+            transform: translateX(50%) translateY(10px);
+            margin-bottom: 12px;
+            padding: 8px 16px;
+            background: var(--primary-blue);
+            color: var(--white);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .cs-tooltip::after {
+            content: ''; position: absolute; top: 100%; left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--primary-blue);
+        }
+        .cs-button:hover .cs-tooltip {
+            opacity: 1; visibility: visible; transform: translateX(50%) translateY(0);
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
             .nav-toggle { display: block; }
             .nav-menu {
@@ -233,21 +233,21 @@
                 box-shadow: -5px 0 20px rgba(0,0,0,0.15);
                 transition: right 0.4s ease;
                 border-radius: 0 0 35px 35px;
-                z-index: 999;
-                justify-content: flex-start; /* Menu mobile mulai dari atas */
+                justify-content: flex-start;
             }
             .nav-menu.active { right: 0; }
             .nav-menu li { margin-bottom: 20px; }
             .nav-menu a { font-size: 1.1rem; display: block; }
-            .nav-login-btn span { display: none; }
-            .nav-login-btn { padding: 10px 16px; }
-            .nav-login-btn i { font-size: 1.1rem; }
-            
             .header h1 { font-size: 1.5rem; }
             .header p { font-size: 0.9rem; }
             #panorama { height: 65vh; min-height: 400px; }
             .location-toggle-btn { top: 10px; left: 10px; padding: 10px 15px; font-size: 0.9rem; }
             .scene-buttons { grid-template-columns: repeat(2, 1fr); }
+            .nav-login-btn span { display: none; }
+            .nav-login-btn { padding: 10px 16px; }
+            .nav-login-btn i { font-size: 1.1rem; }
+            .cs-button { bottom: 15px; right: 15px; width: 50px; height: 50px; }
+            .cs-button i { font-size: 1.5rem; }
         }
         @media (max-width: 480px) {
             .header h1 { font-size: 1.3rem; }
@@ -257,15 +257,13 @@
     </style>
 </head>
 <body>
-    <!-- ✅ NAVBAR - STRUKTUR SAMA, CSS DIPERBAIKI -->
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="container">
             <a href="{{ route('home') }}" class="nav-brand">
                 <i class="fas fa-graduation-cap"></i>
                 <span>SMK NEGERI 11 BANDUNG</span>
             </a>
-            
-            <!-- Menu akan otomatis di tengah berkat CSS flex-grow -->
             <ul class="nav-menu">
                 <li><a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
                 <li><a href="{{ route('home') }}#profile">Profil Sekolah</a></li>
@@ -275,15 +273,11 @@
                 <li><a href="{{ route('home') }}#contact">Kontak</a></li>
                 <li><a href="{{ route('denah') }}" class="{{ request()->routeIs('denah') ? 'active' : '' }}">Denah 360°</a></li>
             </ul>
-            
-            <!-- Tombol Login Admin -->
             <a href="{{ route('admin.login') }}" class="nav-login-btn">
                 <i class="fas fa-user-shield"></i>
                 <span>Login Admin</span>
             </a>
-            <button class="nav-toggle">
-                <i class="fas fa-bars"></i>
-            </button>
+            <button class="nav-toggle"><i class="fas fa-bars"></i></button>
         </div>
     </nav>
 
@@ -357,9 +351,19 @@
         </div>
     </div>
 
+    <!-- ✅ WHATSAPP FLOATING BUTTON -->
+    <a href="https://wa.me/6281234567890?text=Halo%20Admin%20SMK%20Negeri%2011%20Bandung,%20saya%20ingin%20bertanya..." 
+       class="cs-button" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       aria-label="Hubungi Customer Service via WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <div class="cs-tooltip">Chat via WhatsApp</div>
+    </a>
+
     <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
     <script>
-    // ✅ NAVBAR JS
+    // Navbar JS
     document.querySelector('.nav-toggle')?.addEventListener('click', function() {
         document.querySelector('.nav-menu')?.classList.toggle('active');
     });
@@ -369,7 +373,7 @@
         });
     });
 
-    // ✅ Toggle Scene Selector
+    // Scene Selector
     function toggleSceneSelector() {
         document.getElementById('sceneSelectorOverlay').classList.toggle('active');
         document.body.style.overflow = document.getElementById('sceneSelectorOverlay').classList.contains('active') ? 'hidden' : '';
@@ -377,8 +381,6 @@
     function closeSceneSelectorOnOverlay(event) {
         if (event.target === event.currentTarget) toggleSceneSelector();
     }
-    
-    // ✅ Select Scene
     function selectScene(sceneId, sceneName) {
         if (!viewer || sceneId === viewer.getScene()) { toggleSceneSelector(); return; }
         document.querySelectorAll('.scene-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.scene === sceneId));
@@ -394,7 +396,6 @@
             if (str_starts_with($imgPath, 'storage/')) $p->image_url = '/' . $imgPath;
             elseif (str_starts_with($imgPath, 'panoramas/')) $p->image_url = '/' . $imgPath;
             else $p->image_url = asset($imgPath);
-            
             $hotspotsRaw = $p->hotspots ?? '[]';
             if (is_string($hotspotsRaw)) {
                 try { $p->hotspots_array = json_decode($hotspotsRaw, true) ?: []; } catch (\Exception $e) { $p->hotspots_array = []; }
