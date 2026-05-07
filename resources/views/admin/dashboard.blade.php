@@ -12,11 +12,52 @@
     <style>
         :root { --primary-blue: #1e3c72; --secondary-blue: #2a5298; --accent-teal: #00c9b1; --white: #ffffff; }
         body { background: #f8f9fa; font-family: 'Poppins', sans-serif; }
-        .sidebar { min-height: 100vh; background: var(--primary-blue); color: white; display: flex; flex-direction: column; }
+        
+        /* ✅ FIXED SIDEBAR STYLES */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 16.666667%; /* Match col-md-2 width */
+            background: var(--primary-blue);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            z-index: 1030;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        /* Custom scrollbar untuk sidebar */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.5);
+        }
+
         .sidebar a { color: rgba(255,255,255,0.9); text-decoration: none; padding: 12px 20px; display: block; border-radius: 8px; margin: 4px 0; transition: all 0.3s; }
         .sidebar a:hover, .sidebar a.active { background: var(--secondary-blue); color: white; }
         .sidebar .logout-btn { background: none; border: none; color: rgba(255,255,255,0.9); padding: 12px 20px; text-align: left; width: 100%; font-size: 1rem; cursor: pointer; transition: all 0.3s; }
         .sidebar .logout-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+        
+        /* ✅ MAIN CONTENT ADJUSTMENT FOR FIXED SIDEBAR */
+        .main-content {
+            margin-left: 16.666667%; /* Match sidebar width */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
         .stat-card { border: none; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: transform 0.2s; }
         .stat-card:hover { transform: translateY(-3px); }
         .stat-icon { width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
@@ -26,7 +67,7 @@
         .bg-purple-light { background: rgba(139,92,246,0.15); color: #8b5cf6; }
         .bg-pink-light { background: rgba(236,72,153,0.15); color: #ec4899; }
         .bg-orange-light { background: rgba(255,159,67,0.15); color: #ff9f43; }
-        .navbar-admin { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.08); padding: 1rem 2rem; }
+        .navbar-admin { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.08); padding: 1rem 2rem; position: sticky; top: 0; z-index: 1020; }
         .preview-thumb { width: 60px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid #dee2e6; background: #f8f9fa; transition: transform 0.2s; }
         .preview-thumb:hover { transform: scale(1.1); }
         .preview-achievement { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 1px solid #dee2e6; background: #f8f9fa; }
@@ -126,15 +167,57 @@
             font-size: 0.75rem;
             color: var(--gray-600);
         }
+
+        /* ✅ RESPONSIVE: Mobile Sidebar Toggle */
+        @media (max-width: 767px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .sidebar-toggle-btn {
+                display: block !important;
+            }
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 1025;
+            }
+            .overlay.show {
+                display: block;
+            }
+        }
+        @media (min-width: 768px) {
+            .sidebar-toggle-btn {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-2 sidebar p-0">
-                <div class="p-3 border-bottom" style="border-color: rgba(255,255,255,0.2) !important;">
+    <!-- ✅ Overlay untuk mobile -->
+    <div class="overlay" id="sidebarOverlay"></div>
+
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- ✅ Sidebar (Fixed) -->
+            <div class="sidebar p-0">
+                <div class="p-3 border-bottom d-flex align-items-center justify-content-between" style="border-color: rgba(255,255,255,0.2) !important;">
                     <h5 class="mb-0 fw-bold"><i class="fas fa-graduation-cap me-2"></i>Admin SMK 11</h5>
+                    <!-- Toggle button untuk mobile -->
+                    <button class="btn btn-sm btn-link text-white d-md-none sidebar-toggle-btn" id="sidebarCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
                 <nav class="mt-3 p-2 flex-grow-1">
                     <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
@@ -169,12 +252,18 @@
                 </div>
             </div>
 
-            <!-- Main Content -->
-            <div class="col-md-10">
+            <!-- ✅ Main Content (Dengan margin kiri untuk sidebar) -->
+            <div class="main-content col-md-10">
                 <!-- Top Navbar -->
                 <nav class="navbar-admin">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="mb-0 fw-bold" style="color: var(--primary-blue);">📊 Dashboard</h4>
+                        <div class="d-flex align-items-center gap-3">
+                            <!-- ✅ Toggle button untuk mobile -->
+                            <button class="btn btn-sm btn-outline-primary d-md-none sidebar-toggle-btn" id="sidebarToggleBtn">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            <h4 class="mb-0 fw-bold" style="color: var(--primary-blue);">📊 Dashboard</h4>
+                        </div>
                         <div class="d-flex align-items-center gap-3">
                             <span class="text-muted">Halo, {{ Auth::user()->name ?? 'Admin' }}!</span>
                             <div class="bg-teal-light rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-weight: 600;">
@@ -490,7 +579,7 @@
                         </div>
                     </div>
 
-                    <!-- ✅ Gallery Section - Full Width Below Comments (5 Terbaru) - FIXED -->
+                    <!-- ✅ Gallery Section - Full Width Below Comments (5 Terbaru) -->
                     <div class="row g-4 mt-2">
                         <div class="col-12">
                             <div class="section-card">
@@ -505,7 +594,6 @@
                                     <div class="gallery-grid-dashboard">
                                         @foreach($recentGalleries->take(5) as $gallery)
                                         <div class="gallery-item-dashboard">
-                                            {{-- ✅ FIXED: Gunakan $gallery->image (bukan image_path) --}}
                                             @if($gallery->image)
                                                 <img src="{{ asset('storage/' . $gallery->image) }}" 
                                                      alt="{{ $gallery->title }}"
@@ -547,8 +635,43 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Auto close alert after 5 seconds
             document.querySelectorAll('.alert').forEach(alert => {
                 setTimeout(() => { const bsAlert = new bootstrap.Alert(alert); bsAlert.close(); }, 5000);
+            });
+
+            // ✅ Sidebar Toggle untuk Mobile
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const toggleBtn = document.getElementById('sidebarToggleBtn');
+            const closeBtn = document.getElementById('sidebarCloseBtn');
+
+            function toggleSidebar() {
+                sidebar.classList.toggle('show');
+                overlay.classList.toggle('show');
+                document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : '';
+            }
+
+            if(toggleBtn) toggleBtn.addEventListener('click', toggleSidebar);
+            if(closeBtn) closeBtn.addEventListener('click', toggleSidebar);
+            if(overlay) overlay.addEventListener('click', toggleSidebar);
+
+            // Close sidebar when clicking a link on mobile
+            document.querySelectorAll('.sidebar a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if(window.innerWidth < 768 && sidebar.classList.contains('show')) {
+                        toggleSidebar();
+                    }
+                });
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if(window.innerWidth >= 768) {
+                    sidebar.classList.remove('show');
+                    overlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
             });
         });
     </script>

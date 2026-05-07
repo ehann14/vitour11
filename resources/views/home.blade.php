@@ -543,7 +543,7 @@
             </div>
             <div class="gallery-grid">
                 <div class="gallery-item"><img src="{{ asset('image/b/banner-1.png') }}" alt="Kegiatan Upacara"><div class="gallery-overlay"><h4>Kegiatan Upacara</h4><p>Siswa aktif mengikuti kegiatan pembinaan disiplin dan karakter di sekolah</p></div></div>
-                <div class="gallery-item"><img src="{{ asset('image/b/ehan.jpeg') }}" alt="Owner"><div class="gallery-overlay"><h4>Owner</h4><p>Akulah Sang Pembuat Vitour11</p></div></div>
+                <div class="gallery-item"><img src="{{ asset('image/b/slide_3a.jpeg') }}" alt="Lapangan"><div class="gallery-overlay"><h4>Lapangan</h4><p>Tempat kegiatan pembelajaran olahraga dan tempat kegiatan upacara bendera</p></div></div>
                 <div class="gallery-item"><img src="{{ asset('image/b/eskul.jpg') }}" alt="Ekstrakurikuler"><div class="gallery-overlay"><h4>Ekstrakurikuler</h4><p>Pengembangan minat dan bakat siswa</p></div></div>
                 <div class="gallery-item"><img src="{{ asset('image/b/Belajar.Jpeg') }}" alt="Kegiatan Pembelajaran"><div class="gallery-overlay"><h4>Kegiatan belajar</h4><p>Proses pembelajaran interaktif di dalam kelas</p></div></div>
                 <div class="gallery-item"><img src="{{ asset('image/b/slide_2a.jpeg') }}" alt="Taman"><div class="gallery-overlay"><h4>Taman</h4><p>Sebagai ruang belajar alami dan cocok untuk bersantai</p></div></div>
